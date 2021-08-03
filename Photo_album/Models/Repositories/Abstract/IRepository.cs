@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Photo_album.Models.Repositories.Abstract
@@ -11,16 +12,19 @@ namespace Photo_album.Models.Repositories.Abstract
         TEntity GetByKey(TEntityKey key);
         Task<TEntity> GetByKeyAsync(TEntityKey key);
 
-        bool Add(TEntity asset);
-        Task<bool> AddAsync(TEntity Asset);
+        IQueryable<TEntity> GetByUserKey(TEntityKey userKey);
+        Task<IQueryable<TEntity>> GetByUserKeyAsync(TEntityKey userKey);
 
-        bool Update(TEntity asset);
-        Task<bool> UpdateAsync(TEntity asset);
+        IQueryable<TEntity> GetByContainsText(string text);
+        Task<IQueryable<TEntity>> GetByContainsTextAsync(string text);
 
-        bool DeleteByKey(TEntityKey index);
-        Task<bool> DeleteByKeyAsync(TEntityKey key);
+        void Save(TEntity entity);
+        Task SaveAsync(TEntity entity);
 
-        bool DeleteAll();
-        Task<bool> DeleteAllAsync();
+        void DeleteByKey(TEntityKey key);
+        Task DeleteByKeyAsync(TEntityKey key);
+
+        void DeleteAll();
+        Task DeleteAllAsync();
     }
 }

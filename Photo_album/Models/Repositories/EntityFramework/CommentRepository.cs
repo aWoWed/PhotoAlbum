@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Photo_album.Models.Entities;
 using Photo_album.Models.Repositories.Abstract;
@@ -15,64 +17,61 @@ namespace Photo_album.Models.Repositories.EntityFramework
             _appDbContext = appDbContext;
         }
 
-        public IEnumerable<Comment> Get()
+        public IEnumerable<Comment> Get() => _appDbContext.Comments;
+
+        public async Task<IEnumerable<Comment>> GetAsync() => await _appDbContext.Comments.ToListAsync();
+
+        public Comment GetByKey(Guid key) =>
+            _appDbContext.Comments.FirstOrDefault(comment => comment.Id == key);
+
+        public async Task<Comment> GetByKeyAsync(Guid key) => await _appDbContext.Comments.FirstOrDefaultAsync(comment => comment.Id == key);
+
+        public IQueryable<Comment> GetByUserKey(Guid userKey) =>
+            _appDbContext.Comments.Where(comment => comment.UserId == userKey);
+
+        public Task<IQueryable<Comment>> GetByUserKeyAsync(Guid userKey) =>
+            new Task<IQueryable<Comment>>(() => _appDbContext.Comments.Where(comment => comment.UserId == userKey));
+
+        public IQueryable<Comment> GetByContainsText(string text) =>
+            _appDbContext.Comments.Where(comment => comment.Text.Contains(text));
+
+        public Task<IQueryable<Comment>> GetByContainsTextAsync(string text) => new Task<IQueryable<Comment>>(() =>
+            _appDbContext.Comments.Where(comment => comment.Text.Contains(text)));
+
+        public void Save(Comment entity)
         {
-            throw new NotImplementedException();
+            _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
+            _appDbContext.SaveChanges();
         }
 
-        public Task<IEnumerable<Comment>> GetAsync()
+        public async Task SaveAsync(Comment entity)
         {
-            throw new NotImplementedException();
+            _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public Comment GetByKey(string key)
+        public void DeleteByKey(Guid key)
         {
-            throw new NotImplementedException();
+            _appDbContext.Comments.Remove(new Comment {Id = key});
+            _appDbContext.SaveChanges();
         }
 
-        public Task<Comment> GetByKeyAsync(string key)
+        public async Task DeleteByKeyAsync(Guid key)
         {
-            throw new NotImplementedException();
+            _appDbContext.Comments.Remove(new Comment { Id = key });
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public bool Add(Comment asset)
+        public void DeleteAll()
         {
-            throw new NotImplementedException();
+            _appDbContext.Comments.RemoveRange(_appDbContext.Comments);
+            _appDbContext.SaveChanges();
         }
 
-        public Task<bool> AddAsync(Comment Asset)
+        public async Task DeleteAllAsync()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(Comment asset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> UpdateAsync(Comment asset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteByKey(string index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteByKeyAsync(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAllAsync()
-        {
-            throw new NotImplementedException();
+            _appDbContext.Comments.RemoveRange(_appDbContext.Comments);
+            await _appDbContext.SaveChangesAsync();
         }
     }
 }

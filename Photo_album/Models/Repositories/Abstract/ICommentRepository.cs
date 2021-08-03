@@ -1,7 +1,8 @@
-﻿using Photo_album.Models.Entities;
+﻿using System;
+using Photo_album.Models.Entities;
 
 namespace Photo_album.Models.Repositories.Abstract
 {
-    public interface ICommentRepository : IRepository<string, Comment>
+    public interface ICommentRepository : IRepository<Guid, Comment>
     { }
 }
