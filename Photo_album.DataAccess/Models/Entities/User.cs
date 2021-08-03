@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Photo_album.Models.Entities
+namespace Photo_album.DataAccess.Models.Entities
 {
     public class User : IdentityUser
     {

@@ -1,18 +1,18 @@
-namespace Photo_album.Migrations
+namespace Photo_album.DataAccess.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Models.Photo_albumDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Photo_album.DataAccess.Models.Photo_albumDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Models.Photo_albumDbContext context)
+        protected override void Seed(Photo_album.DataAccess.Models.Photo_albumDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Photo_album.Models.Entities
+namespace Photo_album.DataAccess.Models.Entities
 {
     public class Post : BaseModel
     {

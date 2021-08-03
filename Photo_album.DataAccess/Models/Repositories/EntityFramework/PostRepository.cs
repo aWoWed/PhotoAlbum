@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Photo_album.Models.Entities;
-using Photo_album.Models.Repositories.Abstract;
+using Photo_album.DataAccess.Models.Entities;
+using Photo_album.DataAccess.Models.Repositories.Abstract;
 
-namespace Photo_album.Models.Repositories.EntityFramework
+namespace Photo_album.DataAccess.Models.Repositories.EntityFramework
 {
     public class PostRepository : IPostRepository
     {

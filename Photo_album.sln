@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo_album", "Photo_album\Photo_album.csproj", "{62556449-C4D8-49FC-89C7-634A76AB4E1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo_album.DataAccess", "Photo_album.DataAccess\Photo_album.DataAccess.csproj", "{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{62556449-C4D8-49FC-89C7-634A76AB4E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62556449-C4D8-49FC-89C7-634A76AB4E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62556449-C4D8-49FC-89C7-634A76AB4E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

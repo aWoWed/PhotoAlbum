@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Photo_album.Models.Repositories.Abstract
+namespace Photo_album.DataAccess.Models.Repositories.Abstract
 {
     public interface IRepository<in TEntityKey, TEntity>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Photo_album.Models.Entities
+namespace Photo_album.DataAccess.Models.Entities
 {
     public abstract class BaseModel
     {

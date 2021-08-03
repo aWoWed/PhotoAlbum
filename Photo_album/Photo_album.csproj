@@ -136,21 +136,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202108031818447_InitialMigration.cs" />
-    <Compile Include="Migrations\202108031818447_InitialMigration.Designer.cs">
-      <DependentUpon>202108031818447_InitialMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Entities\BaseModel.cs" />
-    <Compile Include="Models\Entities\Comment.cs" />
-    <Compile Include="Models\Entities\Post.cs" />
-    <Compile Include="Models\Entities\User.cs" />
-    <Compile Include="Models\Photo_albumDbContext.cs" />
-    <Compile Include="Models\Repositories\Abstract\ICommentRepository.cs" />
-    <Compile Include="Models\Repositories\Abstract\IPostRepository.cs" />
-    <Compile Include="Models\Repositories\Abstract\IRepository.cs" />
-    <Compile Include="Models\Repositories\EntityFramework\CommentRepository.cs" />
-    <Compile Include="Models\Repositories\EntityFramework\PostRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -205,11 +190,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202108031818447_InitialMigration.resx">
-      <DependentUpon>202108031818447_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

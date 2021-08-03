@@ -1,4 +1,4 @@
-namespace Photo_album.Migrations
+namespace Photo_album.DataAccess.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
