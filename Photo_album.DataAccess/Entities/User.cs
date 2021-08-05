@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Photo_album.DataAccess.Models.Entities
+namespace Photo_album.DataAccess.Entities
 {
     public class User : IdentityUser
     {

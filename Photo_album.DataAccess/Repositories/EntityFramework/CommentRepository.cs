@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Photo_album.DataAccess.Models.Entities;
-using Photo_album.DataAccess.Models.Repositories.Abstract;
+using Photo_album.DataAccess.Context;
+using Photo_album.DataAccess.Entities;
+using Photo_album.DataAccess.Repositories.Abstract;
 
-namespace Photo_album.DataAccess.Models.Repositories.EntityFramework
+namespace Photo_album.DataAccess.Repositories.EntityFramework
 {
     public class CommentRepository : ICommentRepository
     {
@@ -38,40 +39,10 @@ namespace Photo_album.DataAccess.Models.Repositories.EntityFramework
         public Task<IQueryable<Comment>> GetByContainsTextAsync(string text) => new Task<IQueryable<Comment>>(() =>
             _appDbContext.Comments.Where(comment => comment.Text.Contains(text)));
 
-        public void Save(Comment entity)
-        {
-            _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
-            _appDbContext.SaveChanges();
-        }
-
-        public async Task SaveAsync(Comment entity)
-        {
-            _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
-            await _appDbContext.SaveChangesAsync();
-        }
-
-        public void DeleteByKey(Guid key)
-        {
-            _appDbContext.Comments.Remove(new Comment {Id = key});
-            _appDbContext.SaveChanges();
-        }
-
-        public async Task DeleteByKeyAsync(Guid key)
-        {
-            _appDbContext.Comments.Remove(new Comment { Id = key });
-            await _appDbContext.SaveChangesAsync();
-        }
-
-        public void DeleteAll()
-        {
-            _appDbContext.Comments.RemoveRange(_appDbContext.Comments);
-            _appDbContext.SaveChanges();
-        }
-
-        public async Task DeleteAllAsync()
-        {
-            _appDbContext.Comments.RemoveRange(_appDbContext.Comments);
-            await _appDbContext.SaveChangesAsync();
-        }
+        public void Save(Comment entity) => _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
+        
+        public void DeleteByKey(Guid key) => _appDbContext.Comments.Remove(new Comment {Id = key});
+        
+        public void DeleteAll() => _appDbContext.Comments.RemoveRange(_appDbContext.Comments);
     }
 }

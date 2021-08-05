@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Photo_album.DataAccess.Models.Repositories.Abstract
+namespace Photo_album.DataAccess.Repositories.Abstract
 {
     public interface IRepository<in TEntityKey, TEntity>
     {
@@ -19,12 +19,9 @@ namespace Photo_album.DataAccess.Models.Repositories.Abstract
         Task<IQueryable<TEntity>> GetByContainsTextAsync(string text);
 
         void Save(TEntity entity);
-        Task SaveAsync(TEntity entity);
 
         void DeleteByKey(TEntityKey key);
-        Task DeleteByKeyAsync(TEntityKey key);
 
         void DeleteAll();
-        Task DeleteAllAsync();
     }
 }

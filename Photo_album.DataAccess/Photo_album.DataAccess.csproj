@@ -54,22 +54,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UOfW\IUnitOfWork.cs" />
     <Compile Include="Migrations\202108032029278_InitialMigration.cs" />
     <Compile Include="Migrations\202108032029278_InitialMigration.Designer.cs">
       <DependentUpon>202108032029278_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Entities\BaseModel.cs" />
-    <Compile Include="Models\Entities\Comment.cs" />
-    <Compile Include="Models\Entities\Post.cs" />
-    <Compile Include="Models\Entities\User.cs" />
-    <Compile Include="Models\Photo_albumDbContext.cs" />
-    <Compile Include="Models\Repositories\Abstract\ICommentRepository.cs" />
-    <Compile Include="Models\Repositories\Abstract\IPostRepository.cs" />
-    <Compile Include="Models\Repositories\Abstract\IRepository.cs" />
-    <Compile Include="Models\Repositories\EntityFramework\CommentRepository.cs" />
-    <Compile Include="Models\Repositories\EntityFramework\PostRepository.cs" />
+    <Compile Include="Entities\BaseModel.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Post.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Context\Photo_albumDbContext.cs" />
+    <Compile Include="Repositories\Abstract\ICommentRepository.cs" />
+    <Compile Include="Repositories\Abstract\IPostRepository.cs" />
+    <Compile Include="Repositories\Abstract\IRepository.cs" />
+    <Compile Include="Repositories\EntityFramework\CommentRepository.cs" />
+    <Compile Include="Repositories\EntityFramework\PostRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UOfW\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -80,5 +82,12 @@
       <DependentUpon>202108032029278_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Photo_album\Photo_album.csproj">
+      <Project>{62556449-c4d8-49fc-89c7-634a76ab4e1d}</Project>
+      <Name>Photo_album</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Photo_album.DataAccess.Models.Entities;
+using Photo_album.DataAccess.Entities;
 
-namespace Photo_album.DataAccess.Models
+namespace Photo_album.DataAccess.Context
 {
     public class Photo_albumDbContext : IdentityDbContext<User>
     {

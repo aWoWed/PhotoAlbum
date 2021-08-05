@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Photo_album.DataAccess.Models.Entities;
-using Photo_album.DataAccess.Models.Repositories.Abstract;
+using Photo_album.DataAccess.Context;
+using Photo_album.DataAccess.Entities;
+using Photo_album.DataAccess.Repositories.Abstract;
 
-namespace Photo_album.DataAccess.Models.Repositories.EntityFramework
+namespace Photo_album.DataAccess.Repositories.EntityFramework
 {
     public class PostRepository : IPostRepository
     {
@@ -35,41 +36,11 @@ namespace Photo_album.DataAccess.Models.Repositories.EntityFramework
         public Task<IQueryable<Post>> GetByContainsTextAsync(string text) =>
             new Task<IQueryable<Post>>(() => _appDbContext.Posts.Where(post => post.Description.Contains(text)));
 
-        public void Save(Post entity)
-        {
-            _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
-            _appDbContext.SaveChanges();
-        }
+        public void Save(Post entity) => _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
 
-        public async Task SaveAsync(Post entity)
-        {
-            _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
-            await _appDbContext.SaveChangesAsync();
-        }
+        public void DeleteByKey(Guid key) => _appDbContext.Posts.Remove(new Post {Id = key});
 
-        public void DeleteByKey(Guid key)
-        {
-            _appDbContext.Posts.Remove(new Post {Id = key});
-            _appDbContext.SaveChanges();
-        }
-
-        public async Task DeleteByKeyAsync(Guid key)
-        {
-            _appDbContext.Posts.Remove(new Post {Id = key});
-            await _appDbContext.SaveChangesAsync();
-        }
-
-        public void DeleteAll()
-        {
-            _appDbContext.Posts.RemoveRange(_appDbContext.Posts);
-            _appDbContext.SaveChanges();
-        }
-
-        public async Task DeleteAllAsync()
-        {
-            _appDbContext.Posts.RemoveRange(_appDbContext.Posts);
-            await _appDbContext.SaveChangesAsync();
-        }
+        public void DeleteAll() => _appDbContext.Posts.RemoveRange(_appDbContext.Posts);
 
         public int Count(Guid userKey) => _appDbContext.Posts.Count(post => post.UserId == userKey);
     }
