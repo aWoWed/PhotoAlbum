@@ -22,12 +22,12 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
 
         public async Task<IEnumerable<Post>> GetAsync() => await _appDbContext.Posts.ToListAsync();
 
-        public Post GetByKey(Guid key) => _appDbContext.Posts.FirstOrDefault(post => post.Id == key);
+        public Post GetByKey(string key) => _appDbContext.Posts.FirstOrDefault(post => post.Id == key);
 
-        public async Task<Post> GetByKeyAsync(Guid key) => await _appDbContext.Posts.FirstOrDefaultAsync(post => post.Id == key);
-        public IQueryable<Post> GetByUserKey(Guid userKey) => _appDbContext.Posts.Where(post => post.UserId == userKey);
+        public async Task<Post> GetByKeyAsync(string key) => await _appDbContext.Posts.FirstOrDefaultAsync(post => post.Id == key);
+        public IQueryable<Post> GetByUserKey(string userKey) => _appDbContext.Posts.Where(post => post.UserId == userKey);
 
-        public Task<IQueryable<Post>> GetByUserKeyAsync(Guid userKey) =>
+        public Task<IQueryable<Post>> GetByUserKeyAsync(string userKey) =>
             new Task<IQueryable<Post>>(() => _appDbContext.Posts.Where(post => post.UserId == userKey));
 
         public IQueryable<Post> GetByContainsText(string text) =>
@@ -38,10 +38,10 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
 
         public void Save(Post entity) => _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
 
-        public void DeleteByKey(Guid key) => _appDbContext.Posts.Remove(new Post {Id = key});
+        public void DeleteByKey(string key) => _appDbContext.Posts.Remove(new Post {Id = key});
 
         public void DeleteAll() => _appDbContext.Posts.RemoveRange(_appDbContext.Posts);
 
-        public int Count(Guid userKey) => _appDbContext.Posts.Count(post => post.UserId == userKey);
+        public int Count(string userKey) => _appDbContext.Posts.Count(post => post.UserId == userKey);
     }
 }

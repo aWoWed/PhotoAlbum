@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Photo_album.DataAccess.Entities
 {
@@ -7,8 +8,12 @@ namespace Photo_album.DataAccess.Entities
     {
         public string Text { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
-        public Guid PostId { get; set; }
+        public string PostId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
+        [ForeignKey("PostId")]
+        public virtual Post Post { get; set; }
     }
 }

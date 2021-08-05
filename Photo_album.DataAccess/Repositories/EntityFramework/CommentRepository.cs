@@ -22,15 +22,15 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
 
         public async Task<IEnumerable<Comment>> GetAsync() => await _appDbContext.Comments.ToListAsync();
 
-        public Comment GetByKey(Guid key) =>
+        public Comment GetByKey(string key) =>
             _appDbContext.Comments.FirstOrDefault(comment => comment.Id == key);
 
-        public async Task<Comment> GetByKeyAsync(Guid key) => await _appDbContext.Comments.FirstOrDefaultAsync(comment => comment.Id == key);
+        public async Task<Comment> GetByKeyAsync(string key) => await _appDbContext.Comments.FirstOrDefaultAsync(comment => comment.Id == key);
 
-        public IQueryable<Comment> GetByUserKey(Guid userKey) =>
+        public IQueryable<Comment> GetByUserKey(string userKey) =>
             _appDbContext.Comments.Where(comment => comment.UserId == userKey);
 
-        public Task<IQueryable<Comment>> GetByUserKeyAsync(Guid userKey) =>
+        public Task<IQueryable<Comment>> GetByUserKeyAsync(string userKey) =>
             new Task<IQueryable<Comment>>(() => _appDbContext.Comments.Where(comment => comment.UserId == userKey));
 
         public IQueryable<Comment> GetByContainsText(string text) =>
@@ -41,7 +41,7 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
 
         public void Save(Comment entity) => _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
         
-        public void DeleteByKey(Guid key) => _appDbContext.Comments.Remove(new Comment {Id = key});
+        public void DeleteByKey(string key) => _appDbContext.Comments.Remove(new Comment {Id = key});
         
         public void DeleteAll() => _appDbContext.Comments.RemoveRange(_appDbContext.Comments);
     }

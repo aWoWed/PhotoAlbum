@@ -54,6 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\202108052143012_WithForeignKeysMigration.cs" />
+    <Compile Include="Migrations\202108052143012_WithForeignKeysMigration.Designer.cs">
+      <DependentUpon>202108052143012_WithForeignKeysMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="UOfW\IUnitOfWork.cs" />
     <Compile Include="Migrations\202108032029278_InitialMigration.cs" />
     <Compile Include="Migrations\202108032029278_InitialMigration.Designer.cs">
@@ -80,6 +84,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202108032029278_InitialMigration.resx">
       <DependentUpon>202108032029278_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108052143012_WithForeignKeysMigration.resx">
+      <DependentUpon>202108052143012_WithForeignKeysMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

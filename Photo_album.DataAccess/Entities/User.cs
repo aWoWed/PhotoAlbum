@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Photo_album.DataAccess.Entities
 {
@@ -6,5 +7,7 @@ namespace Photo_album.DataAccess.Entities
     {
         public string Description { get; set; }
         public string ProfilePhoto { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
