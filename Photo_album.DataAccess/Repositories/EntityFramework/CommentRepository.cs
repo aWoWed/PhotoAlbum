@@ -18,9 +18,9 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
             _appDbContext = appDbContext;
         }
 
-        public IEnumerable<Comment> Get() => _appDbContext.Comments;
+        public IQueryable<Comment> Get() => _appDbContext.Comments;
 
-        public async Task<IEnumerable<Comment>> GetAsync() => await _appDbContext.Comments.ToListAsync();
+        public Task<IQueryable<Comment>> GetAsync() => Task.FromResult(_appDbContext.Comments.AsQueryable());
 
         public Comment GetByKey(string key) =>
             _appDbContext.Comments.FirstOrDefault(comment => comment.Id == key);
@@ -31,15 +31,18 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
             _appDbContext.Comments.Where(comment => comment.UserId == userKey);
 
         public Task<IQueryable<Comment>> GetByUserKeyAsync(string userKey) =>
-            new Task<IQueryable<Comment>>(() => _appDbContext.Comments.Where(comment => comment.UserId == userKey));
+            Task.FromResult(_appDbContext.Comments.Where(comment => comment.UserId == userKey));
 
         public IQueryable<Comment> GetByContainsText(string text) =>
-            _appDbContext.Comments.Where(comment => comment.Text.Contains(text));
+            _appDbContext.Comments.Where(comment => comment.Text.ToLower().Contains(text.ToLower()));
 
-        public Task<IQueryable<Comment>> GetByContainsTextAsync(string text) => new Task<IQueryable<Comment>>(() =>
-            _appDbContext.Comments.Where(comment => comment.Text.Contains(text)));
+        public Task<IQueryable<Comment>> GetByContainsTextAsync(string text) =>
+            Task.FromResult(_appDbContext.Comments.Where(comment => comment.Text.ToLower().Contains(text.ToLower())));
 
-        public void Save(Comment entity) => _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
+        public void Save(Comment entity) => _appDbContext.Entry(entity).State =
+            _appDbContext.Comments.FirstOrDefault(comment => comment.Id == entity.Id) == null
+                ? EntityState.Added
+                : EntityState.Modified;
         
         public void DeleteByKey(string key) => _appDbContext.Comments.Remove(new Comment {Id = key});
         

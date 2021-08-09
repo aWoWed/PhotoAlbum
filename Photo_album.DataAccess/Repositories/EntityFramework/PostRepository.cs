@@ -18,9 +18,9 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
             _appDbContext = appDbContext;
         }
 
-        public IEnumerable<Post> Get() => _appDbContext.Posts;
+        public IQueryable<Post> Get() => _appDbContext.Posts;
 
-        public async Task<IEnumerable<Post>> GetAsync() => await _appDbContext.Posts.ToListAsync();
+        public Task<IQueryable<Post>> GetAsync() => Task.FromResult(_appDbContext.Posts.AsQueryable());
 
         public Post GetByKey(string key) => _appDbContext.Posts.FirstOrDefault(post => post.Id == key);
 
@@ -28,15 +28,18 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         public IQueryable<Post> GetByUserKey(string userKey) => _appDbContext.Posts.Where(post => post.UserId == userKey);
 
         public Task<IQueryable<Post>> GetByUserKeyAsync(string userKey) =>
-            new Task<IQueryable<Post>>(() => _appDbContext.Posts.Where(post => post.UserId == userKey));
+            Task.FromResult(_appDbContext.Posts.Where(post => post.UserId == userKey));
 
         public IQueryable<Post> GetByContainsText(string text) =>
-            _appDbContext.Posts.Where(post => post.Description.Contains(text));
+            _appDbContext.Posts.Where(post => post.Description.ToLower().Contains(text.ToLower()));
 
         public Task<IQueryable<Post>> GetByContainsTextAsync(string text) =>
-            new Task<IQueryable<Post>>(() => _appDbContext.Posts.Where(post => post.Description.Contains(text)));
+            Task.FromResult(_appDbContext.Posts.Where(post => post.Description.ToLower().Contains(text.ToLower())));
 
-        public void Save(Post entity) => _appDbContext.Entry(entity).State = entity.Id == default ? EntityState.Added : EntityState.Modified;
+        public void Save(Post entity) => _appDbContext.Entry(entity).State =
+            _appDbContext.Posts.FirstOrDefault(post => post.Id == entity.Id) == null
+                ? EntityState.Added
+                : EntityState.Modified;
 
         public void DeleteByKey(string key) => _appDbContext.Posts.Remove(new Post {Id = key});
 

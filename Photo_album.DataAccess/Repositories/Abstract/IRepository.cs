@@ -6,8 +6,8 @@ namespace Photo_album.DataAccess.Repositories.Abstract
 {
     public interface IRepository<in TEntityKey, TEntity>
     {
-        IEnumerable<TEntity> Get();
-        Task<IEnumerable<TEntity>> GetAsync();
+        IQueryable<TEntity> Get();
+        Task<IQueryable<TEntity>> GetAsync();
 
         TEntity GetByKey(TEntityKey key);
         Task<TEntity> GetByKeyAsync(TEntityKey key);
