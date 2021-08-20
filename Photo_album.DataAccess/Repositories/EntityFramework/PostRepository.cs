@@ -18,33 +18,95 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
             _appDbContext = appDbContext;
         }
 
+        /// <summary>
+        /// Gets Posts from Db
+        /// </summary>
+        /// <returns>Posts from Db</returns>
         public IQueryable<Post> Get() => _appDbContext.Posts;
 
+        /// <summary>
+        /// Gets Async Posts from Db
+        /// </summary>
+        /// <returns>Posts from Db</returns>
         public Task<IQueryable<Post>> GetAsync() => Task.FromResult(_appDbContext.Posts.AsQueryable());
 
+        /// <summary>
+        /// Gets Posts by current key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns> Posts with current key</returns>
         public Post GetByKey(string key) => _appDbContext.Posts.FirstOrDefault(post => post.Id == key);
 
+        /// <summary>
+        /// Gets Async Posts by current key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns> Posts with current key</returns>
         public async Task<Post> GetByKeyAsync(string key) => await _appDbContext.Posts.FirstOrDefaultAsync(post => post.Id == key);
+
+        /// <summary>
+        /// Gets Posts by current User key
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <returns> Posts with current User key</returns>
         public IQueryable<Post> GetByUserKey(string userKey) => _appDbContext.Posts.Where(post => post.UserId == userKey);
 
+        /// <summary>
+        /// Gets Async Posts by current User key
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <returns> Posts with current User key</returns>
         public Task<IQueryable<Post>> GetByUserKeyAsync(string userKey) =>
             Task.FromResult(_appDbContext.Posts.Where(post => post.UserId == userKey));
 
+        /// <summary>
+        /// Gets Posts by contains Text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns>Posts with contains text</returns>
         public IQueryable<Post> GetByContainsText(string text) =>
             _appDbContext.Posts.Where(post => post.Description.ToLower().Contains(text.ToLower()));
 
+        /// <summary>
+        /// Gets Async Posts by contains Text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns>Posts with contains text</returns>
         public Task<IQueryable<Post>> GetByContainsTextAsync(string text) =>
             Task.FromResult(_appDbContext.Posts.Where(post => post.Description.ToLower().Contains(text.ToLower())));
 
-        public void Save(Post entity) => _appDbContext.Entry(entity).State =
-            _appDbContext.Posts.FirstOrDefault(post => post.Id == entity.Id) == null
-                ? EntityState.Added
-                : EntityState.Modified;
+        /// <summary>
+        /// Inserts comment to Db
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Insert(Post entity) => _appDbContext.Entry(entity).State = EntityState.Added;
 
+        /// <summary>
+        /// Updates comment to Db
+        /// </summary>
+        /// <param name="entity"></param>
+        public void Update(Post entity)
+        {
+            _appDbContext.Posts.Attach(entity);
+            _appDbContext.Entry(entity).State = EntityState.Modified;
+        }
+
+        /// <summary>
+        /// Deletes comment with current key
+        /// </summary>
+        /// <param name="key"></param>
         public void DeleteByKey(string key) => _appDbContext.Posts.Remove(new Post {Id = key});
 
+        /// <summary>
+        /// Deletes all Comments
+        /// </summary>
         public void DeleteAll() => _appDbContext.Posts.RemoveRange(_appDbContext.Posts);
 
+        /// <summary>
+        /// Counts posts, which user with userKey made
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <returns>Number of posts made by user with userKey</returns>
         public int Count(string userKey) => _appDbContext.Posts.Count(post => post.UserId == userKey);
     }
 }

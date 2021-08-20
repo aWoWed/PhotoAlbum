@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}</ProjectGuid>
+    <ProjectGuid>{C16496BD-A8B4-419A-8D1F-63FB12B57D14}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Photo_album.DataAccess</RootNamespace>
-    <AssemblyName>Photo_album.DataAccess</AssemblyName>
+    <RootNamespace>Photo_album.BLL</RootNamespace>
+    <AssemblyName>Photo_album.BLL</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -37,11 +37,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -54,47 +51,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\202108052143012_WithForeignKeysMigration.cs" />
-    <Compile Include="Migrations\202108052143012_WithForeignKeysMigration.Designer.cs">
-      <DependentUpon>202108052143012_WithForeignKeysMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UOfW\IUnitOfWork.cs" />
-    <Compile Include="Migrations\202108032029278_InitialMigration.cs" />
-    <Compile Include="Migrations\202108032029278_InitialMigration.Designer.cs">
-      <DependentUpon>202108032029278_InitialMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Entities\BaseModel.cs" />
-    <Compile Include="Entities\Comment.cs" />
-    <Compile Include="Entities\Post.cs" />
-    <Compile Include="Entities\User.cs" />
-    <Compile Include="Context\Photo_albumDbContext.cs" />
-    <Compile Include="Repositories\Abstract\ICommentRepository.cs" />
-    <Compile Include="Repositories\Abstract\IPostRepository.cs" />
-    <Compile Include="Repositories\Abstract\IRepository.cs" />
-    <Compile Include="Repositories\EntityFramework\CommentRepository.cs" />
-    <Compile Include="Repositories\EntityFramework\PostRepository.cs" />
+    <Compile Include="DI\BLLModule.cs" />
+    <Compile Include="Models\BaseDTO.cs" />
+    <Compile Include="Models\CommentDTO.cs" />
+    <Compile Include="Models\PostDTO.cs" />
+    <Compile Include="Models\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UOfW\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202108032029278_InitialMigration.resx">
-      <DependentUpon>202108032029278_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202108052143012_WithForeignKeysMigration.resx">
-      <DependentUpon>202108052143012_WithForeignKeysMigration.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Photo_album\Photo_album.csproj">
-      <Project>{62556449-c4d8-49fc-89c7-634a76ab4e1d}</Project>
-      <Name>Photo_album</Name>
+    <ProjectReference Include="..\Photo_album.DataAccess\Photo_album.DataAccess.csproj">
+      <Project>{5f5d56e6-5cdb-41a5-bc20-784d9e32d71e}</Project>
+      <Name>Photo_album.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\Abstract\" />
+    <Folder Include="Services\Concrete\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo_album", "Photo_album\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo_album.DataAccess", "Photo_album.DataAccess\Photo_album.DataAccess.csproj", "{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photo_album.BLL", "Photo_album.BLL\Photo_album.BLL.csproj", "{C16496BD-A8B4-419A-8D1F-63FB12B57D14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F5D56E6-5CDB-41A5-BC20-784D9E32D71E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C16496BD-A8B4-419A-8D1F-63FB12B57D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C16496BD-A8B4-419A-8D1F-63FB12B57D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C16496BD-A8B4-419A-8D1F-63FB12B57D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C16496BD-A8B4-419A-8D1F-63FB12B57D14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

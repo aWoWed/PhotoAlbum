@@ -31,6 +31,7 @@ namespace Photo_album.DataAccess.UOfW
             {
                 if (disposing)
                 {
+                    _appDbContext.Dispose();
                     _userManager.Dispose();
                 }
 
