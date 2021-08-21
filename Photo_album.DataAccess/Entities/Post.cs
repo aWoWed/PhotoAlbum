@@ -7,7 +7,9 @@ namespace Photo_album.DataAccess.Entities
 {
     public class Post : BaseModel
     {
+        [Required]
         public string Image { get; set; }
+        
         public uint Likes { get; set; }
         public string Description { get; set; }
         [Required]

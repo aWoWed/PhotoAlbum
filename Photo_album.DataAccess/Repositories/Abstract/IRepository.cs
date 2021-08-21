@@ -76,6 +76,12 @@ namespace Photo_album.DataAccess.Repositories.Abstract
         /// </summary>
         /// <param name="key"></param>
         void DeleteByKey(TEntityKey key);
+        
+        /// <summary>
+        /// Deletes Async entity by current key
+        /// </summary>
+        /// <param name="key"></param>
+        Task DeleteByKeyAsync(TEntityKey key);
 
         /// <summary>
         /// Deletes all entity elems from Db

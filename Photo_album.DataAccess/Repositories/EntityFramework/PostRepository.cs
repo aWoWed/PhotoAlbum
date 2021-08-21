@@ -98,6 +98,12 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         public void DeleteByKey(string key) => _appDbContext.Posts.Remove(new Post {Id = key});
 
         /// <summary>
+        /// Deletes Async comment with current key
+        /// </summary>
+        /// <param name="key"></param>
+        public Task DeleteByKeyAsync(string key) => Task.FromResult(_appDbContext.Posts.Remove(new Post {Id = key}));
+
+        /// <summary>
         /// Deletes all Comments
         /// </summary>
         public void DeleteAll() => _appDbContext.Posts.RemoveRange(_appDbContext.Posts);

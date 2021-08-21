@@ -100,6 +100,9 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         /// <param name="key"></param>
         public void DeleteByKey(string key) => _appDbContext.Comments.Remove(new Comment {Id = key});
 
+        public Task DeleteByKeyAsync(string key) =>
+            Task.FromResult(_appDbContext.Comments.Remove(new Comment {Id = key}));
+
         /// <summary>
         /// Deletes all Comments
         /// </summary>

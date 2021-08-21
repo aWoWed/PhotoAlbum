@@ -12,31 +12,37 @@ namespace Photo_album.DataAccess.UOfW
     public class UnitOfWork : IUnitOfWork
     {
         private readonly Photo_albumDbContext _appDbContext;
-        private readonly UserManager<User> _userManager;
-        private readonly IPostRepository _postRepository;
-        private readonly ICommentRepository _commentRepository;
+        private UserManager<User> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
+        private IPostRepository _postRepository;
+        private ICommentRepository _commentRepository;
 
-        public UnitOfWork(Photo_albumDbContext appDbContext)
+        public UnitOfWork()
         {
-            _appDbContext = appDbContext;
+            _appDbContext = new Photo_albumDbContext();
         }
-        public UserManager<User> UserManager => _userManager ?? new UserManager<User>(new UserStore<User>(_appDbContext));
-        public IPostRepository PostRepository => _postRepository ?? new PostRepository(_appDbContext);
-        public ICommentRepository CommentRepository => _commentRepository ?? new CommentRepository(_appDbContext);
 
-        private bool _disposed = false;
-        public virtual void Dispose(bool disposing)
+        public UserManager<User> UserManager =>
+            _userManager ??= new UserManager<User>(new UserStore<User>(_appDbContext));
+
+        public RoleManager<IdentityRole> RoleManager =>
+            _roleManager ??= new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_appDbContext));
+        public IPostRepository PostRepository => _postRepository ??= new PostRepository(_appDbContext);
+        public ICommentRepository CommentRepository => _commentRepository ??= new CommentRepository(_appDbContext);
+
+        private bool _disposed;
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (_disposed) return;
+            if (disposing)
             {
-                if (disposing)
-                {
-                    _appDbContext.Dispose();
-                    _userManager.Dispose();
-                }
-
-                this._disposed = true;
+                _appDbContext.Dispose();
+                _userManager.Dispose();
+                _roleManager.Dispose();
             }
+
+            _disposed = true;
         }
         public void Dispose()
         {
@@ -45,6 +51,6 @@ namespace Photo_album.DataAccess.UOfW
         }
 
         public void Save() => _appDbContext.SaveChanges();
-        public async Task SaveAsync() => await _appDbContext.SaveChangesAsync();
+        public Task SaveAsync() => _appDbContext.SaveChangesAsync();
     }
 }

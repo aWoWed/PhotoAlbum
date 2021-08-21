@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Photo_album.BLL.Models
+namespace Photo_album.BLL.DTOs
 {
     public class BaseDTO
     {
