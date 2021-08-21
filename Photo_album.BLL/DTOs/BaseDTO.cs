@@ -12,7 +12,7 @@ namespace Photo_album.BLL.Models
         protected BaseDTO()
         {
             Id = Guid.NewGuid().ToString();
-            CreationDate = DateTime.UtcNow;
+            CreationDate = DateTime.Now;
         }
     }
 }
