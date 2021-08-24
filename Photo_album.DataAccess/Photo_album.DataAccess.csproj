@@ -90,12 +90,6 @@
       <DependentUpon>202108052143012_WithForeignKeysMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Photo_album\Photo_album.csproj">
-      <Project>{62556449-c4d8-49fc-89c7-634a76ab4e1d}</Project>
-      <Name>Photo_album</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
