@@ -15,9 +15,14 @@ namespace Photo_album.Controllers
     [Authorize]
     public class UserController: Controller
     {
-        private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>() ?? new UserService();
+        private readonly IUserService _userService;
+        private readonly IAuthenticationManager _authenticationManager;
 
-        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+        public UserController(IUserService userService, IAuthenticationManager authenticationManager)
+        {
+            _userService = userService;
+            _authenticationManager = authenticationManager;
+        }
 
         [AllowAnonymous]
         public ActionResult Login()
@@ -32,30 +37,28 @@ namespace Photo_album.Controllers
         {
             await SetInitialDataAsync();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+            var userDto = new UserDTO { Email = model.Email, Password = model.Password };
+            var claim = await _userService.Authenticate(userDto);
+
+            if (claim == null)
+                ModelState.AddModelError("", "Your login or password are incorrect!");
+
+            else
             {
-                var userDto = new UserDTO { Email = model.Email, Password = model.Password };
-                var claim = await UserService.Authenticate(userDto);
-
-                if (claim == null)
-                    ModelState.AddModelError("", "Your login or password are incorrect!");
-
-                else
+                _authenticationManager.SignOut();
+                _authenticationManager.SignIn(new AuthenticationProperties
                 {
-                    AuthenticationManager.SignOut();
-                    AuthenticationManager.SignIn(new AuthenticationProperties
-                    {
-                        IsPersistent = true
-                    }, claim);
-                    return RedirectToAction("Index", "Home");
-                }
+                    IsPersistent = true
+                }, claim);
+                return RedirectToAction("Index", "Home");
             }
             return View(model);
         }
 
         public ActionResult Logout()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
@@ -72,33 +75,31 @@ namespace Photo_album.Controllers
         {
             await SetInitialDataAsync();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+            var userDto = new UserDTO
             {
-                var userDto = new UserDTO
-                {
-                    Email = model.Email,
-                    UserName = model.Email,
-                    Password = model.Password,
-                    Role = new List<string>{"user"}
-                };
+                Email = model.Email,
+                UserName = model.Email,
+                Password = model.Password,
+                Role = new List<string>{"user"}
+            };
 
-                var operationDetails = await UserService.Create(userDto);
+            var operationDetails = await _userService.Create(userDto);
 
-                if (operationDetails.Succeed)
-                    return RedirectToAction("Index","Home");
+            if (operationDetails.Succeed)
+                return RedirectToAction("Index","Home");
 
-                ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
-            }
+            ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
 
             return View(model);
         }
         private async Task SetInitialDataAsync()
         {
-            await UserService.SetInitialData(new UserDTO
+            await _userService.SetInitialData(new UserDTO
             {
-                Email = "german123@gmail.com",
-                UserName = "german123@gmail.com",
-                Password = "German123",
+                Email = "admin@gmail.com",
+                UserName = "Admin",
+                Password = "Admin123",
                 Role = new List<string>{"admin"},
                 
             }, new List<string> { "user", "admin" });

@@ -1,5 +1,4 @@
-﻿using System;
-using Photo_album.DataAccess.Entities;
+﻿using Photo_album.DataAccess.Entities;
 
 namespace Photo_album.DataAccess.Repositories.Abstract
 {

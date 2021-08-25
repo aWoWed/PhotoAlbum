@@ -27,7 +27,7 @@ namespace Photo_album.BLL.Services.Concrete
 
             if (user == null)
             {
-                user = new User { Email = userDto.Email, UserName = userDto.Email };
+                user = new User { Email = userDto.Email, UserName = userDto.UserName };
                 var result = await _unitOfWork.UserManager.CreateAsync(user, userDto.Password);
 
                 if (result.Errors.Any())
@@ -81,7 +81,7 @@ namespace Photo_album.BLL.Services.Concrete
             {
                 Id = user.Id,
                 Email = user.Email,
-                UserName = user.Email,
+                UserName = user.UserName,
                 Password = user.PasswordHash,
             };
         }

@@ -1,0 +1,27 @@
+@model Photo_album.Models.UserModels.RegisterModel
+
+@{
+    ViewBag.Title = "User";
+}
+
+@using (Html.BeginForm("Register", "User", FormMethod.Post))
+{
+    <div class="text-box border border-3 px-3 py-2 my-2">
+        @Html.AntiForgeryToken()
+        <h4>Create new account</h4>
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <p>Email:</p>
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        <p>Password:</p>
+        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+        <p>Confirm password:</p>
+        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+        <div class="mt-2">
+            <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

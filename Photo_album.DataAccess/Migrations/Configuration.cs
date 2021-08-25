@@ -2,10 +2,7 @@ using Photo_album.DataAccess.Context;
 
 namespace Photo_album.DataAccess.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Photo_albumDbContext>
     {

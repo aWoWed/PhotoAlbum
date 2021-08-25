@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm", @class = "ms-auto flex-nowrap navbar-nav" }))
+    {
+        @Html.AntiForgeryToken()
+        <li class="nav-item">
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", new { area = "" }, htmlAttributes: new { @class = "nav-link" })
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+        </li>
+    }
+}
+else
+{
+    <li class="nav-item">@Html.ActionLink("Register", "Register", "User", new {area = ""}, new {@class = "nav-link"})</li>
+    <li class="nav-item">@Html.ActionLink("Login", "Login", "User", new { area = "" }, new { @class = "nav-link" })</li>
+}
+}
