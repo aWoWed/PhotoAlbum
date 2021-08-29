@@ -12,13 +12,11 @@ namespace Photo_album.Controllers
 {
     public class PostController : Controller
     {
-        private readonly IUserService _userService;
         private readonly IPostService _postService;
 
-        public PostController(IPostService postService, IUserService userService)
+        public PostController(IPostService postService)
         {
             _postService = postService;
-            _userService = userService;
         }
 
         [HttpGet]
