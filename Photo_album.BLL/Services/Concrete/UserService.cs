@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Photo_album.BLL.DTOs;
@@ -15,9 +16,11 @@ namespace Photo_album.BLL.Services.Concrete
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserService()
+        public UserService(IMapper mapper)
         {
+            _mapper = mapper;
             _unitOfWork = new UnitOfWork();
         }
 
@@ -27,7 +30,7 @@ namespace Photo_album.BLL.Services.Concrete
 
             if (user == null)
             {
-                user = new User { Email = userDto.Email, UserName = userDto.UserName };
+                user = _mapper.Map<UserDTO, User>(userDto);
                 var result = await _unitOfWork.UserManager.CreateAsync(user, userDto.Password);
 
                 if (result.Errors.Any())
@@ -77,13 +80,7 @@ namespace Photo_album.BLL.Services.Concrete
         public async Task<UserDTO> FindUserByKeyAsync(string userKey)
         {
             var user = await _unitOfWork.UserManager.FindByIdAsync(userKey);
-            return new UserDTO
-            {
-                Id = user.Id,
-                Email = user.Email,
-                UserName = user.UserName,
-                Password = user.PasswordHash,
-            };
+            return _mapper.Map<User, UserDTO>(user);
         }
 
         public void Dispose() => _unitOfWork.Dispose();

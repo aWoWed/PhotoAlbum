@@ -1,0 +1,21 @@
+﻿@model Photo_album.Models.PostCreate
+
+@{
+    ViewBag.Title = "Post";
+}
+
+@using (Html.BeginForm("PostCreate", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="text-box border border-3 px-3 py-2 my-2"> 
+        @Html.ValidationSummary(true)
+        <p>Description:</p>
+        @Html.TextArea("Description", "", new { @class = "form-control" })
+        <p class="alert-danger">@Html.ValidationMessageFor(model => model.Description)</p>
+        <p>Image:</p>
+        @Html.TextBoxFor(model => model.Image, new { type = "file", id = "img", name = "uploadFile", accept = "image/*"})
+        <p class="alert-danger">@Html.ValidationMessageFor(model => model.Image)</p>
+        <div class="mt-2">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </div>
+}

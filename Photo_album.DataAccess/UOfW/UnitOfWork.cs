@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Entity.Validation;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -51,6 +53,23 @@ namespace Photo_album.DataAccess.UOfW
         }
 
         public void Save() => _appDbContext.SaveChanges();
-        public Task SaveAsync() => _appDbContext.SaveChangesAsync();
+        public Task SaveAsync()
+        {
+            try
+            {
+                return _appDbContext.SaveChangesAsync();
+            }
+            catch (DbEntityValidationException e)
+            {
+                //var str = "";
+                //foreach (var eve in e.EntityValidationErrors)
+                //{
+                //    str += $"Entity of type {eve.Entry.Entity.GetType().Name} in state {eve.Entry.State} has the following validation errors:";
+                //    str = eve.ValidationErrors.Aggregate(str, (current, ve) => current + $"- Property: {ve.PropertyName}, Error: {ve.ErrorMessage}\n");
+                //}
+                throw;
+            }
+            
+        }
     }
 }

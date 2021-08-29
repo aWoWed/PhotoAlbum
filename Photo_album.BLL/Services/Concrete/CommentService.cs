@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Photo_album.BLL.DTOs;
@@ -20,10 +21,10 @@ namespace Photo_album.BLL.Services.Concrete
         }
 
         public IQueryable<CommentDTO> Get() =>
-            _mapper.Map<IQueryable<Comment>, IQueryable<CommentDTO>>(_unitOfWork.CommentRepository.Get());
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(_unitOfWork.CommentRepository.Get()).AsQueryable();
 
         public async Task<IQueryable<CommentDTO>> GetAsync() =>
-            _mapper.Map<IQueryable<Comment>, IQueryable<CommentDTO>>(await _unitOfWork.CommentRepository.GetAsync());
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(await _unitOfWork.CommentRepository.GetAsync()).AsQueryable();
 
         public CommentDTO GetByKey(string key) =>
             _mapper.Map<Comment, CommentDTO>(_unitOfWork.CommentRepository.GetByKey(key));

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Photo_album.BLL.DTOs;
@@ -19,11 +20,11 @@ namespace Photo_album.BLL.Services.Concrete
             _unitOfWork = unitOfWork;
         }
 
-        public IQueryable<PostDTO> Get() =>
-            _mapper.Map<IQueryable<Post>, IQueryable<PostDTO>>(_unitOfWork.PostRepository.Get());
+        IQueryable<PostDTO> IService<string, PostDTO>.Get() =>
+            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(_unitOfWork.PostRepository.Get()).AsQueryable();
 
         public async Task<IQueryable<PostDTO>> GetAsync() =>
-            _mapper.Map<IQueryable<Post>, IQueryable<PostDTO>>(await _unitOfWork.PostRepository.GetAsync());    
+            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(await _unitOfWork.PostRepository.GetAsync()).AsQueryable();    
 
         public PostDTO GetByKey(string key) => 
             _mapper.Map<Post, PostDTO>(_unitOfWork.PostRepository.GetByKey(key));    

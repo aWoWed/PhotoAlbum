@@ -9,6 +9,7 @@ namespace Photo_album.BLL.DTOs
         public string Id { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
+
         protected BaseDTO()
         {
             Id = Guid.NewGuid().ToString();

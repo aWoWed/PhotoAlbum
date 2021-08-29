@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Photo_album.BLL.DTOs;
 using Photo_album.BLL.Services.Abstract;
-using Photo_album.BLL.Services.Concrete;
 using Photo_album.Models.UserModels;
 
 namespace Photo_album.Controllers

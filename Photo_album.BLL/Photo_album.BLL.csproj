@@ -71,7 +71,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutomapperProfile.cs" />
     <Compile Include="DI\BLLModule.cs" />
     <Compile Include="DTOs\BaseDTO.cs" />
     <Compile Include="DTOs\CommentDTO.cs" />
