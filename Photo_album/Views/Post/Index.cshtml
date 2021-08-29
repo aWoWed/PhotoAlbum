@@ -9,7 +9,7 @@
     {
     <div class="text-box border border-3 px-3 py-2 my-2">
         <div>
-            <p class="border px-3 py-2"> <b>User:</b> @item.UserDto.UserName</p>
+            <p class="border px-3 py-2"> <b>User:</b> @item.UserDto.Email.Substring(0, item.UserDto.Email.Length - item.UserDto.Email.IndexOf('@'))</p>
         </div>
         <div>
             <p class="border px-3 py-2"> <b>Description:</b> @item.Description</p>

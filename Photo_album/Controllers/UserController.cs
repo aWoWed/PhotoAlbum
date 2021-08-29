@@ -33,9 +33,11 @@ namespace Photo_album.Controllers
         public async Task<ActionResult> Login(LoginModel model)
         {
             await SetInitialDataAsync();
-
             if (!ModelState.IsValid) return View(model);
-            var userDto = new UserDTO { Email = model.Email, Password = model.Password };
+            var userDto = new UserDTO
+            {
+                Email = model.Email, Password = model.Password,
+            };
             var claim = await _userService.Authenticate(userDto);
 
             if (claim == null)
