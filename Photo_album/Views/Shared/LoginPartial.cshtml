@@ -5,10 +5,10 @@
     {
         @Html.AntiForgeryToken()
         <li class="nav-item">
-            @Html.ActionLink("Hello " + User.Identity.GetUserName().Substring(0, User.Identity.GetUserName().IndexOf('@')) + "!", "Index", "Manage", new { area = "" }, htmlAttributes: new { @class = "nav-link" })
+            @Html.ActionLink("Profile", "Index", "Manage", new { area = "" }, htmlAttributes: new { @class = "nav-link" })
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
         </li>
     }
 }

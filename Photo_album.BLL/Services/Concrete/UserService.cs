@@ -49,7 +49,7 @@ namespace Photo_album.BLL.Services.Concrete
         {
             ClaimsIdentity claim = null;
 
-            var user = await _unitOfWork.UserManager.FindAsync(userDto.Email, userDto.Password);
+            var user = await _unitOfWork.UserManager.FindAsync(userDto.UserName, userDto.Password);
 
             if (user != null)
                 claim = await _unitOfWork.UserManager.CreateIdentityAsync(user,

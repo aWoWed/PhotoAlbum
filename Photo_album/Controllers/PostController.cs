@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -21,7 +22,7 @@ namespace Photo_album.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var postViewModel = new PostViewModel {PostDTOs = _postService.Get()};
+            var postViewModel = new PostViewModel {PostDTOs = _postService.Get().OrderByDescending(post => post.CreationDate)};
             return View(postViewModel);
         }
 
@@ -59,7 +60,7 @@ namespace Photo_album.Controllers
         [HttpGet]
         public ActionResult PostsByUser()
         {
-            return View(_postService.GetByUserKey(User.Identity.GetUserId()));
+            return View(_postService.GetByUserKey(User.Identity.GetUserId()).OrderByDescending(post => post.CreationDate));
         }
     }
 }

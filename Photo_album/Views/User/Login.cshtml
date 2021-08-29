@@ -10,8 +10,8 @@
         @Html.AntiForgeryToken()
         <h4>Login to your account</h4>
         @Html.ValidationSummary("", new { @class = "text-danger" })
-        <p>Email:</p>
-        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        <p>Username:</p>
+        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
         <p>Password:</p>
         @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
         <div>

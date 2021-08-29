@@ -36,7 +36,7 @@ namespace Photo_album.Controllers
             if (!ModelState.IsValid) return View(model);
             var userDto = new UserDTO
             {
-                Email = model.Email, Password = model.Password,
+                UserName = model.UserName, Password = model.Password
             };
             var claim = await _userService.Authenticate(userDto);
 
@@ -48,7 +48,7 @@ namespace Photo_album.Controllers
                 _authenticationManager.SignOut();
                 _authenticationManager.SignIn(new AuthenticationProperties
                 {
-                    IsPersistent = true
+                    IsPersistent = model.RememberMe
                 }, claim);
                 return RedirectToAction("Index", "Home");
             }
@@ -78,7 +78,7 @@ namespace Photo_album.Controllers
             var userDto = new UserDTO
             {
                 Email = model.Email,
-                UserName = model.Email,
+                UserName = model.UserName,
                 Password = model.Password,
                 Role = new List<string>{"user"}
             };
