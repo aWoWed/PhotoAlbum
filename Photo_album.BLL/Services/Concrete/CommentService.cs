@@ -21,10 +21,12 @@ namespace Photo_album.BLL.Services.Concrete
         }
 
         public IQueryable<CommentDTO> Get() =>
-            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(_unitOfWork.CommentRepository.Get()).AsQueryable();
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(_unitOfWork.CommentRepository.Get())
+                .AsQueryable();
 
         public async Task<IQueryable<CommentDTO>> GetAsync() =>
-            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(await _unitOfWork.CommentRepository.GetAsync()).AsQueryable();
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(await _unitOfWork.CommentRepository.GetAsync())
+                .AsQueryable();
 
         public CommentDTO GetByKey(string key) =>
             _mapper.Map<Comment, CommentDTO>(_unitOfWork.CommentRepository.GetByKey(key));
@@ -33,16 +35,20 @@ namespace Photo_album.BLL.Services.Concrete
             _mapper.Map<Comment, CommentDTO>(await _unitOfWork.CommentRepository.GetByKeyAsync(key));
 
         public IQueryable<CommentDTO> GetByUserKey(string userKey) =>
-            _mapper.Map<IQueryable<Comment>, IQueryable<CommentDTO>>(_unitOfWork.CommentRepository.GetByUserKey(userKey));
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(
+                _unitOfWork.CommentRepository.GetByUserKey(userKey)).AsQueryable();
 
         public async Task<IQueryable<CommentDTO>> GetByUserKeyAsync(string userKey) =>
-            _mapper.Map<IQueryable<Comment>, IQueryable<CommentDTO>>(await _unitOfWork.CommentRepository.GetByUserKeyAsync(userKey));
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(
+                await _unitOfWork.CommentRepository.GetByUserKeyAsync(userKey)).AsQueryable();
 
         public IQueryable<CommentDTO> GetByContainsText(string text) =>
-            _mapper.Map<IQueryable<Comment>, IQueryable<CommentDTO>>(_unitOfWork.CommentRepository.GetByContainsText(text));
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(
+                _unitOfWork.CommentRepository.GetByContainsText(text)).AsQueryable();
 
         public async Task<IQueryable<CommentDTO>> GetByContainsTextAsync(string text) =>
-        _mapper.Map<IQueryable<Comment>, IQueryable<CommentDTO>>(await _unitOfWork.CommentRepository.GetByContainsTextAsync(text)); 
+            _mapper.Map<IEnumerable<Comment>, IEnumerable<CommentDTO>>(
+                await _unitOfWork.CommentRepository.GetByContainsTextAsync(text)).AsQueryable();
         
         public void Insert(CommentDTO entity)
         {

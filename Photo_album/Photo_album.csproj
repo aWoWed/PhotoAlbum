@@ -196,6 +196,7 @@
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\PostCreate.cs" />
     <Compile Include="Models\UserModels\ChangePasswordModel.cs" />
+    <Compile Include="Models\UserModels\ChangeProfileInfo.cs" />
     <Compile Include="Models\UserModels\LoginModel.cs" />
     <Compile Include="Models\UserModels\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -371,6 +372,8 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Post\Index.cshtml" />
     <Content Include="Views\Post\PostCreate.cshtml" />
+    <Content Include="Views\Post\PostsByUser.cshtml" />
+    <Content Include="Views\Manage\ChangeProfileInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -24,7 +24,8 @@ namespace Photo_album.BLL.Services.Concrete
             _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(_unitOfWork.PostRepository.Get()).AsQueryable();
 
         public async Task<IQueryable<PostDTO>> GetAsync() =>
-            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(await _unitOfWork.PostRepository.GetAsync()).AsQueryable();    
+            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(await _unitOfWork.PostRepository.GetAsync())
+                .AsQueryable();    
 
         public PostDTO GetByKey(string key) => 
             _mapper.Map<Post, PostDTO>(_unitOfWork.PostRepository.GetByKey(key));    
@@ -34,17 +35,20 @@ namespace Photo_album.BLL.Services.Concrete
                 _mapper.Map<Post, PostDTO>( await _unitOfWork.PostRepository.GetByKeyAsync(key));
 
         public IQueryable<PostDTO> GetByUserKey(string userKey) =>
-            _mapper.Map<IQueryable<Post>, IQueryable<PostDTO>>(_unitOfWork.PostRepository.GetByUserKey(userKey));
+            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(_unitOfWork.PostRepository.GetByUserKey(userKey))
+                .AsQueryable();
 
         public async Task<IQueryable<PostDTO>> GetByUserKeyAsync(string userKey) =>
-            _mapper.Map<IQueryable<Post>, IQueryable<PostDTO>>( await _unitOfWork.PostRepository.GetByUserKeyAsync(userKey));
+            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(
+                await _unitOfWork.PostRepository.GetByUserKeyAsync(userKey)).AsQueryable();
 
         public IQueryable<PostDTO> GetByContainsText(string text) =>
-            _mapper.Map<IQueryable<Post>, IQueryable<PostDTO>>(_unitOfWork.PostRepository.GetByContainsText(text));
+            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(_unitOfWork.PostRepository.GetByContainsText(text))
+                .AsQueryable();
 
         public async Task<IQueryable<PostDTO>> GetByContainsTextAsync(string text) =>
-            _mapper.Map<IQueryable<Post>, IQueryable<PostDTO>>(
-                await _unitOfWork.PostRepository.GetByContainsTextAsync(text));
+            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(
+                await _unitOfWork.PostRepository.GetByContainsTextAsync(text)).AsQueryable();
         
         public void Insert(PostDTO entity)
         {

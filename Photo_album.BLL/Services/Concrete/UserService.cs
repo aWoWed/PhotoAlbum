@@ -83,6 +83,17 @@ namespace Photo_album.BLL.Services.Concrete
             return _mapper.Map<User, UserDTO>(user);
         }
 
+        public async Task UpdateUserInfo(UserDTO userDto)
+        {
+            var user = await _unitOfWork.UserManager.FindByIdAsync(userDto.Id);
+
+            user.Description = userDto.Description;
+            user.ProfilePhoto = userDto.ProfilePhoto;
+
+            await _unitOfWork.UserManager.UpdateAsync(user);
+            await _unitOfWork.SaveAsync();
+        }
+
         public void Dispose() => _unitOfWork.Dispose();
     }
 }

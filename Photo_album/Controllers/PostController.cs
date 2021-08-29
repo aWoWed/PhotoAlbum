@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -55,6 +54,12 @@ namespace Photo_album.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult PostsByUser()
+        {
+            return View(_postService.GetByUserKey(User.Identity.GetUserId()));
         }
     }
 }

@@ -16,6 +16,6 @@ namespace Photo_album.BLL.Services.Abstract
 
         Task<IdentityResult> ChangePasswordAsync(string userKey, string currentPassword, string newPassword);
         Task<UserDTO> FindUserByKeyAsync(string userKey);
-
+        Task UpdateUserInfo(UserDTO userDto);
     }
 }

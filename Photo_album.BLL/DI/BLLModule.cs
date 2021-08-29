@@ -81,6 +81,12 @@ namespace Photo_album.BLL.DI
                     .ForMember(userDto => userDto.UserName,
                         configurationExpression =>
                             configurationExpression.MapFrom(user => user.UserName))
+                    .ForMember(userDto => userDto.ProfilePhoto,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(user => user.ProfilePhoto))
+                    .ForMember(userDto => userDto.Description,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(user => user.Description))
                     .ForMember(userDto => userDto.Role,
                         configurationExpression =>
                             configurationExpression.MapFrom(user => user.Roles.Select(role => role.RoleId)))

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Photo_album.BLL.DTOs;
-using Photo_album.Models;
 
 namespace Photo_album.ViewModels
 {

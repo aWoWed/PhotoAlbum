@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Validation;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
