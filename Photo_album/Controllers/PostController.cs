@@ -13,17 +13,37 @@ namespace Photo_album.Controllers
     public class PostController : Controller
     {
         private readonly IPostService _postService;
+        private readonly IUserService _userService;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IUserService userService)
         {
             _postService = postService;
+            _userService = userService;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var postViewModel = new PostViewModel {PostDTOs = _postService.Get().OrderByDescending(post => post.CreationDate)};
+            var postViewModel = new PostViewModel { PostDTOs = _postService.Get().OrderByDescending(post => post.CreationDate) };
             return View(postViewModel);
+        }
+
+        [HttpGet]
+        public ActionResult FullPost(string id)
+        {
+            return View(_postService.GetByKey(id));
+        }
+
+        [HttpGet]
+        public ActionResult OtherUserPosts(string userKey)
+        {
+            return View(_postService.GetByUserKey(userKey));
+        }
+
+        [HttpPost]
+        public ActionResult AddLike()
+        {
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

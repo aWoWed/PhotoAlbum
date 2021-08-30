@@ -374,6 +374,9 @@
     <Content Include="Views\Post\PostCreate.cshtml" />
     <Content Include="Views\Post\PostsByUser.cshtml" />
     <Content Include="Views\Manage\ChangeProfileInfo.cshtml" />
+    <Content Include="Views\Post\FullPost.cshtml" />
+    <Content Include="Views\Post\OtherUserPosts.cshtml" />
+    <Content Include="Views\Manage\ProfileInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

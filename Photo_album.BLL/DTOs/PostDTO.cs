@@ -5,13 +5,12 @@ namespace Photo_album.BLL.DTOs
 {
     public class PostDTO : BaseDTO
     {
-        [Required]
+        [Required] 
         public string Image { get; set; }
-        
+
         public uint Likes { get; set; }
         public string Description { get; set; }
-        [Required]
-        public string UserId { get; set; }
+        [Required] public string UserId { get; set; }
         public UserDTO UserDto { get; set; }
         public ICollection<CommentDTO> CommentDtos { get; set; }
 

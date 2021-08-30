@@ -1,0 +1,28 @@
+﻿@model IQueryable<Photo_album.BLL.DTOs.PostDTO>
+
+@{
+    ViewBag.Title = "Post";
+}
+
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="text-box border border-3 px-3 py-2 my-2">
+            <h2>@item.UserDto.UserName posts:</h2>
+            <div>
+                <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = item.UserId})"><b>User:</b> @item.UserDto.UserName</a>
+            </div>
+            <div>
+                <p class="border px-3 py-2"> <b>Description:</b> @item.Description</p>
+            </div>
+            <div>
+                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + item.Image)" />
+            </div>
+            <div class="px-3 py-2">
+                <p>@item.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+            <a href="@Url.Action("FullPost", "Post", new {id = item.Id})">Full post</a>
+        </div>
+    }
+    
+</div>

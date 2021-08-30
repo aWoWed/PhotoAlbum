@@ -25,5 +25,6 @@ namespace Photo_album.BLL.DTOs
             CommentDtos = new List<CommentDTO>();
             PostDtos = new List<PostDTO>();
         }
+
     }
 }

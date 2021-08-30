@@ -16,6 +16,7 @@ namespace Photo_album.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -28,6 +29,12 @@ namespace Photo_album.Controllers
         }
 
         [HttpGet]
+        public ActionResult ProfileInfo(string userKey)
+        {
+            return User.Identity.GetUserId() == userKey ? View("Index", _userService.FindUserByKey(User.Identity.GetUserId())) : View(_userService.FindUserByKey(userKey));
+        }
+
+        [HttpGet]
         public ActionResult ChangePassword()
         {
             return View();
@@ -37,10 +44,14 @@ namespace Photo_album.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordModel model)
         {
+            if (model.OldPassword == model.NewPassword)
+                ModelState.AddModelError("", "Old password and new password are same!");
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
             var result = await _userService.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {

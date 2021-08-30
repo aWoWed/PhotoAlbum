@@ -6,17 +6,18 @@
 
 @using (Html.BeginForm("ChangeProfileInfo", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="text-box border border-3 px-3 py-2 my-2">
-        @Html.ValidationSummary("", new { @class = "text-danger" })
-        @Html.ValidationSummary(true)
-        <h4>Change your profile info</h4>
-        @Html.ValidationSummary(true)
-        <p>Description:</p>
-        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
-        <p>Profile photo:</p>
-        @Html.TextBoxFor(model => model.ProfilePhoto,new { type = "file", id = "img", name = "uploadFile", accept = "image/*" })
-        <div class="mt-2">
-            <button class="btn btn-primary" type="submit">Change profile info</button>
-        </div>
+<div class="text-box border border-3 px-3 py-2 my-2">
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <h4>Change your profile info</h4>
+    @Html.ValidationSummary(true)
+    <p>Description:</p>
+    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+    <p>Profile photo:</p>
+    @Html.TextBoxFor(model => model.ProfilePhoto, new { type = "file", id = "img", name = "uploadFile", accept = "image/*" })
+    <div class="mt-2">
+        <button class="btn btn-primary" type="submit">Change profile info</button>
     </div>
+</div>
 }

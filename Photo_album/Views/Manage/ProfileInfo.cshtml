@@ -1,19 +1,12 @@
 ﻿@model Photo_album.BLL.DTOs.UserDTO
 ﻿
 @{
-     ViewBag.Title = "User";
- }
+    ViewBag.Title = "User";
+}
 
 <div class="text-box border border-3 px-3 py-2 my-2">
-    <h2>Welcome to your @Model.UserName page!</h2>
-    <h4>Change your account settings</h4>
-    <div>
-        @Html.ActionLink("Change your password", "ChangePassword")
-        @Html.ActionLink("Create your post", "PostCreate", "Post")
-        @Html.ActionLink("Your posts", "PostsByUser", "Post")
-        @Html.ActionLink("Change your profile info", "ChangeProfileInfo")
-    </div>
-
+    <h2>Welcome to @Model.UserName page!</h2>
+    <a href="@Url.Action("OtherUserPosts", "Post", new {userKey =  Model.Id})"><b>@Model.UserName</b> Posts:</a>
     @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
     {
         <div>

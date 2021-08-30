@@ -1,0 +1,23 @@
+﻿@model Photo_album.BLL.DTOs.PostDTO
+
+@{
+    ViewBag.Title = "Post";
+}
+
+<div class="container">
+    <h1>Full post:</h1>
+    <div class="text-box border border-3 px-3 py-2 my-2">
+        <div>
+            <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = Model.UserId})"><b>User:</b> @Model.UserDto.UserName</a>
+        </div>
+        <div>
+            <p class="border px-3 py-2"> <b>Description:</b> @Model.Description</p>
+        </div>
+        <div>
+            <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.Image)"/>
+        </div>
+        <div class="px-3 py-2">
+            <p>@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
+        </div>
+    </div>
+</div>

@@ -77,6 +77,12 @@ namespace Photo_album.BLL.Services.Concrete
             string newPassword) => await
             _unitOfWork.UserManager.ChangePasswordAsync(userKey, currentPassword, newPassword);
 
+        public UserDTO FindUserByKey(string userKey)
+        {
+            var user = _unitOfWork.UserManager.FindById(userKey);
+            return _mapper.Map<User, UserDTO>(user);
+        }
+
         public async Task<UserDTO> FindUserByKeyAsync(string userKey)
         {
             var user = await _unitOfWork.UserManager.FindByIdAsync(userKey);
