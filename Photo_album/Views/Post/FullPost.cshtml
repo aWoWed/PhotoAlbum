@@ -19,5 +19,38 @@
         <div class="px-3 py-2">
             <p>@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
         </div>
+        @using (Html.BeginForm("AddComment", "Post", FormMethod.Post))
+        {
+            <div class="border px-3 py-2">
+                @{
+                    var postKey = Model.Id;
+                } 
+
+                <div hidden>
+                    @Html.EditorFor(m => postKey)
+                </div>
+
+                @Html.ValidationSummary(true)
+
+                <p>Text:</p>
+                @Html.TextArea("Text", "", new {@class = "form-control"})
+                <p class="alert-danger">@Html.ValidationMessageFor(model => model.CommentDtos.Single().Text)</p>
+                <div class="mt-2">
+                    <button class="btn btn-primary" type="submit">Add comment</button>
+                </div>
+            </div>
+        }
+        <div class="text-box border border-3 px-3 py-2 my-2">
+            <h3>Comments:</h3>
+            @foreach (var comment in Model.CommentDtos.OrderByDescending(comment => comment.CreationDate))
+            {
+                <div class="text-box border border-2 px-3 py-2 my-2">
+                    <p class="border px-3 py-2">@comment.UserDto.UserName</p>
+                    <p class="border px-3 py-2">@comment.Text</p>
+                    <p class="border px-3 py-2">@comment.CreationDate</p>
+                </div>
+            }
+        </div>
+
     </div>
 </div>

@@ -14,11 +14,13 @@ namespace Photo_album.Controllers
     {
         private readonly IPostService _postService;
         private readonly IUserService _userService;
+        private readonly ICommentService _commentService;
 
-        public PostController(IPostService postService, IUserService userService)
+        public PostController(IPostService postService, IUserService userService, ICommentService commentService)
         {
             _postService = postService;
             _userService = userService;
+            _commentService = commentService;
         }
 
         [HttpGet]
@@ -75,6 +77,42 @@ namespace Photo_album.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddComment(string postKey, string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                ModelState.AddModelError("Text", "Error! Please enter your text!");
+
+            if (ModelState.IsValid)
+            {
+                var post = _postService.GetByKey(postKey);
+
+                post.CommentDtos.Add(new CommentDTO
+                {
+                    Text = text,
+                    PostId = postKey,
+                    UserId = User.Identity.GetUserId(),
+                    UserDto = _userService.FindUserByKey(User.Identity.GetUserId()),
+                    PostDto = post,
+                });
+
+                await _postService.UpdateAsync(post);
+
+                await _commentService.InsertAsync(new CommentDTO
+                {
+                    Text = text,
+                    PostId = postKey,
+                    UserId = User.Identity.GetUserId(),
+                });
+
+                ModelState.Clear();
+
+                return View("FullPost", post);
+            }
+
+            return RedirectToAction("FullPost");
         }
 
         [HttpGet]

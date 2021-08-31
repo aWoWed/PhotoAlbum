@@ -86,12 +86,8 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         /// Updates comment to Db
         /// </summary>
         /// <param name="entity"></param>
-        public void Update(Comment entity)
-        {
-            _appDbContext.Comments.Attach(entity);
-            _appDbContext.Entry(entity).State = EntityState.Modified;
-        }
-
+        public void Update(Comment entity) => _appDbContext.Entry(entity).State = EntityState.Modified;
+        
         /// <summary>
         /// Deletes Comment with current key
         /// </summary>

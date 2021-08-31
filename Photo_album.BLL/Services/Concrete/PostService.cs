@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Photo_album.BLL.DTOs;
+ using AutoMapper.Internal;
+ using Photo_album.BLL.DTOs;
 using Photo_album.BLL.Services.Abstract;
 using Photo_album.DataAccess.Entities;
 using Photo_album.DataAccess.UOfW;
@@ -66,13 +67,38 @@ namespace Photo_album.BLL.Services.Concrete
 
         public void Update(PostDTO entity)
         {
-            _unitOfWork.PostRepository.Update(_mapper.Map<PostDTO, Post>(entity));
+            var post = _mapper.Map<PostDTO, Post>(entity);
+
+            _unitOfWork.PostRepository.Update(post);
             _unitOfWork.Save();
         }
 
         public async Task<PostDTO> UpdateAsync(PostDTO entity)
         {
-            var post = _mapper.Map<PostDTO, Post>(entity);
+            var post = _unitOfWork.PostRepository.GetByKey(entity.Id);
+
+            post.Comments.ForAll(comment =>
+            {
+                var comm = post.Comments.FirstOrDefault(cmt => cmt.Id == comment.Id);
+
+                if(comm != null)
+                    post.Comments.Add(comm);
+                else
+                {
+                    post.Comments.Add(new Comment
+                    {
+
+                        Id = comment.Id,
+                        Text = comment.Text,
+                        UserId = comment.UserId,
+                        PostId = comment.PostId,
+                        User = comment.User,
+                        Post = comment.Post,
+                        CreationDate = comment.CreationDate
+                    });
+                }
+            });
+
             _unitOfWork.PostRepository.Update(post);
             await _unitOfWork.SaveAsync();
             return entity;
