@@ -9,6 +9,9 @@ using Photo_album.DataAccess.Repositories.EntityFramework;
 
 namespace Photo_album.DataAccess.UOfW
 {
+    /// <summary>
+    ///     Represents unit of work
+    /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
         private readonly Photo_albumDbContext _appDbContext;
@@ -17,21 +20,45 @@ namespace Photo_album.DataAccess.UOfW
         private IPostRepository _postRepository;
         private ICommentRepository _commentRepository;
 
+        /// <summary>
+        ///     Initializes DB context
+        /// </summary>
         public UnitOfWork()
         {
             _appDbContext = new Photo_albumDbContext();
         }
-
+        
+        /// <summary>
+        ///     Initializes user manager
+        /// </summary>
         public UserManager<User> UserManager =>
             _userManager ??= new UserManager<User>(new UserStore<User>(_appDbContext));
 
+        /// <summary>
+        ///     Initializes role manager
+        /// </summary>
         public RoleManager<IdentityRole> RoleManager =>
             _roleManager ??= new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_appDbContext));
+
+        /// <summary>
+        ///     Initializes post repository
+        /// </summary>
         public IPostRepository PostRepository => _postRepository ??= new PostRepository(_appDbContext);
+
+        /// <summary>
+        ///     Initializes comment repository
+        /// </summary>
         public ICommentRepository CommentRepository => _commentRepository ??= new CommentRepository(_appDbContext);
 
+        /// <summary>
+        ///     Disposed flag
+        /// </summary>
         private bool _disposed;
 
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources(DB connection, user and role managers)
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
@@ -44,13 +71,24 @@ namespace Photo_album.DataAccess.UOfW
 
             _disposed = true;
         }
+
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        ///     Saves changes to DB
+        /// </summary>
         public void Save() => _appDbContext.SaveChanges();
+
+        /// <summary>
+        ///     Saves changes async to DB
+        /// </summary>
         public Task SaveAsync() => _appDbContext.SaveChangesAsync();
     }
 }

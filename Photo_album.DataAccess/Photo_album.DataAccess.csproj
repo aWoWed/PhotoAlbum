@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Like.cs" />
     <Compile Include="Migrations\202108052143012_WithForeignKeysMigration.cs" />
     <Compile Include="Migrations\202108052143012_WithForeignKeysMigration.Designer.cs">
       <DependentUpon>202108052143012_WithForeignKeysMigration.cs</DependentUpon>
@@ -63,6 +64,12 @@
     <Compile Include="Migrations\202108252103310_NewWithKeysMigration.Designer.cs">
       <DependentUpon>202108252103310_NewWithKeysMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109022100507_LikesMigration.cs" />
+    <Compile Include="Migrations\202109022100507_LikesMigration.Designer.cs">
+      <DependentUpon>202109022100507_LikesMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\Abstract\ILikeRepository.cs" />
+    <Compile Include="Repositories\EntityFramework\LikeRepository.cs" />
     <Compile Include="UOfW\IUnitOfWork.cs" />
     <Compile Include="Migrations\202108032029278_InitialMigration.cs" />
     <Compile Include="Migrations\202108032029278_InitialMigration.Designer.cs">
@@ -95,6 +102,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108252103310_NewWithKeysMigration.resx">
       <DependentUpon>202108252103310_NewWithKeysMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109022100507_LikesMigration.resx">
+      <DependentUpon>202109022100507_LikesMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
