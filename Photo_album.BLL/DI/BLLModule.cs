@@ -11,10 +11,13 @@ using Photo_album.DataAccess.UOfW;
 namespace Photo_album.BLL.DI
 {
     /// <summary>
-    /// Ninject module for registering needed dependencies for BLL
+    ///     Ninject module for registering needed dependencies for BLL
     /// </summary>
     public class BLLModule : NinjectModule
     {
+        /// <summary>
+        ///     Loads the module into the kernel
+        /// </summary>
         public override void Load()
         {
             var mapperConfiguration = CreateConfiguration();
@@ -27,8 +30,13 @@ namespace Photo_album.BLL.DI
             Bind<IUserService>().To<UserService>();
             Bind<ICommentService>().To<CommentService>();
             Bind<IPostService>().To<PostService>();
+            Bind<ILikeService>().To<LikeService>();
         }
 
+        /// <summary>
+        ///     Creates mapping configurations 
+        /// </summary>
+        /// <returns>Mapping configurations</returns>
         private static MapperConfiguration CreateConfiguration()
         {
             var cfg = new MapperConfiguration(config =>
@@ -40,8 +48,6 @@ namespace Photo_album.BLL.DI
                         configurationExpression => configurationExpression.MapFrom(post => post.CreationDate))
                     .ForMember(postDto => postDto.Image,
                         configurationExpression => configurationExpression.MapFrom(post => post.Image))
-                    .ForMember(postDto => postDto.Likes,
-                        configurationExpression => configurationExpression.MapFrom(post => post.Likes))
                     .ForMember(postDto => postDto.Description,
                         configurationExpression => configurationExpression.MapFrom(post => post.Description))
                     .ForMember(postDto => postDto.CommentDtos,
@@ -53,6 +59,9 @@ namespace Photo_album.BLL.DI
                     .ForMember(postDto => postDto.UserId,
                         configurationExpression =>
                             configurationExpression.MapFrom(post => post.UserId))
+                    .ForMember(postDto => postDto.LikeDtos,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(post => post.Likes))
                     .ReverseMap();
 
                 config.CreateMap<Comment, CommentDTO>()
@@ -72,6 +81,8 @@ namespace Photo_album.BLL.DI
                         configurationExpression => configurationExpression.MapFrom(comment => comment.PostId))
                     .ForMember(commentDto => commentDto.UserId,
                         configurationExpression => configurationExpression.MapFrom(comment => comment.UserId))
+                    .ForMember(commentDto => commentDto.LikeDtos,
+                        configurationExpression => configurationExpression.MapFrom(comment => comment.Likes))
                     .ReverseMap();
 
                 config.CreateMap<User, UserDTO>()
@@ -96,7 +107,32 @@ namespace Photo_album.BLL.DI
                     .ForMember(userDto => userDto.PostDtos,
                         configurationExpression =>
                             configurationExpression.MapFrom(user => user.Posts))
+                    .ForMember(userDto => userDto.LikeDtos,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(user => user.Likes))
                     .ReverseMap();
+
+                config.CreateMap<Like, LikeDTO>()
+                    .ForMember(likeDto => likeDto.UserId,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(like => like.UserId))
+                    .ForMember(likeDto => likeDto.UserDto,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(like => like.User))
+                    .ForMember(likeDto => likeDto.PostId,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(like => like.PostId))
+                    .ForMember(likeDto => likeDto.PostDto,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(like => like.Post))
+                    .ForMember(likeDto => likeDto.CommentId,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(like => like.CommentId))
+                    .ForMember(likeDto => likeDto.CommentDto,
+                        configurationExpression =>
+                            configurationExpression.MapFrom(like => like.Comment))
+                    .ReverseMap();
+
             });
 
             return cfg;

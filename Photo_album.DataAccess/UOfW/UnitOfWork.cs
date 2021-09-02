@@ -19,6 +19,7 @@ namespace Photo_album.DataAccess.UOfW
         private RoleManager<IdentityRole> _roleManager;
         private IPostRepository _postRepository;
         private ICommentRepository _commentRepository;
+        private ILikeRepository _likeRepository;
 
         /// <summary>
         ///     Initializes DB context
@@ -49,6 +50,7 @@ namespace Photo_album.DataAccess.UOfW
         ///     Initializes comment repository
         /// </summary>
         public ICommentRepository CommentRepository => _commentRepository ??= new CommentRepository(_appDbContext);
+        public ILikeRepository LikeRepository => _likeRepository ??= new LikeRepository(_appDbContext);
 
         /// <summary>
         ///     Disposed flag

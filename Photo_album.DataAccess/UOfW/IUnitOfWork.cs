@@ -33,6 +33,11 @@ namespace Photo_album.DataAccess.UOfW
         IPostRepository PostRepository { get; }
 
         /// <summary>
+        ///     Gets like repository
+        /// </summary>
+        ILikeRepository LikeRepository { get; }
+
+        /// <summary>
         ///     Saves changes to DB
         /// </summary>
         void Save();

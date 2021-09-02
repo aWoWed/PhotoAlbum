@@ -13,17 +13,30 @@ using Photo_album.DataAccess.UOfW;
 
 namespace Photo_album.BLL.Services.Concrete
 {
+    /// <summary>
+    ///     Represents user service
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        ///     Creates user service instance
+        /// </summary>
+        /// <param name="unitOfWork"></param>
+        /// <param name="mapper"></param>
         public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        ///     Creates new userDTO, inserts it to DB
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns>Operation detail</returns>
         public async Task<OperationDetails> Create(UserDTO userDto)
         {
             var user = await _unitOfWork.UserManager.FindByEmailAsync(userDto.Email);
@@ -45,6 +58,11 @@ namespace Photo_album.BLL.Services.Concrete
             return new OperationDetails(false, "User with such Email already exists!", "Email");
         }
 
+        /// <summary>
+        ///     Authenticates user
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns>Login user</returns>
         public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
         {
             ClaimsIdentity claim = null;
@@ -58,6 +76,12 @@ namespace Photo_album.BLL.Services.Concrete
             return claim;
         }
 
+        /// <summary>
+        ///     Sets data for user
+        /// </summary>
+        /// <param name="adminDto"></param>
+        /// <param name="roles"></param>
+        /// <returns>Sets data</returns>
         public async Task SetInitialData(UserDTO adminDto, List<string> roles)
         {
             foreach (var roleName in roles)
@@ -73,22 +97,44 @@ namespace Photo_album.BLL.Services.Concrete
             await Create(adminDto);
         }
 
+        /// <summary>
+        ///     Changes async user password
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="currentPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns>New user password</returns>
         public async Task<IdentityResult> ChangePasswordAsync(string userKey, string currentPassword,
             string newPassword) => await
             _unitOfWork.UserManager.ChangePasswordAsync(userKey, currentPassword, newPassword);
 
+        /// <summary>
+        ///     Finds user by user key
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <returns>User by user key</returns>
         public UserDTO FindUserByKey(string userKey)
         {
             var user = _unitOfWork.UserManager.FindById(userKey);
             return _mapper.Map<User, UserDTO>(user);
         }
 
+        /// <summary>
+        ///     Finds async user by user key
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <returns>User by user key</returns>
         public async Task<UserDTO> FindUserByKeyAsync(string userKey)
         {
             var user = await _unitOfWork.UserManager.FindByIdAsync(userKey);
             return _mapper.Map<User, UserDTO>(user);
         }
 
+        /// <summary>
+        ///     Updates user description or profile photo
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns>Updated user</returns>
         public async Task UpdateUserInfo(UserDTO userDto)
         {
             var user = await _unitOfWork.UserManager.FindByIdAsync(userDto.Id);
