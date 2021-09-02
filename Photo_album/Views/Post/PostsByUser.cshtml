@@ -1,4 +1,5 @@
-﻿@model IQueryable<Photo_album.BLL.DTOs.PostDTO>
+﻿@using Photo_album.Helpers
+@model Photo_album.ViewModels.PostViewModel
 
 @{
     ViewBag.Title = "Post";
@@ -6,13 +7,13 @@
 
 <div class="container">
     <h1>Your posts:</h1>
-    @if (!Model.Any())
+    @if (!Model.PostDTOs.Any())
     {
         @Html.ActionLink("Create your first post", "PostCreate", "Post")
     }
     else 
     {
-        foreach (var item in Model)
+        foreach (var item in Model.PostDTOs)
         {
             <div class="text-box border border-3 px-3 py-2 my-2">
                 <div>
@@ -30,5 +31,8 @@
                 <a href="@Url.Action("FullPost", "Post", new {id = item.Id})">Full post</a>
             </div>
         }
+        <div class="btn-group">
+            @Html.PageLinks(Model.PageInfo, x => Url.Action("PostsByUser", "Post", new { page = x }))
+        </div>
     }
 </div>

@@ -24,9 +24,14 @@ namespace Photo_album.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, int pageSize = 10)
         {
-            var postViewModel = new PostViewModel { PostDTOs = _postService.Get().OrderByDescending(post => post.CreationDate) };
+            var postViewModel = new PostViewModel
+            {
+                PostDTOs = _postService.Get().OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
+                    .Take(pageSize),
+                PageInfo = new PageInfo {PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count()}
+            };
             return View(postViewModel);
         }
 
@@ -37,9 +42,15 @@ namespace Photo_album.Controllers
         }
 
         [HttpGet]
-        public ActionResult OtherUserPosts(string userKey)
+        public ActionResult OtherUserPosts(string userKey, int page = 1, int pageSize = 10)
         {
-            return View(_postService.GetByUserKey(userKey));
+            var postViewModel = new PostViewModel
+            {
+                PostDTOs = _postService.GetByUserKey(userKey).OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
+                    .Take(pageSize),
+                PageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count() }
+            };
+            return View(postViewModel);
         }
 
         [HttpPost]
@@ -116,9 +127,15 @@ namespace Photo_album.Controllers
         }
 
         [HttpGet]
-        public ActionResult PostsByUser()
+        public ActionResult PostsByUser(int page = 1, int pageSize = 10)
         {
-            return View(_postService.GetByUserKey(User.Identity.GetUserId()).OrderByDescending(post => post.CreationDate));
+            var postViewModel = new PostViewModel
+            {
+                PostDTOs = _postService.GetByUserKey(User.Identity.GetUserId()).OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
+                    .Take(pageSize),
+                PageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count() }
+            };
+            return View(postViewModel);
         }
     }
 }

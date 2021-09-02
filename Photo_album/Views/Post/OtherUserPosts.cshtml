@@ -1,11 +1,12 @@
-﻿@model IQueryable<Photo_album.BLL.DTOs.PostDTO>
+﻿@using Photo_album.Helpers
+@model Photo_album.ViewModels.PostViewModel
 
 @{
     ViewBag.Title = "Post";
 }
 
 <div class="container">
-    @foreach (var item in Model)
+    @foreach (var item in Model.PostDTOs)
     {
         <div class="text-box border border-3 px-3 py-2 my-2">
             <h2>@item.UserDto.UserName posts:</h2>
@@ -25,4 +26,8 @@
         </div>
     }
     
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("OtherUserPosts", "Post",new { page = x }))
+    </div>
+
 </div>

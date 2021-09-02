@@ -192,6 +192,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PagingHelpers.cs" />
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\PostCreate.cs" />
     <Compile Include="Models\UserModels\ChangePasswordModel.cs" />

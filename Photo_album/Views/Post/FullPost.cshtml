@@ -24,11 +24,7 @@
             <div class="border px-3 py-2">
                 @{
                     var postKey = Model.Id;
-                } 
-
-                <div hidden>
-                    @Html.EditorFor(m => postKey)
-                </div>
+                }
 
                 @Html.ValidationSummary(true)
 
