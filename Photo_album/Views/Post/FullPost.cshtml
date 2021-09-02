@@ -25,6 +25,10 @@
                 @{
                     var postKey = Model.Id;
                 }
+                
+                <div hidden>
+                    @Html.EditorFor(m => postKey)
+                </div>
 
                 @Html.ValidationSummary(true)
 
