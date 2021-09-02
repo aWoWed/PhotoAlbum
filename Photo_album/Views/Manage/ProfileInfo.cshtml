@@ -1,22 +1,32 @@
 ﻿@model Photo_album.BLL.DTOs.UserDTO
-﻿
-@{
-    ViewBag.Title = "User";
+
+@if (Model is null)
+{
+    <div class="alert alert-danger" role="alert">
+        Error! Model is null!
+    </div>
 }
 
-<div class="text-box border border-3 px-3 py-2 my-2">
-    <h2>Welcome to @Model.UserName page!</h2>
-    <a href="@Url.Action("OtherUserPosts", "Post", new {userKey =  Model.Id})"><b>@Model.UserName</b> Posts:</a>
-    @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
+else
+{
     {
-        <div>
-            <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)" />
-        </div>
+        ViewBag.Title = "User";
     }
-    @if (!string.IsNullOrEmpty(Model.Description))
-    {
-        <div>
-            <p class="border px-3 py-2">@Model.Description</p>
-        </div>
-    }
-</div>
+
+    <div class="text-box border border-3 px-3 py-2 my-2">
+        <h2>Welcome to @Model.UserName page!</h2>
+        <a href="@Url.Action("OtherUserPosts", "Post", new {userKey = Model.Id})"><b>@Model.UserName</b> Posts:</a>
+        @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
+        {
+            <div>
+                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)"/>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div>
+                <p class="border px-3 py-2">@Model.Description</p>
+            </div>
+        }
+    </div>
+}

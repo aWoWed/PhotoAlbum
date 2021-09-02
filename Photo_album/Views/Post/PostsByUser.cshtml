@@ -31,8 +31,11 @@
                 <a href="@Url.Action("FullPost", "Post", new {id = item.Id})">Full post</a>
             </div>
         }
-        <div class="btn-group">
-            @Html.PageLinks(Model.PageInfo, x => Url.Action("PostsByUser", "Post", new { page = x }))
-        </div>
+        if (@Model.PostDTOs.Count() > Model.PageInfo.PageSize)
+        {
+            <div class="btn-group">
+                @Html.PageLinks(Model.PageInfo, x => Url.Action("PostsByUser", "Post", new { page = x }))
+            </div>
+        }
     }
 </div>

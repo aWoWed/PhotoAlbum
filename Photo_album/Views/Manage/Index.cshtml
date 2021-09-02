@@ -1,30 +1,38 @@
 ﻿@model Photo_album.BLL.DTOs.UserDTO
-﻿
-@{
-     ViewBag.Title = "User";
- }
 
-<div class="text-box border border-3 px-3 py-2 my-2">
-    <h2>Welcome to your @Model.UserName page!</h2>
-    <h4>Change your account settings</h4>
-    <div>
-        @Html.ActionLink("Change your password", "ChangePassword")
-        @Html.ActionLink("All Posts", "Index", "Post")
-        @Html.ActionLink("Create your post", "PostCreate", "Post")
-        @Html.ActionLink("Your posts", "PostsByUser", "Post")
-        @Html.ActionLink("Change your profile info", "ChangeProfileInfo")
+@if (Model is null)
+{
+    <p>@Html.ActionLink("Login", "Login", "User") or @Html.ActionLink("Register", "Register", "User") if you do not have an account!</p>
+}
+
+else
+{
+    {
+        ViewBag.Title = "User";
+    }
+
+    <div class="text-box border border-3 px-3 py-2 my-2">
+        <h2>Welcome to your @Model.UserName page!</h2>
+        <h4>Change your account settings</h4>
+        <div>
+            @Html.ActionLink("Change your password", "ChangePassword")
+            @Html.ActionLink("All Posts", "Index", "Post")
+            @Html.ActionLink("Create your post", "PostCreate", "Post")
+            @Html.ActionLink("Your posts", "PostsByUser", "Post")
+            @Html.ActionLink("Change your profile info", "ChangeProfileInfo")
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
+        {
+            <div>
+                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)" />
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div>
+                <p class="border px-3 py-2">@Model.Description</p>
+            </div>
+        }
     </div>
-
-    @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
-    {
-        <div>
-            <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)" />
-        </div>
-    }
-    @if (!string.IsNullOrEmpty(Model.Description))
-    {
-        <div>
-            <p class="border px-3 py-2">@Model.Description</p>
-        </div>
-    }
-</div>
+}

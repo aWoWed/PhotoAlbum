@@ -1,56 +1,87 @@
-﻿@model Photo_album.BLL.DTOs.PostDTO
+﻿@using System.Diagnostics.Eventing.Reader
+@model Photo_album.BLL.DTOs.PostDTO
 
-@{
-    ViewBag.Title = "Post";
+@if (Model is null)
+{
+    <div class="alert alert-danger" role="alert">
+        Error! Model is null!
+    </div>
 }
 
-<div class="container">
-    <h1>Full post:</h1>
-    <div class="text-box border border-3 px-3 py-2 my-2">
-        <div>
-            <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = Model.UserId})"><b>User:</b> @Model.UserDto.UserName</a>
-        </div>
-        <div>
-            <p class="border px-3 py-2"> <b>Description:</b> @Model.Description</p>
-        </div>
-        <div>
-            <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.Image)"/>
-        </div>
-        <div class="px-3 py-2">
-            <p>@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
-        </div>
-        @using (Html.BeginForm("AddComment", "Post", FormMethod.Post))
-        {
-            <div class="border px-3 py-2">
-                @{
-                    var postKey = Model.Id;
-                }
-                
-                <div hidden>
-                    @Html.EditorFor(m => postKey)
-                </div>
+else
+{
+    {
+        ViewBag.Title = "Post";
+    }
 
-                @Html.ValidationSummary(true)
-
-                <p>Text:</p>
-                @Html.TextArea("Text", "", new {@class = "form-control"})
-                <p class="alert-danger">@Html.ValidationMessageFor(model => model.CommentDtos.Single().Text)</p>
-                <div class="mt-2">
-                    <button class="btn btn-primary" type="submit">Add comment</button>
-                </div>
-            </div>
-        }
+    <div class="container">
+        <h1>Full post:</h1>
         <div class="text-box border border-3 px-3 py-2 my-2">
-            <h3>Comments:</h3>
-            @foreach (var comment in Model.CommentDtos.OrderByDescending(comment => comment.CreationDate))
+            <div>
+                <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = Model.UserId})"><b>User:</b> @Model.UserDto.UserName</a>
+            </div>
+            <div>
+                <p class="border px-3 py-2"> <b>Description:</b> @Model.Description</p>
+            </div>
+            <div>
+                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.Image)" />
+            </div>
+            <div class="px-3 py-2">
+                <p>@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+            @using (Html.BeginForm("AddComment", "Post", FormMethod.Post))
             {
-                <div class="text-box border border-2 px-3 py-2 my-2">
-                    <p class="border px-3 py-2">@comment.UserDto.UserName</p>
-                    <p class="border px-3 py-2">@comment.Text</p>
-                    <p class="border px-3 py-2">@comment.CreationDate</p>
+                <div class="border px-3 py-2">
+                    @{
+                        var postKey = Model.Id;
+                    }
+
+                    <div hidden>
+                        @Html.EditorFor(m => postKey)
+                    </div>
+
+                    @Html.ValidationSummary(true)
+
+                    <p>Text:</p>
+                    @Html.TextArea("Text", "", new { @class = "form-control" })
+                    <p class="alert-danger">@Html.ValidationMessageFor(model => model.CommentDtos.Single().Text)</p>
+                    <div class="mt-2">
+                        <button class="btn btn-primary" type="submit">Add comment</button>
+                    </div>
                 </div>
             }
-        </div>
+            <div class="text-box border border-3 px-3 py-2 my-2">
+                @{
+                    var comments = Model.CommentDtos.OrderByDescending(comment => comment.CreationDate).ToList();
+                }
+                @if (comments.Any())
+                {
+                    <h3>Comments:</h3>
+                    <div class="text-box border border-2 px-3 py-2 my-2">
+                        <p class="border px-3 py-2">@comments[0].UserDto.UserName</p>
+                        <p class="border px-3 py-2">@comments[0].Text</p>
+                        <p class="border px-3 py-2">@comments[0].CreationDate</p>
+                    </div>
+                    if (comments.Count > 1)
+                    {
+                        <a data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            More comments
+                        </a>
+                        <div class="collapse" id="collapseExample">
+                            @for (var i = 1; i < comments.Count; i++)
+                            {
+                                <div class="text-box border border-2 px-3 py-2 my-2">
+                                    <p class="border px-3 py-2">@comments[i].UserDto.UserName</p>
+                                    <p class="border px-3 py-2">@comments[i].Text</p>
+                                    <p class="border px-3 py-2">@comments[i].CreationDate</p>
+                                </div>
+                            }
+                        </div>
 
+                    }
+                }
+            </div>
+
+        </div>
     </div>
-</div>
+}
