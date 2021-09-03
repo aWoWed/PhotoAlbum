@@ -94,15 +94,15 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         /// </summary>
         /// <param name="entity"></param>
         public void Update(Comment entity) => _appDbContext.Entry(entity).State = EntityState.Modified;
-        
+
         /// <summary>
         ///     Deletes Comment with current key
         /// </summary>
         /// <param name="key"></param>
-        public void DeleteByKey(string key) => _appDbContext.Comments.Remove(new Comment {Id = key});
+        public void DeleteByKey(string key) => _appDbContext.Comments.Remove(GetByKey(key));
 
-        public Task DeleteByKeyAsync(string key) =>
-            Task.FromResult(_appDbContext.Comments.Remove(new Comment {Id = key}));
+        public async Task DeleteByKeyAsync(string key) =>
+            await Task.FromResult(_appDbContext.Comments.Remove(await GetByKeyAsync(key)));
 
         /// <summary>
         ///     Deletes all Comments

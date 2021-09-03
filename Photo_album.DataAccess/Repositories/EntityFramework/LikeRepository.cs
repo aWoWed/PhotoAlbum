@@ -81,22 +81,16 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         ///     Deletes like with current key
         /// </summary>
         /// <param name="key"></param>
-        public void DeleteByKey(string key)
-        {
-            var entity =  GetByKey(key);
-            Task.FromResult(_appDbContext.Likes.Remove(entity));
-        }
+        public void DeleteByKey(string key) => Task.FromResult(_appDbContext.Likes.Remove(GetByKey(key)));
+
 
         /// <summary>
         ///     Deletes Async like with current key
         /// </summary>
         /// <param name="key"></param>
-        public async Task DeleteByKeyAsync(string key)
-        {
-            var entity = await GetByKeyAsync(key);
-            await Task.FromResult(_appDbContext.Likes.Remove(entity));
-        } 
-
+        public async Task DeleteByKeyAsync(string key) =>
+            await Task.FromResult(_appDbContext.Likes.Remove(await GetByKeyAsync(key)));
+        
         /// <summary>
         ///     Deletes all Likes
         /// </summary>
