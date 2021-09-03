@@ -36,5 +36,39 @@ namespace Photo_album.DataAccess.Repositories.Abstract
         /// <param name="commentKey"></param>
         /// <returns>Likes with current comment key from Db</returns>
         Task<IQueryable<Like>> GetByCommentKeyAsync(string commentKey);
+
+        /// <summary>
+        ///     Gets All likes by user and post keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <returns>All likes by user and post keys</returns>
+        IQueryable<Like> GetByUserPostKey(string userKey, string postKey);
+
+        /// <summary>
+        ///     Gets Async All likes by user and post keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <returns>All likes by user and post keys</returns>
+        Task<IQueryable<Like>> GetByUserPostKeyAsync(string userKey, string postKey);
+
+        /// <summary>
+        ///     Gets All likes by user, post, comment keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <param name="commentKey"></param>
+        /// <returns>All likes by user, post, comment keys</returns>
+        IQueryable<Like> GetByUserPostCommentKey(string userKey, string postKey, string commentKey);
+
+        /// <summary>
+        ///     Gets Async All likes by user, post, comment keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <param name="commentKey"></param>
+        /// <returns>All likes by user, post, comment keys</returns>
+        Task<IQueryable<Like>> GetByUserPostCommentKeyAsync(string userKey, string postKey, string commentKey);
     }
 }

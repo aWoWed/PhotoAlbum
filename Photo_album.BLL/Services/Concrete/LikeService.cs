@@ -189,5 +189,21 @@ namespace Photo_album.BLL.Services.Concrete
         public async Task<IQueryable<LikeDTO>> GetByCommentKeyAsync(string commentKey) =>
             _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(await _unitOfWork.LikeRepository.GetByCommentKeyAsync(commentKey))
                 .AsQueryable();
+
+        public IQueryable<LikeDTO> GetByUserPostKey(string userKey, string postKey) => 
+            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(_unitOfWork.LikeRepository.GetByUserPostKey(userKey, postKey))
+                .AsQueryable();
+
+        public async Task<IQueryable<LikeDTO>> GetByUserPostKeyAsync(string userKey, string postKey) =>
+            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(await _unitOfWork.LikeRepository.GetByUserPostKeyAsync(userKey, postKey))
+                .AsQueryable();
+
+        public IQueryable<LikeDTO> GetByUserPostCommentKey(string userKey, string postKey, string commentKey) =>
+            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(_unitOfWork.LikeRepository.GetByUserPostCommentKey(userKey, postKey, commentKey))
+                .AsQueryable();
+
+        public async Task<IQueryable<LikeDTO>> GetByUserPostCommentKeyAsync(string userKey, string postKey, string commentKey) =>
+            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(await _unitOfWork.LikeRepository.GetByUserPostCommentKeyAsync(userKey, postKey, commentKey))
+                .AsQueryable();
     }
 }

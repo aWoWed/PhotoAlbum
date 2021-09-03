@@ -81,13 +81,21 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         ///     Deletes like with current key
         /// </summary>
         /// <param name="key"></param>
-        public void DeleteByKey(string key) => _appDbContext.Likes.Remove(new Like {Id = key});
+        public void DeleteByKey(string key)
+        {
+            var entity =  GetByKey(key);
+            Task.FromResult(_appDbContext.Likes.Remove(entity));
+        }
 
         /// <summary>
         ///     Deletes Async like with current key
         /// </summary>
         /// <param name="key"></param>
-        public Task DeleteByKeyAsync(string key) => Task.FromResult(_appDbContext.Likes.Remove(new Like {Id = key}));
+        public async Task DeleteByKeyAsync(string key)
+        {
+            var entity = await GetByKeyAsync(key);
+            await Task.FromResult(_appDbContext.Likes.Remove(entity));
+        } 
 
         /// <summary>
         ///     Deletes all Likes
@@ -125,5 +133,44 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         /// <returns>Likes with current comment key from Db</returns>
         public Task<IQueryable<Like>> GetByCommentKeyAsync(string commentKey) =>
             Task.FromResult(_appDbContext.Likes.Where(like => like.CommentId == commentKey));
+
+        /// <summary>
+        ///     Gets All likes by user and post keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <returns>All likes by user and post keys</returns>
+        public IQueryable<Like> GetByUserPostKey(string userKey, string postKey) =>
+            _appDbContext.Likes.Where(like => like.PostId == postKey && like.UserId == userKey);
+
+        /// <summary>
+        ///     Gets Async All likes by user and post keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <returns>All likes by user and post keys</returns>
+        public Task<IQueryable<Like>> GetByUserPostKeyAsync(string userKey, string postKey) =>
+            Task.FromResult(_appDbContext.Likes.Where(like => like.PostId == postKey && like.UserId == userKey));
+
+        /// <summary>
+        ///     Gets All likes by user, post, comment keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <param name="commentKey"></param>
+        /// <returns>All likes by user, post, comment keys</returns>
+        public IQueryable<Like> GetByUserPostCommentKey(string userKey, string postKey, string commentKey) =>
+            _appDbContext.Likes.Where(like => like.PostId == postKey && like.UserId == userKey && like.CommentId == commentKey);
+
+        /// <summary>
+        ///     Gets Async All likes by user, post, comment keys from Db
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <param name="postKey"></param>
+        /// <param name="commentKey"></param>
+        /// <returns>All likes by user, post, comment keys</returns>
+        public Task<IQueryable<Like>> GetByUserPostCommentKeyAsync(string userKey, string postKey, string commentKey) =>
+            Task.FromResult(_appDbContext.Likes.Where(like => like.PostId == postKey && like.UserId == userKey && like.CommentId == commentKey));
+
     }
 }

@@ -9,7 +9,6 @@
     <div class="text-box border border-3 px-3 py-2 my-2">
         <h4>Create your post:</h4>
         @Html.ValidationSummary("", new {@class = "text-danger"})
-        @Html.ValidationSummary(true)
         <p>Description:</p>
         @Html.TextArea("Description", "", new {@class = "form-control"})
         <p class="alert-danger">@Html.ValidationMessageFor(model => model.Description)</p>

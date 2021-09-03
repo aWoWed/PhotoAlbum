@@ -15,12 +15,14 @@ namespace Photo_album.Controllers
         private readonly IPostService _postService;
         private readonly IUserService _userService;
         private readonly ICommentService _commentService;
+        private readonly ILikeService _likeService;
 
-        public PostController(IPostService postService, IUserService userService, ICommentService commentService)
+        public PostController(IPostService postService, IUserService userService, ICommentService commentService, ILikeService likeService)
         {
             _postService = postService;
             _userService = userService;
             _commentService = commentService;
+            _likeService = likeService;
         }
 
         [HttpGet]
@@ -38,8 +40,44 @@ namespace Photo_album.Controllers
         [HttpGet]
         public ActionResult FullPost(string id)
         {
-            return View(_postService.GetByKey(id));
+            var isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), id).Any();
+            var fullPostViewModel = new FullPostViewModel{ IsLiked = isLiked, PostDto = _postService.GetByKey(id) };
+            return View(fullPostViewModel);
         }
+
+        /// <summary>
+        ///     Adds a like to the post
+        /// </summary>
+        /// <param name="postKey">Post id</param>
+        /// <returns>A <see cref="Task" /> representing asynchronous action result</returns>
+        [HttpGet]
+        public async Task<ActionResult> LikePost(string postKey)
+        {
+            var postDto = await _postService.GetByKeyAsync(postKey);
+            await _likeService.InsertAsync(new LikeDTO
+            {
+                PostId = postKey,
+                UserId = User.Identity.GetUserId(),
+            });
+            await _postService.UpdateAsync(postDto);
+            return RedirectToAction("FullPost", new {id = postKey});
+        }
+
+        /// <summary>
+        ///     Deletes a like from the post
+        /// </summary>
+        /// <param name="postKey">Post id</param>
+        /// <returns>A <see cref="Task" /> representing asynchronous action result</returns>
+        [HttpGet]
+        public async Task<ActionResult> UnlikePost(string postKey)
+        {
+            var postDto = await _postService.GetByKeyAsync(postKey);
+            var likeKey = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey).Single().Id;
+            await _likeService.DeleteByKeyAsync(likeKey);
+            await _postService.UpdateAsync(postDto);
+            return RedirectToAction("FullPost", new { id = postKey });
+        }
+
 
         [HttpGet]
         public ActionResult OtherUserPosts(string userKey, int page = 1, int pageSize = 10)
@@ -51,12 +89,6 @@ namespace Photo_album.Controllers
                 PageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count() }
             };
             return View(postViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult AddLike()
-        {
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -84,10 +116,10 @@ namespace Photo_album.Controllers
                     Description = post.Description.Trim(), Image = base64, UserId = User.Identity.GetUserId()
                 };
                 await _postService.InsertAsync(postDTO);
-                return RedirectToAction("Index");
+                return RedirectToAction("PostsByUser");
             }
 
-            return RedirectToAction("Index");
+            return View("PostCreate");
         }
 
         [HttpPost]
@@ -95,6 +127,9 @@ namespace Photo_album.Controllers
         {
             if (string.IsNullOrEmpty(text))
                 ModelState.AddModelError("Text", "Error! Please enter your text!");
+
+            var isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey) != null;
+            var fullPostViewModel = new FullPostViewModel { IsLiked = isLiked, PostDto = _postService.GetByKey(postKey) };
 
             if (ModelState.IsValid)
             {
@@ -118,12 +153,15 @@ namespace Photo_album.Controllers
                     UserId = User.Identity.GetUserId(),
                 });
 
+                isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey) != null;
+                fullPostViewModel = new FullPostViewModel { IsLiked = isLiked, PostDto = post };
+
                 ModelState.Clear();
 
-                return View("FullPost", post);
+                return View("FullPost", fullPostViewModel);
             }
 
-            return RedirectToAction("FullPost");
+            return View("FullPost", fullPostViewModel);
         }
 
         [HttpGet]

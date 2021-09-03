@@ -1,6 +1,6 @@
-﻿@model Photo_album.BLL.DTOs.PostDTO
+﻿@model Photo_album.ViewModels.FullPostViewModel
 
-@if (Model is null)
+@if (Model?.PostDto is null)
 {
     <div class="alert alert-danger" role="alert">
         Error! Model is null!
@@ -17,33 +17,49 @@ else
         <h1>Full post:</h1>
         <div class="text-box border border-3 px-3 py-2 my-2">
             <div>
-                <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = Model.UserId})"><b>User:</b> @Model.UserDto.UserName</a>
+                <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = Model.PostDto.UserId})"><b>User:</b> @Model.PostDto.UserDto.UserName</a>
             </div>
             <div>
-                <p class="border px-3 py-2"> <b>Description:</b> @Model.Description</p>
+                <p class="border px-3 py-2"> <b>Description:</b> @Model.PostDto.Description</p>
             </div>
             <div>
-                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.Image)" />
+                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.PostDto.Image)" />
             </div>
             <div class="px-3 py-2">
-                <p>@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
+                <p>@Model.PostDto.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
             </div>
             @using (Html.BeginForm("AddComment", "Post", FormMethod.Post))
             {
                 <div class="border px-3 py-2">
                     @{
-                        var postKey = Model.Id;
+                        var postKey = Model.PostDto.Id;
                     }
 
                     <div hidden>
                         @Html.EditorFor(m => postKey)
                     </div>
-
-                    @Html.ValidationSummary(true)
+                    
+                    @Html.ValidationSummary("", new {@class = "text-danger"})
 
                     <p>Text:</p>
                     @Html.TextArea("Text", "", new { @class = "form-control" })
-                    <p class="alert-danger">@Html.ValidationMessageFor(model => model.CommentDtos.Single().Text)</p>
+                    <p class="alert-danger">@Html.ValidationMessageFor(model => model.PostDto.CommentDtos.Single().Text)</p>
+
+                    <p>Likes: @Model.PostDto.LikeDtos.Count</p>
+
+                    @if (!Model.IsLiked)
+                    {
+                        <a class="text-dark" href="@Url.Action("LikePost", "Post", new {postKey = Model.PostDto.Id})">
+                            Like
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="text-dark" href="@Url.Action("UnlikePost", "Post", new {postKey = Model.PostDto.Id})">
+                            Unlike
+                        </a>
+                    }
+
                     <div class="mt-2">
                         <button class="btn btn-primary" type="submit">Add comment</button>
                     </div>
@@ -51,7 +67,7 @@ else
             }
             <div class="text-box border border-3 px-3 py-2 my-2">
                 @{
-                    var comments = Model.CommentDtos.OrderByDescending(comment => comment.CreationDate).ToList();
+                    var comments = Model.PostDto.CommentDtos.OrderByDescending(comment => comment.CreationDate).ToList();
                 }
                 @if (comments.Any())
                 {
