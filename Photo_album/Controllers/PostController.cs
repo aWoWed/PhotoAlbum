@@ -26,13 +26,22 @@ namespace Photo_album.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(int page = 1, int pageSize = 10)
+        public ActionResult Index(string searchString, int page = 1, int pageSize = 10)
         {
             var postViewModel = new PostViewModel
             {
-                PostDTOs = _postService.Get().OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
-                    .Take(pageSize),
-                PageInfo = new PageInfo {PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count()}
+                PostDTOs = string.IsNullOrEmpty(searchString)
+                    ? _postService.Get().OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                    : _postService.GetByContainsText(searchString).OrderByDescending(post => post.CreationDate)
+                        .Skip((page - 1) * pageSize).Take(pageSize),
+                PageInfo = new PageInfo
+                {
+                    PageNumber = page, PageSize = pageSize,
+                    TotalItems = string.IsNullOrEmpty(searchString)
+                        ? _postService.Get().Count()
+                        : _postService.GetByContainsText(searchString).Count()
+                }
             };
             return View(postViewModel);
         }
