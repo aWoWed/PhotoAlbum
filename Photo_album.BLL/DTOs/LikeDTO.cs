@@ -24,15 +24,5 @@
         ///     Gets or sets postDTO
         /// </summary>
         public PostDTO PostDto { get; set; }
-
-        /// <summary>
-        ///     Gets or sets commentDTO id
-        /// </summary>
-        public string CommentId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets commentDTO
-        /// </summary>
-        public CommentDTO CommentDto { get; set; }
     }
 }

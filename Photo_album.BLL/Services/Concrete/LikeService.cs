@@ -172,38 +172,12 @@ namespace Photo_album.BLL.Services.Concrete
             _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(await _unitOfWork.LikeRepository.GetByPostKeyAsync(postKey))
                 .AsQueryable();
 
-        /// <summary>
-        ///     Gets All likeDTOs by comment key from Db
-        /// </summary>
-        /// <param name="commentKey"></param>
-        /// <returns>LikeDTOs with current comment key from Db</returns>
-        public IQueryable<LikeDTO> GetByCommentKey(string commentKey) =>
-            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(_unitOfWork.LikeRepository.GetByCommentKey(commentKey))
-                .AsQueryable();
-
-        /// <summary>
-        ///     Gets Async All likeDTOs by comment key from Db
-        /// </summary>
-        /// <param name="commentKey"></param>
-        /// <returns>LikeDTOs with current comment key from Db</returns>
-        public async Task<IQueryable<LikeDTO>> GetByCommentKeyAsync(string commentKey) =>
-            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(await _unitOfWork.LikeRepository.GetByCommentKeyAsync(commentKey))
-                .AsQueryable();
-
         public IQueryable<LikeDTO> GetByUserPostKey(string userKey, string postKey) => 
             _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(_unitOfWork.LikeRepository.GetByUserPostKey(userKey, postKey))
                 .AsQueryable();
 
         public async Task<IQueryable<LikeDTO>> GetByUserPostKeyAsync(string userKey, string postKey) =>
             _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(await _unitOfWork.LikeRepository.GetByUserPostKeyAsync(userKey, postKey))
-                .AsQueryable();
-
-        public IQueryable<LikeDTO> GetByUserPostCommentKey(string userKey, string postKey, string commentKey) =>
-            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(_unitOfWork.LikeRepository.GetByUserPostCommentKey(userKey, postKey, commentKey))
-                .AsQueryable();
-
-        public async Task<IQueryable<LikeDTO>> GetByUserPostCommentKeyAsync(string userKey, string postKey, string commentKey) =>
-            _mapper.Map<IEnumerable<Like>, IEnumerable<LikeDTO>>(await _unitOfWork.LikeRepository.GetByUserPostCommentKeyAsync(userKey, postKey, commentKey))
                 .AsQueryable();
     }
 }

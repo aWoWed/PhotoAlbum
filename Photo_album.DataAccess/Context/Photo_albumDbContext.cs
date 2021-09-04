@@ -41,7 +41,6 @@ namespace Photo_album.DataAccess.Context
         /// <param name="modelBuilder">Model builder</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             base.OnModelCreating(modelBuilder);
         }
     }

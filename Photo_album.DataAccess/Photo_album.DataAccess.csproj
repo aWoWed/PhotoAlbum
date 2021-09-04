@@ -68,6 +68,14 @@
     <Compile Include="Migrations\202109022100507_LikesMigration.Designer.cs">
       <DependentUpon>202109022100507_LikesMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109042015593_DeleteCascadeMigration.cs" />
+    <Compile Include="Migrations\202109042015593_DeleteCascadeMigration.Designer.cs">
+      <DependentUpon>202109042015593_DeleteCascadeMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109042028454_NewLikesMigration.cs" />
+    <Compile Include="Migrations\202109042028454_NewLikesMigration.Designer.cs">
+      <DependentUpon>202109042028454_NewLikesMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\Abstract\ILikeRepository.cs" />
     <Compile Include="Repositories\EntityFramework\LikeRepository.cs" />
     <Compile Include="UOfW\IUnitOfWork.cs" />
@@ -105,6 +113,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109022100507_LikesMigration.resx">
       <DependentUpon>202109022100507_LikesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109042015593_DeleteCascadeMigration.resx">
+      <DependentUpon>202109042015593_DeleteCascadeMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109042028454_NewLikesMigration.resx">
+      <DependentUpon>202109042028454_NewLikesMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -125,12 +125,6 @@ namespace Photo_album.BLL.DI
                     .ForMember(likeDto => likeDto.PostDto,
                         configurationExpression =>
                             configurationExpression.MapFrom(like => like.Post))
-                    .ForMember(likeDto => likeDto.CommentId,
-                        configurationExpression =>
-                            configurationExpression.MapFrom(like => like.CommentId))
-                    .ForMember(likeDto => likeDto.CommentDto,
-                        configurationExpression =>
-                            configurationExpression.MapFrom(like => like.Comment))
                     .ReverseMap();
 
             });

@@ -28,17 +28,5 @@ namespace Photo_album.DataAccess.Entities
         /// </summary>
         [ForeignKey("PostId")]
         public virtual Post Post { get; set; }
-
-        /// <summary>
-        ///     Gets or sets comment id
-        /// </summary>
-        public string CommentId { get; set; }
-
-        /// <summary>
-        ///     Gets or sets comments
-        /// </summary>
-        [ForeignKey("CommentId")]
-        public virtual Comment Comment { get; set; }
-
     }
 }
