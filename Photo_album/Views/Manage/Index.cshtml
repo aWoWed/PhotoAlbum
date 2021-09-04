@@ -20,6 +20,10 @@ else
             @Html.ActionLink("Create your post", "PostCreate", "Post")
             @Html.ActionLink("Your posts", "PostsByUser", "Post")
             @Html.ActionLink("Change your profile info", "ChangeProfileInfo")
+            @if (User.IsInRole("admin")) 
+            {
+                @Html.ActionLink("Admin panel", "Index", "Admin")
+            }
         </div>
 
         @if (!string.IsNullOrEmpty(Model.ProfilePhoto))

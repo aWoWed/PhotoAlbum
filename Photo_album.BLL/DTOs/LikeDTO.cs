@@ -1,4 +1,6 @@
-﻿namespace Photo_album.BLL.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Photo_album.BLL.DTOs
 {
     /// <summary>
     ///     Represents likeDTO
@@ -8,6 +10,7 @@
         /// <summary>
         ///     Gets or sets userDTO id
         /// </summary>
+        [Required]
         public string UserId { get; set; }
 
         /// <summary>
@@ -18,6 +21,7 @@
         /// <summary>
         ///     Gets or sets postDTO id
         /// </summary>
+        [Required]
         public string PostId { get; set; }
 
         /// <summary>

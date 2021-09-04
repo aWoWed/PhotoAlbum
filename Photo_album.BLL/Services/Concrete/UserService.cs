@@ -146,6 +146,38 @@ namespace Photo_album.BLL.Services.Concrete
             await _unitOfWork.SaveAsync();
         }
 
+        /// <summary>
+        ///     Gets all userDtos
+        /// </summary>
+        /// <returns>All users</returns>
+        public IQueryable<UserDTO> Get() => _mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unitOfWork.UserManager.Users).AsQueryable();
+
+        /// <summary>
+        ///     Gets async all userDtos
+        /// </summary>
+        /// <returns>All users</returns>
+        public Task<IQueryable<UserDTO>> GetAsync() => Task.FromResult(_mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unitOfWork.UserManager.Users).AsQueryable());
+
+        /// <summary>
+        ///     Deletes userDTO by Key
+        /// </summary>
+        /// <param name="key"></param>
+        public void DeleteByKey(string key)
+        {
+            _unitOfWork.UserManager.Delete(_unitOfWork.UserManager.FindById(key));
+            _unitOfWork.Save();
+        }
+
+        /// <summary>
+        ///     Deletes Async userDTO by Key
+        /// </summary>
+        /// <param name="key"></param>
+        public async Task DeleteByKeyAsync(string key)
+        {
+            await _unitOfWork.UserManager.DeleteAsync(await _unitOfWork.UserManager.FindByIdAsync(key));
+            await _unitOfWork.SaveAsync();
+        }
+
         public void Dispose() => _unitOfWork.Dispose();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Photo_album.DataAccess.Entities
 {
@@ -10,6 +11,7 @@ namespace Photo_album.DataAccess.Entities
         /// <summary>
         ///     Gets or sets user id
         /// </summary>
+        [Required]
         public string UserId { get; set; }
 
         /// <summary>
@@ -21,6 +23,7 @@ namespace Photo_album.DataAccess.Entities
         /// <summary>
         ///     Gets or sets post id
         /// </summary>
+        [Required]
         public string PostId { get; set; }
 
         /// <summary>

@@ -76,6 +76,10 @@
     <Compile Include="Migrations\202109042028454_NewLikesMigration.Designer.cs">
       <DependentUpon>202109042028454_NewLikesMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109042350202_LikesNotNullMigration.cs" />
+    <Compile Include="Migrations\202109042350202_LikesNotNullMigration.Designer.cs">
+      <DependentUpon>202109042350202_LikesNotNullMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\Abstract\ILikeRepository.cs" />
     <Compile Include="Repositories\EntityFramework\LikeRepository.cs" />
     <Compile Include="UOfW\IUnitOfWork.cs" />
@@ -119,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109042028454_NewLikesMigration.resx">
       <DependentUpon>202109042028454_NewLikesMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109042350202_LikesNotNullMigration.resx">
+      <DependentUpon>202109042350202_LikesNotNullMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

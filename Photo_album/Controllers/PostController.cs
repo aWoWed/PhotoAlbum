@@ -137,7 +137,7 @@ namespace Photo_album.Controllers
             if (string.IsNullOrEmpty(text))
                 ModelState.AddModelError("Text", "Error! Please enter your text!");
 
-            var isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey) != null;
+            var isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey).Any();
             var fullPostViewModel = new FullPostViewModel { IsLiked = isLiked, PostDto = _postService.GetByKey(postKey) };
 
             if (ModelState.IsValid)
@@ -162,7 +162,7 @@ namespace Photo_album.Controllers
                     UserId = User.Identity.GetUserId(),
                 });
 
-                isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey) != null;
+                isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey).Any();
                 fullPostViewModel = new FullPostViewModel { IsLiked = isLiked, PostDto = post };
 
                 ModelState.Clear();

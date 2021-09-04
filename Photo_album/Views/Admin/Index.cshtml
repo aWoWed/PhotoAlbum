@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNet.Identity
+@using Photo_album.BLL.DTOs
+@model IQueryable<Photo_album.BLL.DTOs.UserDTO>
+
+@{
+    ViewBag.Title = "Admin";
+    var users = Model?.Where(user => user.Id != User.Identity.GetUserId()).ToList() ??  new List<UserDTO>();
+}
+
+@foreach (var user in users)
+{
+    <div class="mx-3">
+        @user.UserName:
+        <a class="text-dark" onclick="return confirm('Are you sure you wish to delete this user?');" href="@Url.Action("DeleteUser", "Admin", new {userKey = user.Id}) ">Delete user @user.UserName</a>
+    </div>
+    var posts = user.PostDtos.ToList();
+    foreach (var post in posts)
+    {
+        <div class="mx-3">
+            @(post.Description?.Substring(0,   post.Description.Length > 10 ? 10 : post.Description.Length)): 
+            <a class="text-dark" onclick="return confirm('Are you sure you wish to delete this post?');" href="@Url.Action("DeletePost", "Admin", new {postKey = post.Id})">
+                Delete Post
+            </a>
+        </div>
+        var comments = post.CommentDtos.ToList();
+        foreach (var comment in comments)
+        {
+            <div class="mx-3">
+                @(comment.Text?.Substring(0, comment.Text.Length > 10 ? 10 : comment.Text.Length)): 
+                <a class="text-dark" onclick="return confirm('Are you sure you wish to delete this comment?');" href="@Url.Action("DeleteComment", "Admin", new {commentKey = comment.Id})">
+                    Delete Comment
+                </a>
+            </div>
+            
+        }
+    }
+}
