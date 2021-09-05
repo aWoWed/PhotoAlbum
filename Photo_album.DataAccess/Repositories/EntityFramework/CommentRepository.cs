@@ -84,6 +84,36 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
             Task.FromResult(_appDbContext.Comments.Where(comment => comment.Text.ToLower().Contains(text.ToLower())));
 
         /// <summary>
+        ///     Gets All comment elems, which contain post key from Db
+        /// </summary>
+        /// <param name="postKey"></param>
+        /// <returns>All comment elems, which contain post key from Db</returns>
+        public IQueryable<Comment> GetByPostKey(string postKey) =>
+            _appDbContext.Comments.Where(comment => comment.PostId == postKey);
+
+        /// <summary>
+        ///     Gets Async All comment elems, which contain post key from Db
+        /// </summary>
+        /// <param name="postKey"></param>
+        /// <returns>All comment elems, which contain post key from Db</returns>
+        public Task<IQueryable<Comment>> GetByPostKeyAsync(string postKey) =>
+            Task.FromResult(_appDbContext.Comments.Where(comment => comment.PostId == postKey));
+
+        /// <summary>
+        ///     Deletes comments by post id from DB
+        /// </summary>
+        /// <param name="postKey"></param>
+        public void DeleteByPostKey(string postKey) => _appDbContext.Comments.RemoveRange(GetByPostKey(postKey));
+
+        /// <summary>
+        ///     Deletes Async comments by post id from DB
+        /// </summary>
+        /// <param name="postKey"></param>
+        /// <returns>A <see cref="Task" /> representing asynchronous action result</returns>
+        public async Task DeleteByPostKeyAsync(string postKey) =>
+            await Task.FromResult(_appDbContext.Comments.RemoveRange(await GetByPostKeyAsync(postKey)));
+
+        /// <summary>
         ///     Inserts comment to Db
         /// </summary>
         /// <param name="entity"></param>

@@ -1,22 +1,21 @@
 ﻿using Photo_album.BLL.DTOs;
+using Photo_album.Models;
 
 namespace Photo_album.ViewModels
 {
     /// <summary>
-    ///     Represents view model for full post
+    ///     Represents view model for editing post
     /// </summary>
-    public class FullPostViewModel
+    public class EditPostViewModel
     {
-
         /// <summary>
         ///     Gets or sets postDTO
         /// </summary>
         public PostDTO PostDto { get; set; }
 
         /// <summary>
-        ///     Gets or sets a valued indicating is post liked by requesting user or not
+        ///     Gets or sets post create model
         /// </summary>
-        public bool IsLiked { get; set; }
-
+        public PostCreate PostCreate { get; set; }
     }
 }

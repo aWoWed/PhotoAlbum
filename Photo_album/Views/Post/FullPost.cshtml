@@ -1,4 +1,5 @@
-﻿@model Photo_album.ViewModels.FullPostViewModel
+﻿@using Microsoft.AspNet.Identity
+@model Photo_album.ViewModels.FullPostViewModel
 
 @if (Model?.PostDto is null)
 {
@@ -46,19 +47,22 @@ else
                     <p class="alert-danger">@Html.ValidationMessageFor(model => model.PostDto.CommentDtos.Single().Text)</p>
 
                     <p>Likes: @Model.PostDto.LikeDtos.Count</p>
-
-                    @if (!Model.IsLiked)
-                    {
-                        <a class="text-dark" href="@Url.Action("LikePost", "Post", new {postKey = Model.PostDto.Id})">
-                            Like
-                        </a>
-                    }
-                    else
-                    {
-                        <a class="text-dark" href="@Url.Action("UnlikePost", "Post", new {postKey = Model.PostDto.Id})">
-                            Unlike
-                        </a>
-                    }
+                    
+                    <div class="d-flex">
+                        @if (!Model.IsLiked)
+                        {
+                            <a class="mx-1" href="@Url.Action("LikePost", "Post", new {postKey = Model.PostDto.Id})">Like</a>
+                        }
+                        else
+                        {
+                            <a class="mx-1" href="@Url.Action("UnlikePost", "Post", new {postKey = Model.PostDto.Id})">Unlike</a>
+                        }
+                        @if (Model.PostDto.UserId == User.Identity.GetUserId())
+                        {
+                            <a class="mx-1" href="@Url.Action("EditPost", "Post", new {postKey = Model.PostDto.Id})">Edit Post</a>
+                            <a class="mx-1" onclick="return confirm('Are you sure you wish to delete this post?');" href="@Url.Action("DeletePost", "Post", new {postKey = Model.PostDto.Id})">Delete Post</a>
+                        }
+                    </div>
 
                     <div class="mt-2">
                         <button class="btn btn-primary" type="submit">Add comment</button>
@@ -76,6 +80,11 @@ else
                         <p class="border px-3 py-2">@comments[0].UserDto.UserName</p>
                         <p class="border px-3 py-2">@comments[0].Text</p>
                         <p class="border px-3 py-2">@comments[0].CreationDate</p>
+                        @if (comments[0].UserId == User.Identity.GetUserId())
+                        {
+                            <a class="mx-1" href="@Url.Action("EditComment", "Post", new {postKey = Model.PostDto.Id, commentKey = comments[0].Id})">Edit Comment</a>
+                            <a class="mx-1" onclick="return confirm('Are you sure you wish to delete this comment?');" href="@Url.Action("DeleteComment", "Post", new {postKey = Model.PostDto.Id, commentKey = comments[0].Id})">Delete Comment</a>
+                        }
                     </div>
                     if (comments.Count > 1)
                     {
@@ -89,6 +98,11 @@ else
                                     <p class="border px-3 py-2">@comments[i].UserDto.UserName</p>
                                     <p class="border px-3 py-2">@comments[i].Text</p>
                                     <p class="border px-3 py-2">@comments[i].CreationDate</p>
+                                    @if (comments[i].UserId == User.Identity.GetUserId())
+                                    {
+                                        <a class="mx-1" href="@Url.Action("EditComment", "Post", new {postKey = Model.PostDto.Id, commentKey = comments[i].Id})">Edit Comment</a>
+                                        <a class="mx-1" onclick="return confirm('Are you sure you wish to delete this comment?');" href="@Url.Action("DeleteComment", "Post", new {postKey = Model.PostDto.Id, commentKey = comments[i].Id})">Delete Comment</a>
+                                    }
                                 </div>
                             }
                         </div>

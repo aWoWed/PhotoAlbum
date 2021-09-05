@@ -138,6 +138,9 @@ namespace Photo_album.BLL.Services.Concrete
         {
             var post = await _unitOfWork.PostRepository.GetByKeyAsync(entity.Id);
 
+            post.Description = entity.Description;
+            post.Image = entity.Image;
+
             post.Comments.ForAll(comment =>
             {
                 var comm = post.Comments.FirstOrDefault(cmt => cmt.Id == comment.Id);
@@ -171,6 +174,7 @@ namespace Photo_album.BLL.Services.Concrete
         /// <param name="key"></param>
         public void DeleteByKey(string key)
         {
+            _unitOfWork.CommentRepository.DeleteByPostKey(key);
             _unitOfWork.PostRepository.DeleteByKey(key);
             _unitOfWork.Save();
         }
@@ -181,6 +185,7 @@ namespace Photo_album.BLL.Services.Concrete
         /// <param name="key"></param>
         public async Task DeleteByKeyAsync(string key)
         {
+            await _unitOfWork.CommentRepository.DeleteByPostKeyAsync(key);
             await _unitOfWork.PostRepository.DeleteByKeyAsync(key);
             await _unitOfWork.SaveAsync();
         }

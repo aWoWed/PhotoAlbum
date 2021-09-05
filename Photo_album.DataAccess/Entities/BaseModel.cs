@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Photo_album.DataAccess.Entities
 {
     /// <summary>
-    /// Represents base entity. Contains shared properties for all entities
+    ///     Represents base entity. Contains shared properties for all entities
     /// </summary>
     public abstract class BaseModel
     {

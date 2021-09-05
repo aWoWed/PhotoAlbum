@@ -5,8 +5,18 @@ using Photo_album.Models;
 
 namespace Photo_album.Helpers
 {
+    /// <summary>
+    ///     Represents paging helper for paging
+    /// </summary>
     public static class PagingHelpers
     {
+        /// <summary>
+        ///     Creates paging button menu
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="pageInfo"></param>
+        /// <param name="pageUrl"></param>
+        /// <returns>Paging button menu</returns>
         public static MvcHtmlString PageLinks(this HtmlHelper html, PageInfo pageInfo, Func<int, string> pageUrl)
         {
             var result = new StringBuilder();

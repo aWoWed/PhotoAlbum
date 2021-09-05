@@ -1,0 +1,43 @@
+﻿@model Photo_album.ViewModels.EditPostViewModel
+
+@if (Model?.PostDto is null)
+{
+    <div class="alert alert-danger" role="alert">
+        Error! Model is null!
+    </div>
+}
+
+else
+{
+    {
+        ViewBag.Title = "Post";
+    }
+
+    using (Html.BeginForm("EditPost", "Post", FormMethod.Post, new {enctype = "multipart/form-data"}))
+    {
+        <div class="text-box border border-3 px-3 py-2 my-2">
+            <h4>Edit your post:</h4>
+            @{
+                var postKey = Model.PostDto.Id;
+            }
+
+            <div hidden>
+                @Html.EditorFor(m => postKey)
+            </div>
+            @Html.ValidationSummary("", new {@class = "text-danger"})
+            <p>Description:</p>
+            @Html.TextArea("Description", $"{Model.PostDto.Description}", new {@class = "form-control"})
+            <p class="alert-danger">@Html.ValidationMessageFor(model => model.PostCreate.Description)</p>
+            <p>Image:</p>
+            <div>
+                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.PostDto.Image)"/>
+            </div>
+            <p>Pick new image:</p>
+            @Html.TextBox("Image", Model.PostCreate.Image, new { type = "file", id = "img", name = "uploadFile", accept = "image/*" })
+            <p class="alert-danger">@Html.ValidationMessageFor(model => model.PostCreate.Image)</p>
+            <div class="mt-2">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </div>
+    }
+}

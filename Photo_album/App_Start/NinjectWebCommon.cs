@@ -60,7 +60,6 @@ namespace Photo_album.App_Start
         /// </summary>
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
-        {
-        }
+        { }
     }
 }

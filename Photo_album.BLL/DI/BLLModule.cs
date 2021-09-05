@@ -81,8 +81,6 @@ namespace Photo_album.BLL.DI
                         configurationExpression => configurationExpression.MapFrom(comment => comment.PostId))
                     .ForMember(commentDto => commentDto.UserId,
                         configurationExpression => configurationExpression.MapFrom(comment => comment.UserId))
-                    .ForMember(commentDto => commentDto.LikeDtos,
-                        configurationExpression => configurationExpression.MapFrom(comment => comment.Likes))
                     .ReverseMap();
 
                 config.CreateMap<User, UserDTO>()

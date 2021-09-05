@@ -9,24 +9,41 @@ using Photo_album.Models.UserModels;
 
 namespace Photo_album.Controllers
 {
+    /// <summary>
+    ///     Represents user controller
+    /// </summary>
     [Authorize]
     public class UserController: Controller
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationManager _authenticationManager;
 
+        /// <summary>
+        ///     Creates a new instance of the <see cref="UserController" /> class
+        /// </summary>
+        /// <param name="userService"></param>
+        /// <param name="authenticationManager"></param>
         public UserController(IUserService userService, IAuthenticationManager authenticationManager)
         {
             _userService = userService;
             _authenticationManager = authenticationManager;
         }
 
+        /// <summary>
+        ///     Logs in a user
+        /// </summary>
+        /// <returns>Login view</returns>
         [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
+        /// <summary>
+        ///     Logs in a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Home view with logged in user</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -55,18 +72,31 @@ namespace Photo_album.Controllers
             return View(model);
         }
 
+        /// <summary>
+        ///     Logs out a user
+        /// </summary>
+        /// <returns>Home view</returns>
         public ActionResult Logout()
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        ///     Registers a user
+        /// </summary>
+        /// <returns>Register view</returns>
         [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
+        /// <summary>
+        ///     Registers a user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Home view</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -92,6 +122,11 @@ namespace Photo_album.Controllers
 
             return View(model);
         }
+
+        /// <summary>
+        ///     Sets admin initial data
+        /// </summary>
+        /// <returns>Admin</returns>
         private async Task SetInitialDataAsync()
         {
             await _userService.SetInitialData(new UserDTO

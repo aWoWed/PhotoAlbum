@@ -127,6 +127,7 @@ namespace Photo_album.BLL.Services.Concrete
         public void Update(CommentDTO entity)
         {
             var comment = _unitOfWork.CommentRepository.GetByKey(entity.Id);
+            comment.Text = entity.Text;
             _unitOfWork.CommentRepository.Update(comment);
             _unitOfWork.Save();
         }
@@ -138,6 +139,7 @@ namespace Photo_album.BLL.Services.Concrete
         public async Task<CommentDTO> UpdateAsync(CommentDTO entity)
         {
             var comment = await _unitOfWork.CommentRepository.GetByKeyAsync(entity.Id);
+            comment.Text = entity.Text;
             _unitOfWork.CommentRepository.Update(comment);
             await _unitOfWork.SaveAsync();
             return entity;

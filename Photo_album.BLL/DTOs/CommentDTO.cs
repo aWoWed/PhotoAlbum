@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Photo_album.BLL.DTOs
 {
@@ -34,18 +33,5 @@ namespace Photo_album.BLL.DTOs
         ///     Gets or sets postDTO
         /// </summary>
         public PostDTO PostDto { get; set; }
-
-        /// <summary>
-        ///     Gets or sets likeDTOs
-        /// </summary>
-        public ICollection<LikeDTO> LikeDtos { get; set; }
-
-        /// <summary>
-        ///     Initializes default values of likeDTOs
-        /// </summary>
-        public CommentDTO()
-        {
-            LikeDtos = new List<LikeDTO>();
-        }
     }
 }

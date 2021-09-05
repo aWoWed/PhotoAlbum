@@ -1,0 +1,28 @@
+﻿@model Photo_album.BLL.DTOs.CommentDTO
+    
+@{
+    ViewBag.Title = "Post";
+}
+
+@using (Html.BeginForm("EditComment", "Post", FormMethod.Post))
+{
+    <div class="border px-3 py-2">
+        @{
+            var commentKey = Model.Id;
+        }
+
+        <div hidden>
+            @Html.EditorFor(m => commentKey)
+        </div>
+                    
+        @Html.ValidationSummary("", new {@class = "text-danger"})
+
+        <p>Text:</p>
+        @Html.TextArea("Text", Model.Text, new { @class = "form-control" })
+        <p class="alert-danger">@Html.ValidationMessageFor(model => model.Text)</p>
+
+        <div class="mt-2">
+            <button class="btn btn-primary" type="submit">Edit comment</button>
+        </div>
+    </div>
+}

@@ -7,39 +7,58 @@ using Photo_album.Models.UserModels;
 
 namespace Photo_album.Controllers
 {
+    /// <summary>
+    ///     Represents manage controller
+    /// </summary>
     public class ManageController : Controller
     {
         private readonly IUserService _userService;
 
+        /// <summary>
+        ///      Creates a new instance of the <see cref="ManageController" /> class
+        /// </summary>
+        /// <param name="userService"></param>
         public ManageController(IUserService userService)
         {
             _userService = userService;
         }
 
+        /// <summary>
+        ///     User profile page
+        /// </summary>
+        /// <returns>User profile page view</returns>
         [HttpGet]
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public async Task<ActionResult> Index()
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                    : "";
-
-            var user = await _userService.FindUserByKeyAsync(User.Identity.GetUserId());
-
-            return View(user);
+            return View(await _userService.FindUserByKeyAsync(User.Identity.GetUserId()));
         }
 
+        /// <summary>
+        ///     User profile info
+        /// </summary>
+        /// <param name="userKey"></param>
+        /// <returns>User profile info view</returns>
         [HttpGet]
         public ActionResult ProfileInfo(string userKey)
         {
             return User.Identity.GetUserId() == userKey ? View("Index", _userService.FindUserByKey(User.Identity.GetUserId())) : View(_userService.FindUserByKey(userKey));
         }
 
+        /// <summary>
+        ///     Changes user password
+        /// </summary>
+        /// <returns>Change password view</returns>
         [HttpGet]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
+        /// <summary>
+        ///     Changes user password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>User profile view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordModel model)
@@ -60,18 +79,27 @@ namespace Photo_album.Controllers
                 {
                     await _userService.Authenticate(user);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Index");
             }
             AddErrors(result);
             return View(model);
         }
 
+        /// <summary>
+        ///     Changes profile info
+        /// </summary>
+        /// <returns>Change profile info view</returns>
         [HttpGet]
         public ActionResult ChangeProfileInfo()
         {
             return View();
         }
 
+        /// <summary>
+        ///     Changes profile info
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>User profile view</returns>
         [HttpPost]
         public async Task<ActionResult> ChangeProfileInfo(ChangeProfileInfo model)
         {
@@ -96,6 +124,10 @@ namespace Photo_album.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        ///     Adds error into identity result
+        /// </summary>
+        /// <param name="result"></param>
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -103,11 +135,5 @@ namespace Photo_album.Controllers
                 ModelState.AddModelError("", error);
             }
         }
-
-        public enum ManageMessageId
-        {
-            ChangePasswordSuccess
-        }
-
     }
 }
