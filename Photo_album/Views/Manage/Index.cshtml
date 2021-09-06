@@ -11,35 +11,59 @@ else
         ViewBag.Title = "User";
     }
 
-    <div class="text-box border border-3 px-3 py-2 my-2">
+    <div class="text-box main-wrapper rounded-list">
         <h2>Welcome to your @Model.UserName page!</h2>
-        <h4>Change your account settings</h4>
-        <div>
-            @Html.ActionLink("Change your password", "ChangePassword")
-            @Html.ActionLink("All Posts", "Index", "Post")
-            @Html.ActionLink("Create your post", "PostCreate", "Post")
-            @Html.ActionLink("Your posts", "PostsByUser", "Post")
-            @Html.ActionLink("Change your profile info", "ChangeProfileInfo")
-            @if (User.IsInRole("admin")) 
-            {
-                @Html.ActionLink("Admin panel", "Index", "Admin")
-            }
+        <h4 onclick="collapseCredentials()"
+            data-bs-toggle="collapse"
+            data-bs-target="#credentials"
+            aria-expanded="false"
+            aria-controls="credentials"
+            id="collapseCredentials">
+            Change your account settings <i class="fas fa-chevron-down"></i>
+        </h4>
+        <div class="collapse" id="credentials">
+            <div class="d-flex flex-wrap mb-2">
+                @Html.ActionLink("Change your password", "ChangePassword", new {}, new {@class = "btn-inst mx-1"})
+                @Html.ActionLink("All Posts", "Index", "Post", new {}, new { @class = "btn-inst mx-1" })
+                @Html.ActionLink("Create your post", "PostCreate", "Post", new {}, new { @class = "btn-inst mx-1" })
+                @Html.ActionLink("Your posts", "PostsByUser", "Post", new {}, new { @class = "btn-inst mx-1" })
+                @Html.ActionLink("Change your profile info", "ChangeProfileInfo", new {}, new { @class = "btn-inst mx-1" })
+                @if (User.IsInRole("admin"))
+                {
+                    @Html.ActionLink("Admin panel", "Index", "Admin", new {}, new { @class = "btn-inst mx-1" })
+                }
+            </div>
         </div>
-
-        @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
-        {
-            <div>
-                <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)" />
+        <div class="row mb-2">
+            @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
+            {
+                <div class="col-md-6 col-sm-12 rounded-inst w-50 mb-2">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img class="rounded-circle border border-dark px-3 py-2 image" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)"/>
+                    </div>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="col-md-6 col-sm-12 rounded-inst w-50">
+                    <p class="text-break">@Model.Description</p>
+                </div>
+            }
+            <div class="bg-white rounded-inst">
+                <div class="text-break">
+                    Posts: <b>@Model.PostDtos.Count</b>
+                </div>
             </div>
-        }
-        @if (!string.IsNullOrEmpty(Model.Description))
-        {
-            <div>
-                <p class="border px-3 py-2">@Model.Description</p>
-            </div>
-        }
-        <div>
-            <p class="border px-3 py-2">Posts: @Model.PostDtos.Count</p>
         </div>
     </div>
+    
+    <script>
+        let credentialCollapsed = true
+        const header = document.querySelector("#collapseCredentials")
+
+        function collapseCredentials() {
+            credentialCollapsed = !credentialCollapsed
+            header.innerHTML = `Change your account settings <i class="fas fa-chevron-${credentialCollapsed ? 'down' : 'up'}"></i>`
+        }
+    </script>
 }

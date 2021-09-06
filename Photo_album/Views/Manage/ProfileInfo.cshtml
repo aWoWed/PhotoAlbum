@@ -13,23 +13,31 @@ else
         ViewBag.Title = "User";
     }
 
-<div class="text-box border border-3 px-3 py-2 my-2">
-    <h2>Welcome to @Model.UserName page!</h2>
-    <a href="@Url.Action("OtherUserPosts", "Post", new {userKey = Model.Id})"><b>@Model.UserName</b> Posts:</a>
-    @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
-    {
-        <div>
-            <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)" />
+    <div class="text-box main-wrapper rounded-lists">
+        <h2>Welcome to @Model.UserName page!</h2>
+        <div class="d-flex flex-wrap mb-2">
+            <a class="btn-inst mx-1" href="@Url.Action("OtherUserPosts", "Post", new {userKey = Model.Id})"><b>@Model.UserName</b> Posts:</a>
         </div>
-    }
-    @if (!string.IsNullOrEmpty(Model.Description))
-    {
-        <div>
-            <p class="border px-3 py-2">@Model.Description</p>
+        <div class="row mb-2">
+            @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
+            {
+                <div class="col-md-6 col-sm-12 rounded-inst w-50 mb-2">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img class="rounded-circle border border-dark px-3 py-2 image" alt="Image" src="@("data:image/png;base64," + Model.ProfilePhoto)" />
+                    </div>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="col-md-6 col-sm-12 rounded-inst w-50">
+                    <p class="text-break">@Model.Description</p>
+                </div>
+            }
+            <div class="bg-white rounded-inst">
+                <div class="text-break">
+                    Posts: <b>@Model.PostDtos.Count</b>
+                </div>
+            </div>
         </div>
-    }
-    <div>
-        <p class="border px-3 py-2">Posts: @Model.PostDtos.Count</p>
     </div>
-</div>
 }
