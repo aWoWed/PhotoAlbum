@@ -107,14 +107,14 @@ namespace Photo_album.Controllers
                 var bytes = new byte[post.Image.ContentLength];
                 await post.Image.InputStream.ReadAsync(bytes, 0, bytes.Length);
                 var base64 = Convert.ToBase64String(bytes);
-                var postDTO = new PostDTO
+                var postDto = new PostDTO
                 {
                     Description = post.Description.Trim(),
                     Image = base64,
                     UserId = User.Identity.GetUserId()
                 };
-                await _postService.InsertAsync(postDTO);
-                return RedirectToAction("PostsByUser");
+                await _postService.InsertAsync(postDto);
+                return RedirectToAction("Index", new { userKey = postDto.UserId });
             }
 
             return View("PostCreate");
@@ -290,7 +290,7 @@ namespace Photo_album.Controllers
                 }
                 postDto.Description = post.Description;
                 await _postService.UpdateAsync(postDto);
-                return RedirectToAction("PostsByUser");
+                return RedirectToAction("Index", new {userKey = postDto.UserId});
             }
 
             return View("EditPost");
@@ -313,7 +313,7 @@ namespace Photo_album.Controllers
                     .Take(pageSize),
                 PageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count() }
             };
-            return RedirectToAction("PostsByUser", postViewModel);
+            return RedirectToAction("Index", postViewModel);
         }
     }
 }
