@@ -22,12 +22,5 @@ namespace Photo_album.DataAccess.Repositories.Abstract
         /// <param name="text"></param>
         /// <returns>All post elems, which contain current text, from Db</returns>
         Task<IQueryable<Post>> GetByContainsTextAsync(string text);
-
-        /// <summary>
-        /// Counts posts, which user with userKey made
-        /// </summary>
-        /// <param name="userKey"></param>
-        /// <returns>Number of posts made by user with userKey</returns>
-        int Count(string userKey);
     }
 }

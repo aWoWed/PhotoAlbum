@@ -39,19 +39,21 @@ namespace Photo_album.Controllers
         ///     All posts with paging
         /// </summary>
         /// <param name="searchString"></param>
+        /// <param name="userKey"></param>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns>Posts view</returns>
         [HttpGet]
-        public ActionResult Index(string searchString, int page = 1, int pageSize = 10)
+        public ActionResult Index(string searchString, string userKey, int page = 1, int pageSize = 10)
         {
+            var postDtos = string.IsNullOrEmpty(userKey)
+                ? _postService.Get().OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                : _postService.GetByUserKey(userKey).OrderByDescending(post => post.CreationDate)
+                    .Skip((page - 1) * pageSize).Take(pageSize);
             var postViewModel = new PostViewModel
             {
-                PostDTOs = string.IsNullOrEmpty(searchString)
-                    ? _postService.Get().OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
-                        .Take(pageSize)
-                    : _postService.GetByContainsText(searchString).OrderByDescending(post => post.CreationDate)
-                        .Skip((page - 1) * pageSize).Take(pageSize),
+                PostDTOs = string.IsNullOrEmpty(searchString) ? postDtos : postDtos.Where(post => post.Description.ToLower().Contains(searchString.ToLower())),
                 PageInfo = new PageInfo
                 {
                     PageNumber = page, PageSize = pageSize,
@@ -62,7 +64,7 @@ namespace Photo_album.Controllers
             };
             return View(postViewModel);
         }
-
+        
         /// <summary>
         ///     Current post
         /// </summary>
@@ -74,43 +76,6 @@ namespace Photo_album.Controllers
             var isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), id).Any();
             var fullPostViewModel = new FullPostViewModel{ IsLiked = isLiked, PostDto = _postService.GetByKey(id) };
             return View(fullPostViewModel);
-        }
-
-        /// <summary>
-        ///     All posts from other user with paging
-        /// </summary>
-        /// <param name="userKey"></param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns>Other user posts view</returns>
-        [HttpGet]
-        public ActionResult OtherUserPosts(string userKey, int page = 1, int pageSize = 10)
-        {
-            var postViewModel = new PostViewModel
-            {
-                PostDTOs = _postService.GetByUserKey(userKey).OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
-                    .Take(pageSize),
-                PageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count() }
-            };
-            return View(postViewModel);
-        }
-
-        /// <summary>
-        ///     All posts from current user with paging
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <returns>Posts by user view</returns>
-        [HttpGet]
-        public ActionResult PostsByUser(int page = 1, int pageSize = 10)
-        {
-            var postViewModel = new PostViewModel
-            {
-                PostDTOs = _postService.GetByUserKey(User.Identity.GetUserId()).OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
-                    .Take(pageSize),
-                PageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = _postService.Get().Count() }
-            };
-            return View(postViewModel);
         }
 
         /// <summary>
@@ -167,7 +132,9 @@ namespace Photo_album.Controllers
             if (string.IsNullOrEmpty(text))
                 ModelState.AddModelError("Text", "Error! Please enter your text!");
 
-            var isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey).Any();
+            var userId = User.Identity.GetUserId();
+
+            var isLiked = _likeService.GetByUserPostKey(userId, postKey).Any();
             var fullPostViewModel = new FullPostViewModel { IsLiked = isLiked, PostDto = _postService.GetByKey(postKey) };
 
             if (ModelState.IsValid)
@@ -178,7 +145,7 @@ namespace Photo_album.Controllers
                 {
                     Text = text,
                     PostId = postKey,
-                    UserId = User.Identity.GetUserId(),
+                    UserId = userId,
                     UserDto = _userService.FindUserByKey(User.Identity.GetUserId()),
                     PostDto = post,
                 });
@@ -189,10 +156,10 @@ namespace Photo_album.Controllers
                 {
                     Text = text,
                     PostId = postKey,
-                    UserId = User.Identity.GetUserId(),
+                    UserId = userId,
                 });
 
-                isLiked = _likeService.GetByUserPostKey(User.Identity.GetUserId(), postKey).Any();
+                isLiked = _likeService.GetByUserPostKey(userId, postKey).Any();
                 fullPostViewModel = new FullPostViewModel { IsLiked = isLiked, PostDto = post };
 
                 ModelState.Clear();

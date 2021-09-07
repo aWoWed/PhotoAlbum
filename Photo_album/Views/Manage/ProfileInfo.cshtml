@@ -13,10 +13,10 @@ else
         ViewBag.Title = "User";
     }
 
-    <div class="text-box main-wrapper rounded-lists">
+    <div class="text-box main-wrapper rounded-inst">
         <h2>Welcome to @Model.UserName page!</h2>
         <div class="d-flex flex-wrap mb-2">
-            <a class="btn-inst mx-1" href="@Url.Action("OtherUserPosts", "Post", new {userKey = Model.Id})"><b>@Model.UserName</b> Posts:</a>
+            <a class="btn-inst mx-1" href="@Url.Action("Index", "Post", new {userKey = Model.Id})"><b>@Model.UserName</b> Posts:</a>
         </div>
         <div class="row mb-2">
             @if (!string.IsNullOrEmpty(Model.ProfilePhoto))

@@ -110,12 +110,5 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         ///     Deletes all Comments
         /// </summary>
         public void DeleteAll() => _appDbContext.Posts.RemoveRange(_appDbContext.Posts);
-
-        /// <summary>
-        ///     Counts posts, which user with userKey made
-        /// </summary>
-        /// <param name="userKey"></param>
-        /// <returns>Number of posts made by user with userKey</returns>
-        public int Count(string userKey) => _appDbContext.Posts.Count(post => post.UserId == userKey);
     }
 }

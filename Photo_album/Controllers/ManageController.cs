@@ -41,7 +41,7 @@ namespace Photo_album.Controllers
         [HttpGet]
         public ActionResult ProfileInfo(string userKey)
         {
-            return User.Identity.GetUserId() == userKey ? View("Index", _userService.FindUserByKey(User.Identity.GetUserId())) : View(_userService.FindUserByKey(userKey));
+            return User.Identity.GetUserId() == userKey ? (ActionResult) RedirectToAction("Index", "Manage") : View(_userService.FindUserByKey(userKey));
         }
 
         /// <summary>
@@ -71,10 +71,11 @@ namespace Photo_album.Controllers
                 return View(model);
             }
 
-            var result = await _userService.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            var userId = User.Identity.GetUserId();
+            var result = await _userService.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
-                var user = await _userService.FindUserByKeyAsync(User.Identity.GetUserId());
+                var user = await _userService.FindUserByKeyAsync(userId);
                 if (user != null)
                 {
                     await _userService.Authenticate(user);

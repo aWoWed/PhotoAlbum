@@ -6,17 +6,25 @@
 
 @using (Html.BeginForm("PostCreate", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-<div class="text-box border border-3 px-3 py-2 my-2">
-    <h4>Create your post:</h4>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    @Html.TextArea("Description", "", new { @class = "inst-textarea", id = "description", placeholder = "Description" })
-    <label class="inst-label" for="description">Description</label>
-    <p class="alert-danger">@Html.ValidationMessageFor(model => model.Description)</p>
-    <p>Image:</p>
-    @Html.TextBoxFor(model => model.Image, new { type = "file", id = "img", name = "uploadFile", accept = "image/*" })
-    <p class="alert-danger">@Html.ValidationMessageFor(model => model.Image)</p>
-    <div class="mt-2">
-        <button class="btn-inst" type="submit">Create post</button>
+    <div class="text-box border border-3 px-3 py-2 my-2">
+        <h4>Create your post:</h4>
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        @Html.TextArea("Description", "", new { @class = "inst-textarea", id = "description", placeholder = "Description" })
+        <label class="inst-label" for="description">Description</label>
+        <p class="alert-danger">@Html.ValidationMessageFor(model => model.Description)</p>
+        <p>Image:</p>
+        @Html.TextBoxFor(model => model.Image, new { type = "file", id = "postCreateImg", name = "uploadFile", accept = "image/*" })
+        <label for="postCreateImg" class="btn-inst mx-1">Choose file...</label>
+        <label id="imgLabel" class="my-auto"></label>
+        <p class="alert-danger">@Html.ValidationMessageFor(model => model.Image)</p>
+        <div class="mt-2">
+            <button class="btn-inst" type="submit">Create post</button>
+        </div>
     </div>
-</div>
+
+    <script>
+        function setInputFileName() {
+            document.querySelector('#imgLabel').innerHTML = document.querySelector('#img')?.files[0]?.name || ''
+        }
+    </script>
 }

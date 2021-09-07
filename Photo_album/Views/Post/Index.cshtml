@@ -1,4 +1,5 @@
-﻿@using Photo_album.Helpers
+﻿@using Microsoft.AspNet.Identity
+@using Photo_album.Helpers
 @model Photo_album.ViewModels.PostViewModel
 
 @{
@@ -9,34 +10,46 @@
     @using (Html.BeginForm("Index", "Post", FormMethod.Get))
     {
         <form class="px-3 py-2 my-2 ">
-            Find: @Html.TextArea("searchString", new {@cols = "40", @class="form-control"})
-            <input type="submit" value="Search"/>
+            Find: @Html.TextArea("searchString", new { @cols = "40", @class = "form-control" })
+            @Html.TextArea("userKey", new { @cols = "40", @class = "form-control", hidden = "true", value = Request.Params["userKey"] })
+            <input type="submit" value="Search" />
         </form>
 
-        foreach (var item in Model.PostDTOs)
+        if (!Model.PostDTOs.Any() && string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(Request.Params["searchString"]))
         {
-            <div class="text-box border border-3 px-3 py-2 my-2">
-                <div>
-                    <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = item.UserId})"><b>User:</b> @item.UserDto.UserName</a>
-                </div>
-                <div>
-                    <p class="border px-3 py-2"> <b>Description:</b> @item.Description</p>
-                </div>
-                <div>
-                    <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + item.Image)"/>
-                </div>
-                <div class="px-3 py-2">
-                    <p>@item.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
-                </div>
-                <a href="@Url.Action("FullPost", "Post", new {id = item.Id})">Full post</a>
-            </div>
+            @Html.ActionLink("Create your first post", "PostCreate", "Post")
         }
-
-        if (Model.PostDTOs.Count() > Model.PageInfo.PageSize)
+        else if (!Model.PostDTOs.Any() && !string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(Request.Params["searchString"]))
         {
-            <div class="btn-group">
-                @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new {page = x}))
-            </div>
+            <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = Request.Params["userKey"] })">This User does not have posts</a>
+        }
+        else
+        {
+            foreach (var item in Model.PostDTOs)
+            {
+                <div class="text-box border border-3 px-3 py-2 my-2">
+                    <div>
+                        <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = item.UserId})"><b>User:</b> @item.UserDto.UserName</a>
+                    </div>
+                    <div>
+                        <p class="border px-3 py-2"> <b>Description:</b> @item.Description</p>
+                    </div>
+                    <div>
+                        <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + item.Image)" />
+                    </div>
+                    <div class="px-3 py-2">
+                        <p>@item.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                    <a href="@Url.Action("FullPost", "Post", new {id = item.Id})">Full post</a>
+                </div>
+            }
+
+            if (Model.PostDTOs.Count() > Model.PageInfo.PageSize)
+            {
+                <div class="btn-group">
+                    @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
+                </div>
+            }
         }
     }
 </div>
