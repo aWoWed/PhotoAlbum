@@ -6,50 +6,77 @@
     ViewBag.Title = "Post";
 }
 
-<div class="container">
+<div class="container main-wrapper rounded-inst">
     @using (Html.BeginForm("Index", "Post", FormMethod.Get))
     {
         <form class="px-3 py-2 my-2 ">
-            Find: @Html.TextArea("searchString", new { @cols = "40", @class = "form-control" })
-            @Html.TextArea("userKey", new { @cols = "40", @class = "form-control", hidden = "true", value = Request.Params["userKey"] })
-            <input type="submit" value="Search" />
+            <h4 onclick="collapseSearch()"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseSearch"
+                aria-expanded="false"
+                aria-controls="collapseSearch"
+                id="search">
+                Search <i class="fas fa-chevron-down"></i>
+            </h4>
+            <div class="collapse" id="collapseSearch">
+                <div class="inst-group mt-2">
+                    @Html.TextArea("searchString", "", new { @class = "inst-textarea", id = "searchString", placeholder = "Text" })
+                    <label class="inst-label" for="searchString">Search</label>
+                </div>
+                @Html.TextArea("userKey", new { hidden = "true", value = Request.Params["userKey"] })
+                <input class="btn-inst" type="submit" value="Search" />
+            </div>
         </form>
 
-        if (!Model.PostDTOs.Any() && string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(Request.Params["searchString"]))
+        if (!Model.PostDTOs.Any() && string.IsNullOrEmpty(Request.Params["searchString"]))
         {
-            @Html.ActionLink("Create your first post", "PostCreate", "Post")
+            if (string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase))
+            {
+                @Html.ActionLink("Create your first post", "PostCreate", "Post", new { @class = "btn-inst" })
+            }
+            else
+            {
+                <a class="btn-inst" href="@Url.Action("Index", "Manage", new { userKey = Request.Params["userKey"] })">This User does not have posts</a>
+            }
         }
-        else if (!Model.PostDTOs.Any() && !string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(Request.Params["searchString"]))
-        {
-            <a href="@Url.Action("Index", "Manage", new {userKey = Request.Params["userKey"] })">This User does not have posts</a>
-        }
+
         else
         {
             foreach (var item in Model.PostDTOs)
             {
-                <div class="text-box border border-3 px-3 py-2 my-2">
-                    <div>
-                        <a href="@Url.Action("Index", "Manage", new {userKey = item.UserId})"><b>User:</b> @item.UserDto.UserName</a>
+                <div class="text-box bg-white rounded-inst p-3 my-2">
+                    <div class="mb-2">
+                        <a class="btn-inst" href="@Url.Action("Index", "Manage", new { userKey = item.UserId })"><b>User:</b> @item.UserDto.UserName</a>
                     </div>
                     <div>
-                        <p class="border px-3 py-2"> <b>Description:</b> @item.Description</p>
+                        <p class="px-3 py-2"> <b>Description:</b> @item.Description</p>
                     </div>
-                    <div>
-                        <img class="border px-3 py-2" alt="Image" src="@("data:image/png;base64," + item.Image)" />
+                    <div class="w-100 d-flex justify-content-center align-content-center">
+                        <img class="px-3 py-2 mw-100" alt="Image" src="@("data:image/png;base64," + item.Image)" />
                     </div>
                     <div class="px-3 py-2">
-                        <p>@item.CreationDate.ToString("dd/MM/yyyy HH:mm")</p>
+                        <p><b><i>@item.CreationDate.ToString("dd/MM/yyyy HH:mm")</i></b></p>
                     </div>
-                    <a href="@Url.Action("FullPost", "Post", new {id = item.Id})">Full post</a>
+                    <a class="btn-inst" href="@Url.Action("FullPost", "Post", new { id = item.Id })">Full post</a>
                 </div>
             }
 
-            if (Model.PostDTOs.Count() > Model.PageInfo.PageSize)
+            if (Model.PostDTOs.Count() >= Model.PageInfo.PageSize)
             {
                 <div class="btn-group">
                     @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
                 </div>
             }
         }
+
+        <script>
+            let searchCollapsed = true
+            const header = document.querySelector("#search")
+
+            function collapseSearch() {
+                searchCollapsed = !searchCollapsed
+                header.innerHTML = `Search <i class="fas fa-chevron-${searchCollapsed ? 'down' : 'up'}"></i>`
+            }
+        </script>
     }
 </div>

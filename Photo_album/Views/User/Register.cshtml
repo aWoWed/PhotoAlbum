@@ -6,20 +6,28 @@
 
 @using (Html.BeginForm("Register", "User", FormMethod.Post))
 {
-<div class="text-box border border-3 px-3 py-2 my-2">
+<div class="text-box main-wrapper rounded-inst">
     @Html.AntiForgeryToken()
     <h4>Create new account</h4>
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <p>Email:</p>
-    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-    <p>Username:</p>
-    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
-    <p>Password:</p>
-    @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-    <p>Confirm password:</p>
-    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+    @Html.ValidationSummary( "", new { @class = "alert alert-danger" })
+    <div class="inst-group">
+        @Html.TextBoxFor(model => model.Email, new { @class = "inst-input", id = "email", placeholder = "Email" })
+        <label class="inst-label" for="email">Email</label>
+    </div>
+    <div class="inst-group">
+        @Html.TextBoxFor(model => model.UserName, new { @class = "inst-input", id = "username", placeholder = "Username" })
+        <label class="inst-label" for="username">Username</label>
+    </div>
+    <div class="inst-group">
+        @Html.PasswordFor(model => model.Password, new { @class = "inst-input", id = "password", placeholder = "Password" })
+        <label class="inst-label" for="password">Password</label>
+    </div>
+    <div class="inst-group">
+        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "inst-input", id = "confirmPassword", placeholder = "Confirm password" })
+        <label class="inst-label" for="confirmPassword">Confirm password</label>
+    </div>
     <div class="mt-2">
-        <button class="btn btn-primary" type="submit">Register</button>
+        <button class="btn-inst" type="submit">Register</button>
     </div>
 </div>
 }

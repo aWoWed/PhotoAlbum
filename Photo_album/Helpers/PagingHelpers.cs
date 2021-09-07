@@ -30,10 +30,10 @@ namespace Photo_album.Helpers
                 if (i == pageInfo.PageNumber)
                 {
                     tag.AddCssClass("selected");
-                    tag.AddCssClass("btn-primary");
+                    tag.AddCssClass("btn-inst");
                 }
 
-                tag.AddCssClass("btn btn-default");
+                tag.AddCssClass("btn-inst");
 
                 result.Append(tag);
             }

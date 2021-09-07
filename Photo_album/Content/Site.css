@@ -3,7 +3,8 @@
 :root {
     --bg-color: rgb(229, 229, 229);
     --text-color: rgb(18, 18, 18);
-    --color-primary: rgb(104, 62, 239)
+    --color-primary: rgb(104, 62, 239);
+    --color-secondary: #fc7f49;
 }
 
 * {
@@ -78,6 +79,7 @@ textarea {
 .btn-inst:hover {
     color: white;
     transform: scale(1.02);
+    background-color: var(--color-secondary);
 }
 
 .image {
@@ -136,6 +138,12 @@ textarea {
     color: white !important;
 }
 
+.inst-link:hover {
+    color: white;
+    transform: scale(1.02);
+    background-color: var(--color-secondary);
+}
+
 .inst-textarea {
     box-shadow: none;
     background-color: white;
@@ -174,4 +182,86 @@ textarea {
 
 .inst-group:focus-within {
     border-color: var(--color-primary);
+}
+
+.validation-summary-valid {
+    display: none !important;
+}
+
+ul {
+    margin-bottom: 0 !important;
+}
+
+.inst-checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.inst-checkbox + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+    color: var(--color-primary);
+}
+
+.inst-checkbox + label::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+
+.inst-checkbox:checked + label::before {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.inst-checkbox:not(:disabled):not(:checked) + label:hover::before {
+    border-color: var(--color-primary);
+}
+
+.inst-checkbox:not(:disabled):active + label::before {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.inst-checkbox:focus + label::before {
+    box-shadow: 0 0 0 0.2rem rgba(104, 62, 239, 0.25);
+}
+
+.inst-checkbox:focus:not(:checked) + label::before {
+    border-color: var(--color-primary);
+}
+
+.inst-checkbox:disabled + label::before {
+    background-color: #e9ecef;
+}
+
+nav.navbar.navbar-purple {
+    color: var(--color-primary) !important;
+    background-color: var(--bg-color) !important;
+}
+
+nav.navbar.navbar-purple .nav-link {
+    color: var(--color-primary) !important;
+    transition: .2s ease-in-out;
+}
+
+nav.navbar.navbar-purple .nav-link:hover {
+    color: var(--bg-color) !important;
+    background-color: var(--color-primary) !important;
+}
+
+nav.navbar.navbar-purple .navbar-brand {
+    color: var(--color-primary) !important;
 }

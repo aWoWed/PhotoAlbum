@@ -141,23 +141,27 @@ namespace Photo_album.Controllers
             {
                 var post = _postService.GetByKey(postKey);
 
-                post.CommentDtos.Add(new CommentDTO
+                var commentDto = new CommentDTO
                 {
                     Text = text,
                     PostId = postKey,
                     UserId = userId,
-                    UserDto = _userService.FindUserByKey(User.Identity.GetUserId()),
+                };
+
+                post.CommentDtos.Add(new CommentDTO
+                {
+                    Id = commentDto.Id,
+                    CreationDate = commentDto.CreationDate,
+                    Text = text,
+                    PostId = postKey,
+                    UserId = userId,
+                    UserDto = _userService.FindUserByKey(userId),
                     PostDto = post,
                 });
 
                 await _postService.UpdateAsync(post);
 
-                await _commentService.InsertAsync(new CommentDTO
-                {
-                    Text = text,
-                    PostId = postKey,
-                    UserId = userId,
-                });
+                await _commentService.InsertAsync(commentDto);
 
                 isLiked = _likeService.GetByUserPostKey(userId, postKey).Any();
                 fullPostViewModel = new FullPostViewModel { IsLiked = isLiked, PostDto = post };
@@ -278,9 +282,10 @@ namespace Photo_album.Controllers
             if (string.IsNullOrEmpty(post.Description))
                 ModelState.AddModelError("Description", "Error! Please enter your description!");
 
+            var postDto = _postService.GetByKey(postKey);
+
             if (ModelState.IsValid)
             {
-                var postDto = _postService.GetByKey(postKey);
                 if (post.Image != null)
                 {
                     var bytes = new byte[post.Image.ContentLength];
@@ -292,8 +297,7 @@ namespace Photo_album.Controllers
                 await _postService.UpdateAsync(postDto);
                 return RedirectToAction("Index", new {userKey = postDto.UserId});
             }
-
-            return View("EditPost");
+            return View("EditPost", new EditPostViewModel { PostCreate = post, PostDto = postDto });
         }
 
         /// <summary>

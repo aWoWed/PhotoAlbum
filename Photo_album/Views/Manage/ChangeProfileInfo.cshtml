@@ -12,23 +12,23 @@ else
         ViewBag.Title = "User";
     }
 
-    using (Html.BeginForm("ChangeProfileInfo", "Manage", new { userKey = User.Identity.GetUserId() }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    using (Html.BeginForm("ChangeProfileInfo", "Manage", new {userKey = User.Identity.GetUserId()}, FormMethod.Post, new {enctype = "multipart/form-data"}))
     {
         <div class="text-box border border-3 px-3 py-2 my-2">
-            @Html.ValidationSummary("", new { @class = "text-danger" })
+            @Html.ValidationSummary("", new {@class = "alert alert-danger"})
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
             <h4>Change your profile info</h4>
-            @Html.ValidationSummary(true)
-            @Html.TextArea("Description", "", new { @class = "inst-textarea", id = "description", placeholder = "Description" })
+            @Html.TextArea("Description", "", new {@class = "inst-textarea", id = "description", placeholder = "Description"})
             <label class="inst-label" for="description">Description:</label>
-            <p>Profile photo:</p>
-            @Html.TextBoxFor(model => model.ProfilePhoto, new { type = "file", id = "img", name = "uploadFile", accept = "image/*" })
-            <label for="img" class="btn-inst mx-1">Choose file...</label>
-            <label id="imgLabel" class="my-auto"></label>
+            <div class="inst-group">
+                Profile picture:
+                @Html.TextBoxFor(model => model.ProfilePhoto, new { type = "file", id = "img", name = "uploadFile", accept = "image/*", hidden = "true", onchange = "setInputFileName()" })
+                <label for="img" class="btn-inst mx-1">Choose file...</label>
+                <label id="imgLabel" class="my-auto"></label>
+            </div>
             <div class="mt-2">
                 <button class="btn-inst mx-1" onclick="return confirm('Are you sure you wish to change your profile info?');" type="submit">Change profile info</button>
-                <button class="btn-inst mx-1">@Html.ActionLink("Cancel", "Index", new { }, new { @class = "inst-link" })</button>
+                <button class="btn-inst mx-1">@Html.ActionLink("Cancel", "Index", new {}, new {@class = "inst-link"})</button>
             </div>
         </div>
     }

@@ -3,7 +3,7 @@
 
 @if (Model is null)
 {
-    <p>@Html.ActionLink("Login", "Login", "User") or @Html.ActionLink("Register", "Register", "User") if you do not have an account!</p>
+    <p>@Html.ActionLink("Login", "Login", "User",  "User", new { @class = "inst-link" }) or @Html.ActionLink("Register", "Register", "User",  "User", new { @class = "inst-link" }) if you do not have an account!</p>
 }
 
 else
@@ -26,20 +26,20 @@ else
             @if (!string.Equals(Model.Id, User.Identity.GetUserId(), StringComparison.OrdinalIgnoreCase))
             {
                 <div class="d-flex flex-wrap mb-2">
-                    <a class="btn-inst mx-1" href="@Url.Action("Index", "Post", new {userKey = Model.Id})"><b>@Model.UserName</b> Posts:</a>
+                    <a class="btn-inst mx-1" href="@Url.Action("Index", "Post", new { userKey = Model.Id })"><b>@Model.UserName</b> Posts:</a>
                 </div>
             }
             else
             {
                 <div class="d-flex flex-wrap mb-2">
-                    @Html.ActionLink("Change your password", "ChangePassword", new {}, new {@class = "btn-inst mx-1"})
-                    @Html.ActionLink("All Posts", "Index", "Post", new {}, new {@class = "btn-inst mx-1"})
-                    @Html.ActionLink("Create your post", "PostCreate", "Post", new {}, new {@class = "btn-inst mx-1"})
-                    @Html.ActionLink("Your posts", "Index", "Post", new {userKey = Model.Id}, new {@class = "btn-inst mx-1"})
-                    @Html.ActionLink("Change your profile info", "ChangeProfileInfo", new {}, new {@class = "btn-inst mx-1"})
+                    @Html.ActionLink("Change your password", "ChangePassword", new {}, new { @class = "btn-inst mx-1" })
+                    @Html.ActionLink("All Posts", "Index", "Post", new {}, new { @class = "btn-inst mx-1" })
+                    @Html.ActionLink("Create your post", "PostCreate", "Post", new {}, new { @class = "btn-inst mx-1" })
+                    @Html.ActionLink("Your posts", "Index", "Post", new { userKey = Model.Id }, new { @class = "btn-inst mx-1" })
+                    @Html.ActionLink("Change your profile info", "ChangeProfileInfo", new {}, new { @class = "btn-inst mx-1" })
                     @if (User.IsInRole("admin"))
                     {
-                        @Html.ActionLink("Admin panel", "Index", "Admin", new {}, new {@class = "btn-inst mx-1"})
+                        @Html.ActionLink("Admin panel", "Index", "Admin", new {}, new { @class = "btn-inst mx-1" })
                     }
                 </div>
             }
@@ -55,7 +55,7 @@ else
             }
             @if (!string.IsNullOrEmpty(Model.Description))
             {
-                <div class="col-md-6 col-sm-12 rounded-inst w-50">
+                <div class="col-md-6 col-sm-12 rounded-inst w-50 bg-white w-50 mb-2">
                     <p class="text-break">@Model.Description</p>
                 </div>
             }

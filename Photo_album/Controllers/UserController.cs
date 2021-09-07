@@ -55,6 +55,7 @@ namespace Photo_album.Controllers
             {
                 UserName = model.UserName, Password = model.Password
             };
+
             var claim = await _userService.Authenticate(userDto);
 
             if (claim == null)

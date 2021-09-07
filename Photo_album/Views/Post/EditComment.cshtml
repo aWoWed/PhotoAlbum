@@ -6,7 +6,7 @@
 
 @using (Html.BeginForm("EditComment", "Post", FormMethod.Post))
 {
-    <div class="border px-3 py-2">
+    <div class="main-wrapper rounded-inst px-3 py-2">
         @{
             var commentKey = Model.Id;
         }
@@ -14,15 +14,18 @@
         <div hidden>
             @Html.EditorFor(m => commentKey)
         </div>
-                    
-        @Html.ValidationSummary("", new {@class = "text-danger"})
 
+        @Html.ValidationSummary("", new {@class = "alert alert-danger"})
+
+        <div class="inst-group mt-2">
+            @Html.TextArea("Text", "", new {@class = "inst-textarea", id = "text", placeholder = "Text"})
+            <label class="inst-label" for="text">Text</label>
+        </div>
         <p>Text:</p>
-        @Html.TextArea("Text", Model.Text, new { @class = "form-control" })
-        <p class="alert-danger">@Html.ValidationMessageFor(model => model.Text)</p>
 
         <div class="mt-2">
-            <button class="btn btn-primary" type="submit">Edit comment</button>
+            <button class="btn-inst" type="submit">Edit comment</button>
+            <button class="btn-inst mx-1">@Html.ActionLink("Cancel", "FullPost", new { id = Model.PostDto.Id }, new { @class = "inst-link" })</button>
         </div>
     </div>
 }
