@@ -28,20 +28,9 @@ namespace Photo_album.Controllers
         /// </summary>
         /// <returns>User profile page view</returns>
         [HttpGet]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string userKey)
         {
-            return View(await _userService.FindUserByKeyAsync(User.Identity.GetUserId()));
-        }
-
-        /// <summary>
-        ///     User profile info
-        /// </summary>
-        /// <param name="userKey"></param>
-        /// <returns>User profile info view</returns>
-        [HttpGet]
-        public ActionResult ProfileInfo(string userKey)
-        {
-            return User.Identity.GetUserId() == userKey ? (ActionResult) RedirectToAction("Index", "Manage") : View(_userService.FindUserByKey(userKey));
+            return View(await _userService.FindUserByKeyAsync(string.IsNullOrEmpty(userKey) ? User.Identity.GetUserId() : userKey));
         }
 
         /// <summary>

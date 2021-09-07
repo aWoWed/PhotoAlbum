@@ -21,7 +21,7 @@
         }
         else if (!Model.PostDTOs.Any() && !string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty(Request.Params["searchString"]))
         {
-            <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = Request.Params["userKey"] })">This User does not have posts</a>
+            <a href="@Url.Action("Index", "Manage", new {userKey = Request.Params["userKey"] })">This User does not have posts</a>
         }
         else
         {
@@ -29,7 +29,7 @@
             {
                 <div class="text-box border border-3 px-3 py-2 my-2">
                     <div>
-                        <a href="@Url.Action("ProfileInfo", "Manage", new {userKey = item.UserId})"><b>User:</b> @item.UserDto.UserName</a>
+                        <a href="@Url.Action("Index", "Manage", new {userKey = item.UserId})"><b>User:</b> @item.UserDto.UserName</a>
                     </div>
                     <div>
                         <p class="border px-3 py-2"> <b>Description:</b> @item.Description</p>

@@ -385,7 +385,6 @@
     <Content Include="Views\Post\PostCreate.cshtml" />
     <Content Include="Views\Manage\ChangeProfileInfo.cshtml" />
     <Content Include="Views\Post\FullPost.cshtml" />
-    <Content Include="Views\Manage\ProfileInfo.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Post\EditPost.cshtml" />
     <Content Include="Views\Post\EditComment.cshtml" />

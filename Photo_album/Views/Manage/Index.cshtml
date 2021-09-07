@@ -1,4 +1,5 @@
-﻿@model Photo_album.BLL.DTOs.UserDTO
+﻿@using Microsoft.AspNet.Identity
+@model Photo_album.BLL.DTOs.UserDTO
 
 @if (Model is null)
 {
@@ -22,17 +23,26 @@ else
             Change your account settings <i class="fas fa-chevron-down"></i>
         </h4>
         <div class="collapse" id="credentials">
-            <div class="d-flex flex-wrap mb-2">
-                @Html.ActionLink("Change your password", "ChangePassword", new {}, new {@class = "btn-inst mx-1"})
-                @Html.ActionLink("All Posts", "Index", "Post", new {}, new { @class = "btn-inst mx-1" })
-                @Html.ActionLink("Create your post", "PostCreate", "Post", new {}, new { @class = "btn-inst mx-1" })
-                @Html.ActionLink("Your posts", "Index", "Post", new {userKey = Model.Id}, new { @class = "btn-inst mx-1" })
-                @Html.ActionLink("Change your profile info", "ChangeProfileInfo", new {}, new { @class = "btn-inst mx-1" })
-                @if (User.IsInRole("admin"))
-                {
-                    @Html.ActionLink("Admin panel", "Index", "Admin", new {}, new { @class = "btn-inst mx-1" })
-                }
-            </div>
+            @if (!string.Equals(Model.Id, User.Identity.GetUserId(), StringComparison.OrdinalIgnoreCase))
+            {
+                <div class="d-flex flex-wrap mb-2">
+                    <a class="btn-inst mx-1" href="@Url.Action("Index", "Post", new {userKey = Model.Id})"><b>@Model.UserName</b> Posts:</a>
+                </div>
+            }
+            else
+            {
+                <div class="d-flex flex-wrap mb-2">
+                    @Html.ActionLink("Change your password", "ChangePassword", new {}, new {@class = "btn-inst mx-1"})
+                    @Html.ActionLink("All Posts", "Index", "Post", new {}, new {@class = "btn-inst mx-1"})
+                    @Html.ActionLink("Create your post", "PostCreate", "Post", new {}, new {@class = "btn-inst mx-1"})
+                    @Html.ActionLink("Your posts", "Index", "Post", new {userKey = Model.Id}, new {@class = "btn-inst mx-1"})
+                    @Html.ActionLink("Change your profile info", "ChangeProfileInfo", new {}, new {@class = "btn-inst mx-1"})
+                    @if (User.IsInRole("admin"))
+                    {
+                        @Html.ActionLink("Admin panel", "Index", "Admin", new {}, new {@class = "btn-inst mx-1"})
+                    }
+                </div>
+            }
         </div>
         <div class="row mb-2">
             @if (!string.IsNullOrEmpty(Model.ProfilePhoto))
