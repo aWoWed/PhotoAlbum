@@ -26,7 +26,7 @@ else
             </div>
             @Html.ValidationSummary("", new { @class = "alert alert-danger" })
             <div class="inst-group">
-                @Html.TextArea("Description", "", new { @class = "inst-textarea", id = "description", placeholder = "Description" })
+                @Html.TextArea("Description", $"{Model.PostDto.Description}", new { @class = "inst-textarea", id = "description", placeholder = "Description" })
                 <label class="inst-label" for="description">Description</label>
             </div>
             <p>Image:</p>

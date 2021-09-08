@@ -265,3 +265,10 @@ nav.navbar.navbar-purple .nav-link:hover {
 nav.navbar.navbar-purple .navbar-brand {
     color: var(--color-primary) !important;
 }
+
+@media (max-width: 575px) {
+    .col-sm-12 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+}

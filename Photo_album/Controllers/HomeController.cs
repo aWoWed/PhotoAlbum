@@ -1,26 +1,37 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
+using Photo_album.BLL.Services.Abstract;
+using Photo_album.Extensions;
 
 namespace Photo_album.Controllers
 {
+    /// <summary>
+    ///     Represents home controller
+    /// </summary>
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private readonly IPostService _postService;
+
+        /// <summary>
+        ///     Creates a new instance of the <see cref="HomeController" /> class
+        /// </summary>
+        /// <param name="postService"></param>
+        public HomeController(IPostService postService)
         {
-            return View();
+            _postService = postService;
         }
 
-        public ActionResult About()
+        /// <summary>
+        ///     Home page
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns>Home page with random posts</returns>
+        public ActionResult Index(int count = 12)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            var posts = _postService.Get().ToList();
+            if (count > posts.Count)
+                count = posts.Count;
+            return View(posts.RandomElements(count).AsQueryable());
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Photo_album.Controllers
         /// <param name="pageSize"></param>
         /// <returns>Posts view</returns>
         [HttpGet]
-        public ActionResult Index(string searchString, string userKey, int page = 1, int pageSize = 10)
+        public ActionResult Index(string searchString, string userKey, int page = 1, int pageSize = 12)
         {
             var postDtos = string.IsNullOrEmpty(userKey)
                 ? _postService.Get().OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
@@ -308,7 +308,7 @@ namespace Photo_album.Controllers
         /// <param name="pageSize"></param>
         /// <returns>Posts by current user view without this post</returns>
         [HttpGet]
-        public async Task<ActionResult> DeletePost(string postKey, int page = 1, int pageSize = 10)
+        public async Task<ActionResult> DeletePost(string postKey, int page = 1, int pageSize = 12)
         {
             await _postService.DeleteByKeyAsync(postKey);
             var postViewModel = new PostViewModel

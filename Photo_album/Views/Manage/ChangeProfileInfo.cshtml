@@ -18,7 +18,7 @@ else
             @Html.ValidationSummary("", new {@class = "alert alert-danger"})
             @Html.AntiForgeryToken()
             <h4>Change your profile info</h4>
-            @Html.TextArea("Description", "", new {@class = "inst-textarea", id = "description", placeholder = "Description"})
+            @Html.TextArea("Description", $"", new {@class = "inst-textarea", id = "description", placeholder = "Description"})
             <label class="inst-label" for="description">Description:</label>
             <div class="inst-group">
                 Profile picture:
