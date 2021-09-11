@@ -23,8 +23,8 @@ namespace Photo_album.BLL.DI
             var mapperConfiguration = CreateConfiguration();
             Bind<MapperConfiguration>().ToConstant(mapperConfiguration).InSingletonScope();
 
-            Bind<IMapper>().ToMethod(ctx =>
-                new Mapper(mapperConfiguration, type => ctx.Kernel.Get(type)));
+            Bind<IMapper>().ToMethod(context =>
+                new Mapper(mapperConfiguration, type => context.Kernel.Get(type)));
 
             Bind<IUnitOfWork>().To<UnitOfWork>();
             Bind<IUserService>().To<UserService>();
@@ -39,7 +39,7 @@ namespace Photo_album.BLL.DI
         /// <returns>Mapping configurations</returns>
         private static MapperConfiguration CreateConfiguration()
         {
-            var cfg = new MapperConfiguration(config =>
+            var mapperConfiguration = new MapperConfiguration(config =>
             {
                 config.CreateMap<Post, PostDTO>()
                     .ForMember(postDto => postDto.Id,
@@ -127,7 +127,7 @@ namespace Photo_album.BLL.DI
 
             });
 
-            return cfg;
+            return mapperConfiguration;
         }
     }
 }

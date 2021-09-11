@@ -81,33 +81,61 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
             Task.FromResult(_appDbContext.Posts.Where(post => post.Description.ToLower().Contains(text.ToLower())));
 
         /// <summary>
-        ///     Inserts comment to Db
+        ///     Inserts post to Db
         /// </summary>
         /// <param name="entity"></param>
         public void Insert(Post entity) => _appDbContext.Entry(entity).State = EntityState.Added;
 
         /// <summary>
-        ///     Updates comment to Db
+        ///     Updates post to Db
         /// </summary>
         /// <param name="entity"></param>
-        public void Update(Post entity) => _appDbContext.Entry(entity).State = EntityState.Modified;
+        public void Update(Post entity)
+        {
+            var post = GetByKey(entity.Id);
+
+            post.Description = entity.Description;
+            post.Image = entity.Image;
+
+            foreach (var comment in post.Comments)
+            {
+                var comm = post.Comments.FirstOrDefault(cmt => cmt.Id == comment.Id);
+
+                if (comm != null)
+                    post.Comments.Add(comm);
+                else
+                {
+                    post.Comments.Add(new Comment
+                    {
+
+                        Id = comment.Id,
+                        Text = comment.Text,
+                        UserId = comment.UserId,
+                        PostId = comment.PostId,
+                        User = comment.User,
+                        Post = comment.Post,
+                        CreationDate = comment.CreationDate
+                    });
+                }
+            }
+        }
 
         /// <summary>
-        ///     Deletes comment with current key
+        ///     Deletes post with current key
         /// </summary>
         /// <param name="key"></param>
         public void DeleteByKey(string key) => _appDbContext.Posts.Remove(GetByKey(key));
 
         /// <summary>
-        ///     Deletes Async comment with current key
+        ///     Deletes Async post with current key
         /// </summary>
         /// <param name="key"></param>
         public async Task DeleteByKeyAsync(string key) =>
             await Task.FromResult(_appDbContext.Posts.Remove(await GetByKeyAsync(key)));
-        
+
 
         /// <summary>
-        ///     Deletes all Comments
+        ///     Deletes all Posts
         /// </summary>
         public void DeleteAll() => _appDbContext.Posts.RemoveRange(_appDbContext.Posts);
     }

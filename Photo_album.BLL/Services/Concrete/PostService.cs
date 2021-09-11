@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
- using AutoMapper.Internal;
  using Photo_album.BLL.DTOs;
 using Photo_album.BLL.Services.Abstract;
 using Photo_album.DataAccess.Entities;
@@ -33,8 +32,7 @@ namespace Photo_album.BLL.Services.Concrete
         ///     Gets All postDTOs
         /// </summary>
         /// <returns>postDTOs from Db</returns>
-        IQueryable<PostDTO> IService<string, PostDTO>.Get() =>
-            _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(_unitOfWork.PostRepository.Get()).AsQueryable();
+        public IQueryable<PostDTO> Get() => _mapper.Map<IEnumerable<Post>, IEnumerable<PostDTO>>(_unitOfWork.PostRepository.Get()).AsQueryable();
 
         /// <summary>
         ///     Gets Async All postDTOs
@@ -124,9 +122,7 @@ namespace Photo_album.BLL.Services.Concrete
         /// <param name="entity"></param>
         public void Update(PostDTO entity)
         {
-            var post = _mapper.Map<PostDTO, Post>(entity);
-
-            _unitOfWork.PostRepository.Update(post);
+            _unitOfWork.PostRepository.Update(_mapper.Map<PostDTO, Post>(entity));
             _unitOfWork.Save();
         }
 
@@ -136,34 +132,7 @@ namespace Photo_album.BLL.Services.Concrete
         /// <param name="entity"></param>
         public async Task<PostDTO> UpdateAsync(PostDTO entity)
         {
-            var post = await _unitOfWork.PostRepository.GetByKeyAsync(entity.Id);
-
-            post.Description = entity.Description;
-            post.Image = entity.Image;
-
-            post.Comments.ForAll(comment =>
-            {
-                var comm = post.Comments.FirstOrDefault(cmt => cmt.Id == comment.Id);
-
-                if(comm != null)
-                    post.Comments.Add(comm);
-                else
-                {
-                    post.Comments.Add(new Comment
-                    {
-
-                        Id = comment.Id,
-                        Text = comment.Text,
-                        UserId = comment.UserId,
-                        PostId = comment.PostId,
-                        User = comment.User,
-                        Post = comment.Post,
-                        CreationDate = comment.CreationDate
-                    });
-                }
-            });
-
-            _unitOfWork.PostRepository.Update(post);
+            _unitOfWork.PostRepository.Update(_mapper.Map<PostDTO, Post>(entity));
             await _unitOfWork.SaveAsync();
             return entity;
         }

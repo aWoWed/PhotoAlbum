@@ -123,7 +123,11 @@ namespace Photo_album.DataAccess.Repositories.EntityFramework
         ///     Updates comment to Db
         /// </summary>
         /// <param name="entity"></param>
-        public void Update(Comment entity) => _appDbContext.Entry(entity).State = EntityState.Modified;
+        public void Update(Comment entity)
+        {
+            var comment = GetByKey(entity.Id);
+            comment.Text = entity.Text;
+        }
 
         /// <summary>
         ///     Deletes Comment with current key

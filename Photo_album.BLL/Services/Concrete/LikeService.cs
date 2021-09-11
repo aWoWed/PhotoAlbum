@@ -130,7 +130,7 @@ namespace Photo_album.BLL.Services.Concrete
         /// <param name="key"></param>
         public void DeleteByKey(string key)
         {
-            _unitOfWork.PostRepository.DeleteByKey(key);
+            _unitOfWork.LikeRepository.DeleteByKey(key);
             _unitOfWork.SaveAsync();
         }
 
