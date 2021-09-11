@@ -72,7 +72,7 @@ else
                 var comments = Model.PostDto.CommentDtos.OrderByDescending(comment => comment.CreationDate).ToList();
                 if (comments.Any())
                 {
-                    <h3>Comments:</h3>
+                    <h3>Comments: @comments.Count</h3>
                     <div class="text-box bg-white rounded-inst px-3 py-2 my-2">
                         <div class="px-1 my-2">
                             <a class="btn-inst" href="@Url.Action("Index", "Manage", new { userKey = comments[0].UserDto.Id })">
