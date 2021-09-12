@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNet.Identity
+@using Photo_album.BLL.DTOs
+@model IQueryable<Photo_album.BLL.DTOs.UserDTO>
+
+@{
+    ViewBag.Title = "Admin";
+    var users = Model?.Where(user => user.Id != User.Identity.GetUserId()).ToList() ?? new List<UserDTO>();
+}
+
+@if (users.Any())
+{
+    <div class="container main-wrapper rounded-inst">
+        @foreach (var user in users)
+        {
+        <div class="p-2 rounded-inst m-2">
+            <div class="m-3">
+                <a class="inst-link" style="color: black !important" href="@Url.Action("Index", "Manage", new {userKey = user.Id})"><b>User:</b> @(@user.UserName.Length > 20 ? @user.UserName.Substring(0, 20).Insert(20, "...") : @user.UserName)</a> - <a class="btn-inst" onclick="return confirm('Are you sure you wish to delete this user?');" href="@Url.Action("DeleteUser", "Admin", new {userKey = user.Id}) ">Delete user @user.UserName</a>
+            </div>
+            @{
+                var posts = user.PostDtos.ToList();
+                foreach (var post in posts)
+                {
+                    <div class="m-3">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<a class="inst-link" style="color: black !important" href="@Url.Action("FullPost", "Post", new {id = post.Id, userKey = post.UserId})"><b>Post:</b>  @(post.Description.Length > 10 ? post.Description.Substring(0, 10).Insert(10, "...") : post.Description)</a> - 
+                        <a class="btn-inst" onclick="return confirm('Are you sure you wish to delete this post?');" href="@Url.Action("DeletePost", "Admin", new {postKey = post.Id})">
+                            Delete Post
+                        </a>
+                    </div>
+                    var comments = post.CommentDtos.ToList();
+                    foreach (var comment in comments)
+                    {
+                        <div class="m-3">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Comment: </b>@(comment.Text.Length > 10 ? comment.Text.Substring(0, 10).Insert(10, "...") : comment.Text) - 
+                            <a class="btn-inst" onclick="return confirm('Are you sure you wish to delete this comment?');" href="@Url.Action("DeleteComment", "Admin", new {commentKey = comment.Id})">
+                                Delete Comment
+                            </a>
+                        </div>
+
+                    }
+                }
+            }
+        </div>
+        }
+    </div>
+}

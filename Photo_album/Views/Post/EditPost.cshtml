@@ -1,0 +1,54 @@
+﻿@model Photo_album.ViewModels.EditPostViewModel
+
+@if (Model?.PostDto is null)
+{
+    <div class="alert alert-danger" role="alert">
+        Error! Model is null!
+    </div>
+}
+
+else
+{
+    {
+        ViewBag.Title = "Post";
+    }
+
+    using (Html.BeginForm("EditPost", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="text-box main-wrapper rounded-inst">
+            <h4>Edit your post:</h4>
+            @{
+                var postKey = Model.PostDto.Id;
+            }
+
+            <div hidden>
+                @Html.EditorFor(m => postKey)
+            </div>
+            @Html.ValidationSummary("", new { @class = "alert alert-danger" })
+            <div class="inst-group">
+                @Html.TextArea("Description", $"{Model.PostDto.Description}", new { @class = "inst-textarea", id = "description", placeholder = "Description" })
+                <label class="inst-label" for="description">Description</label>
+            </div>
+            <p>Image:</p>
+            <div class="w-100 d-flex justify-content-center align-items-center">
+                <img class="border px-3 py-2 mw-100" alt="Image" src="@("data:image/png;base64," + Model.PostDto.Image)" />
+            </div>
+            <div class="inst-group">
+                New Image:
+                @Html.TextBoxFor(model => model.PostCreate.Image, new { type = "file", id = "editPostImg", name = "uploadFile", accept = "image/*", hidden = "true", onchange = "setInputFileName()" })
+                <label for="editPostImg" class="btn-inst m-3">Choose file...</label>
+                <label id="imgLabel" class="my-auto"></label>
+            </div>
+            <div class="mt-2">
+                <button class="btn-inst" type="submit">Edit Post</button>
+                <button class="btn-inst mx-1">@Html.ActionLink("Cancel", "FullPost", new { id = postKey }, new { @class = "inst-link" })</button>
+            </div>
+        </div>
+
+        <script>
+            function setInputFileName() {
+                document.querySelector('#imgLabel').innerHTML = document.querySelector('#editPostImg')?.files[0]?.name || ''
+            }
+        </script>
+    }
+}

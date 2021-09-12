@@ -1,0 +1,41 @@
+﻿@model Photo_album.BLL.DTOs.CommentDTO
+
+@{
+    ViewBag.Title = "Post";
+}
+
+@if (Model is null)
+{
+    <div class="alert alert-danger" role="alert">
+        Error! Model is null!
+    </div>
+}
+
+else
+{
+    using (Html.BeginForm("EditComment", "Post", FormMethod.Post))
+    {
+        <div class="main-wrapper rounded-inst px-3 py-2">
+            @{
+                var commentKey = Model.Id;
+            }
+
+            <div hidden>
+                @Html.EditorFor(m => commentKey)
+            </div>
+
+            @Html.ValidationSummary("", new {@class = "alert alert-danger"})
+
+            <div class="inst-group mt-2">
+                @Html.TextArea("Text", $"{Model.Text}", new {@class = "inst-textarea", id = "text", placeholder = "Text"})
+                <label class="inst-label" for="text">Text</label>
+            </div>
+            <p>Text:</p>
+
+            <div class="mt-2">
+                <button class="btn-inst" type="submit">Edit comment</button>
+                <button class="btn-inst mx-1">@Html.ActionLink("Cancel", "FullPost", new {id = Model.PostDto.Id}, new {@class = "inst-link"})</button>
+            </div>
+        </div>
+    }
+}

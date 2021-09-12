@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNet.Identity
+@model Photo_album.Models.PostCreate
+
+@{
+    ViewBag.Title = "Post";
+}
+
+@using (Html.BeginForm("PostCreate", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="text-box main-wrapper rounded-inst">
+        <h4>Create your post:</h4>
+        @Html.ValidationSummary("", new { @class = "alert alert-danger" })
+        <div class="inst-group">
+            @Html.TextArea("Description", "", new { @class = "inst-textarea", id = "description", placeholder = "Description" })
+            <label class="inst-label" for="description">Description</label>
+        </div>
+        <div class="inst-group">
+            Image:
+            @Html.TextBoxFor(model => model.Image, new { type = "file", id = "postCreateImg", name = "uploadFile", accept = "image/*", hidden = "true", onchange = "setInputFileName()" })
+            <label for="postCreateImg" class="btn-inst m-3">Choose file...</label>
+            <label id="imgLabel" class="my-auto"></label>
+        </div>
+        <button class="btn-inst" type="submit">Create post</button>
+        <button class="btn-inst mx-1">@Html.ActionLink("Cancel", "Index", "Manage", new { userKey = User.Identity.GetUserId() },  new { @class = "inst-link"})</button>
+    </div>
+
+    <script>
+        function setInputFileName() {
+            document.querySelector('#imgLabel').innerHTML = document.querySelector('#postCreateImg')?.files[0]?.name || ''
+        }
+    </script>
+}

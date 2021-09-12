@@ -1,0 +1,138 @@
+﻿@using Microsoft.AspNet.Identity
+@model Photo_album.ViewModels.FullPostViewModel
+
+@if (Model?.PostDto is null)
+{
+    <div class="alert alert-danger" role="alert">
+        Error! Model is null!
+    </div>
+}
+
+else
+{
+    {
+        ViewBag.Title = "Post";
+    }
+
+    <div class="container">
+        <div class="text-box main-wrapper rounded-inst">
+            <div class="mb-4">
+                <a class="btn-inst" href="@Url.Action("Index", "Manage", new { userKey = Model.PostDto.UserId })"><b>User:</b> @Model.PostDto.UserDto.UserName</a>
+            </div>
+            <div class="bg-white rounded-inst p-2 mb-2">
+                <div class="text-wrap"><b>Description:</b> @Model.PostDto.Description</div>
+            </div>
+            <div class="d-flex align-content-center justify-content-center w-100">
+                <img class="border px-3 py-2 mw-100" alt="Image" src="@("data:image/png;base64," + Model.PostDto.Image)"/>
+            </div>
+            <div class="bg-white rounded-inst p-2 mb-2">
+                <div class="text-wrap">@Model.PostDto.CreationDate.ToString("dd/MM/yyyy HH:mm")</div>
+            </div>
+            <div class="bg-white rounded-inst p-2 mb-2">
+                <div class="text-wrap">Likes: <b>@Model.PostDto.LikeDtos.Count</b></div>
+            </div>
+            <div class="d-flex flex-wrap">
+                @if (!Model.IsLiked)
+                {
+                    <a class="btn-inst m-1" href="@Url.Action("LikePost", "Post", new { postKey = Model.PostDto.Id })">Like</a>
+                }
+                else
+                {
+                    <a class="btn-inst m-1" href="@Url.Action("UnlikePost", "Post", new { postKey = Model.PostDto.Id })">Unlike</a>
+                }
+                @if (Model.PostDto.UserId == User.Identity.GetUserId())
+                {
+                    <a class="btn-inst m-1" href="@Url.Action("EditPost", "Post", new { postKey = Model.PostDto.Id })">Edit Post</a>
+                    <a class="btn-inst m-1" onclick="return confirm('Are you sure you wish to delete this post?');" href="@Url.Action("DeletePost", "Post", new { postKey = Model.PostDto.Id })">Delete Post</a>
+                }
+            </div>
+            @using (Html.BeginForm("AddComment", "Post", FormMethod.Post))
+            {
+                <div class="border px-3 py-2">
+                    @{
+                        var postKey = Model.PostDto.Id;
+                    }
+
+                    <div hidden>
+                        @Html.EditorFor(m => postKey)
+                    </div>
+
+                    @Html.ValidationSummary("", new { @class = "alert alert-danger" })
+
+                    <div class="inst-group">
+                        @Html.TextArea("Text", "", new { @class = "inst-textarea", id = "comment", placeholder = "Enter a comment" })
+                        <label class="inst-label" for="comment">Enter a comment</label>
+                    </div>
+                    <button class="btn-inst" type="submit">Add comment</button>
+                </div>
+            }
+        </div>
+        <div class="text-box px-3 py-2 my-2">
+            @{
+                var comments = Model.PostDto.CommentDtos.OrderByDescending(comment => comment.CreationDate).ToList();
+                if (comments.Any())
+                {
+                    <h3>Comments: @comments.Count</h3>
+                    <div class="text-box bg-white rounded-inst px-3 py-2 my-2">
+                        <div class="px-1 my-2">
+                            <a class="btn-inst" href="@Url.Action("Index", "Manage", new { userKey = comments[0].UserDto.Id })">
+                                @comments[0].UserDto.UserName
+                            </a>
+                        </div>
+                        <p class="px-3 py-2">@comments[0].Text</p>
+                        <p class="px-3 py-2"><i><b>@comments[0].CreationDate</b></i></p>
+                        @if (comments[0].UserId == User.Identity.GetUserId())
+                        {
+                            <div class="d-flex flex-wrap">
+                                <a class="btn-inst m-1" href="@Url.Action("EditComment", "Post", new { postKey = Model.PostDto.Id, commentKey = comments[0].Id})">Edit Comment</a>
+                                <a class="btn-inst m-1" onclick="return confirm('Are you sure you wish to delete this comment?');" href="@Url.Action("DeleteComment", "Post", new { postKey = Model.PostDto.Id, commentKey = comments[0].Id })">Delete Comment</a>
+                            </div>
+                        }
+                    </div>
+                    if (comments.Count > 1)
+                    {
+                        <h4 onclick="collapseComments()"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseExample"
+                            aria-expanded="false"
+                            aria-controls="collapseExample"
+                            id="example">
+                            More comments <i class="fas fa-chevron-down"></i>
+                         </h4>
+                        <div class="collapse" id="collapseExample">
+                            @for (var i = 1; i < comments.Count; i++)
+                            {
+                                <div class="text-box bg-white rounded-inst px-3 py-2 my-2">
+                                    <div class="px-1 my-2">
+                                        <a class="btn-inst" href="@Url.Action("Index", "Manage", new { userKey = comments[i].UserDto.Id })">
+                                            @comments[i].UserDto.UserName
+                                        </a>
+                                    </div>
+                                    <p class="px-3 py-2">@comments[i].Text</p>
+                                    <p class="px-3 py-2"><i><b>@comments[i].CreationDate</b></i></p>
+                                    @if (comments[i].UserId == User.Identity.GetUserId())
+                                    {
+                                        <div class="d-flex flex-wrap">
+                                            <a class="btn-inst m-1" href="@Url.Action("EditComment", "Post", new { postKey = Model.PostDto.Id, commentKey = comments[i].Id })">Edit Comment</a>
+                                            <a class="btn-inst m-1" onclick="return confirm('Are you sure you wish to delete this comment?');" href="@Url.Action("DeleteComment", "Post", new { postKey = Model.PostDto.Id, commentKey = comments[i].Id })">Delete Comment</a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <script>
+                            let commentsCollapse = true
+                            const header = document.querySelector("#example")
+
+                            function collapseComments() {
+                                commentsCollapse = !commentsCollapse
+                                header.innerHTML =
+                                    `More comments <i class="fas fa-chevron-${commentsCollapse ? 'down' : 'up'}"></i>`
+                            }
+                        </script>
+                    }
+                }
+            }
+        </div>
+    </div>
+}
