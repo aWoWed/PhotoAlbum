@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Photo_album.DataAccess\Photo_album.DataAccess.csproj" />
   </ItemGroup>
 
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" 
+    Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v16.0\WebApplications\Microsoft.WebApplication.targets" Condition="true" />
+
 </Project>
