@@ -3,7 +3,7 @@
 
 @if (Model is null)
 {
-    <p>@Html.ActionLink("Login", "Login", "User",  "User", new { @class = "inst-link" }) or @Html.ActionLink("Register", "Register", "User",  "User", new { @class = "inst-link" }) if you do not have an account!</p>
+    <p>@Html.ActionLink("Login", "Login", "User",  "User", new { @class = "inst-link", @style= "color: var(--color-primary) !important;" }) or @Html.ActionLink("Register", "Register", "User",  "User", new { @class = "inst-link", @style = "color: var(--color-primary) !important;" }) if you do not have an account!</p>
 }
 
 else
