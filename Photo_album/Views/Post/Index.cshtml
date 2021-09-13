@@ -34,6 +34,10 @@
             {
                 @Html.ActionLink("Create your first post", "PostCreate", "Post", new { @class = "btn-inst" })
             }
+            else if(string.IsNullOrEmpty(Request.Params["userKey"]))
+            {
+                <p>There are no posts</p>
+            }
             else
             {
                 <a class="btn-inst" href="@Url.Action("Index", "Manage", new { userKey = Request.Params["userKey"] })">This User does not have posts</a>
