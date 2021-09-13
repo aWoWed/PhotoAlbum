@@ -24,13 +24,13 @@
                     <label class="inst-label" for="searchString">Search</label>
                 </div>
                 @Html.TextArea("userKey", new { hidden = "true", value = Request.Params["userKey"] })
-                <input class="btn-inst" type="submit" value="Search" />
+                <input class="btn-inst mb-4" type="submit" value="Search" />
             </div>
         </form>
 
         if (!Model.PostDTOs.Any() && string.IsNullOrEmpty(Request.Params["searchString"]))
         {
-            if (string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(User.Identity.GetUserId(), Request.Params["userKey"], StringComparison.OrdinalIgnoreCase) && User.IsInRole("user"))
             {
                 @Html.ActionLink("Create your first post", "PostCreate", "Post", new { @class = "btn-inst" })
             }
