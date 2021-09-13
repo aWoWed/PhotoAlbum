@@ -25,14 +25,14 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore
 
-      - name: Publish to folder
-        run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+      - name: Build and Publish Web App
+        run: msbuild Photo_album.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+ 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1.0.0
         with:
-          name: ASP-app
-          path: '/published/**'
+          name: published_webapp
+          path: bin\Release\Publish
 
   deploy:
     runs-on: windows-latest
