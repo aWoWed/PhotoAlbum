@@ -31,40 +31,43 @@ else
             <div class="bg-white rounded-inst p-2 mb-2">
                 <div class="text-wrap">Likes: <b>@Model.PostDto.LikeDtos.Count</b></div>
             </div>
-            <div class="d-flex flex-wrap">
-                @if (!Model.IsLiked)
-                {
-                    <a class="btn-inst m-1" href="@Url.Action("LikePost", "Post", new { postKey = Model.PostDto.Id })">Like</a>
-                }
-                else
-                {
-                    <a class="btn-inst m-1" href="@Url.Action("UnlikePost", "Post", new { postKey = Model.PostDto.Id })">Unlike</a>
-                }
-                @if (Model.PostDto.UserId == User.Identity.GetUserId())
-                {
-                    <a class="btn-inst m-1" href="@Url.Action("EditPost", "Post", new { postKey = Model.PostDto.Id })">Edit Post</a>
-                    <a class="btn-inst m-1" onclick="return confirm('Are you sure you wish to delete this post?');" href="@Url.Action("DeletePost", "Post", new { postKey = Model.PostDto.Id })">Delete Post</a>
-                }
-            </div>
-            @using (Html.BeginForm("AddComment", "Post", FormMethod.Post))
+            @if (!string.IsNullOrEmpty(User.Identity.GetUserId()))
             {
-                <div class="border px-3 py-2">
-                    @{
-                        var postKey = Model.PostDto.Id;
+                <div class="d-flex flex-wrap">
+                    @if (!Model.IsLiked)
+                    {
+                        <a class="btn-inst m-1" href="@Url.Action("LikePost", "Post", new { postKey = Model.PostDto.Id })">Like</a>
                     }
-
-                    <div hidden>
-                        @Html.EditorFor(m => postKey)
-                    </div>
-
-                    @Html.ValidationSummary("", new { @class = "alert alert-danger" })
-
-                    <div class="inst-group">
-                        @Html.TextArea("Text", "", new { @class = "inst-textarea", id = "comment", placeholder = "Enter a comment" })
-                        <label class="inst-label" for="comment">Enter a comment</label>
-                    </div>
-                    <button class="btn-inst" type="submit">Add comment</button>
+                    else
+                    {
+                        <a class="btn-inst m-1" href="@Url.Action("UnlikePost", "Post", new { postKey = Model.PostDto.Id })">Unlike</a>
+                    }
+                    @if (Model.PostDto.UserId == User.Identity.GetUserId())
+                    {
+                        <a class="btn-inst m-1" href="@Url.Action("EditPost", "Post", new { postKey = Model.PostDto.Id })">Edit Post</a>
+                        <a class="btn-inst m-1" onclick="return confirm('Are you sure you wish to delete this post?');" href="@Url.Action("DeletePost", "Post", new { postKey = Model.PostDto.Id })">Delete Post</a>
+                    }
                 </div>
+                using (Html.BeginForm("AddComment", "Post", FormMethod.Post))
+                {
+                    <div class="border px-3 py-2">
+                        @{
+                            var postKey = Model.PostDto.Id;
+                        }
+
+                        <div hidden>
+                            @Html.EditorFor(m => postKey)
+                        </div>
+
+                        @Html.ValidationSummary("", new { @class = "alert alert-danger" })
+
+                        <div class="inst-group">
+                            @Html.TextArea("Text", "", new { @class = "inst-textarea", id = "comment", placeholder = "Enter a comment" })
+                            <label class="inst-label" for="comment">Enter a comment</label>
+                        </div>
+                        <button class="btn-inst" type="submit">Add comment</button>
+                    </div>
+                }
             }
         </div>
         <div class="text-box px-3 py-2 my-2">
@@ -123,7 +126,6 @@ else
                         <script>
                             let commentsCollapse = true
                             const header = document.querySelector("#example")
-
                             function collapseComments() {
                                 commentsCollapse = !commentsCollapse
                                 header.innerHTML =

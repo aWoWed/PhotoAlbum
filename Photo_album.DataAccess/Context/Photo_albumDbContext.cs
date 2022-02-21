@@ -12,7 +12,7 @@ namespace Photo_album.DataAccess.Context
         /// <summary>
         ///     Initializes a new instance of the DB context
         /// </summary>
-        public Photo_albumDbContext() : base("name=DefaultConnection") { Database.SetInitializer(new CreateDatabaseIfNotExists<Photo_albumDbContext>()); }
+        public Photo_albumDbContext() : base("name=SqlLocalConnection") { Database.SetInitializer(new CreateDatabaseIfNotExists<Photo_albumDbContext>()); }
 
         /// <summary>
         ///     Gets or sets users database set

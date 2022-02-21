@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -44,7 +45,7 @@ namespace Photo_album.Controllers
         /// <param name="pageSize"></param>
         /// <returns>Posts view</returns>
         [HttpGet]
-        public ActionResult Index(string searchString, string userKey, int page = 1, int pageSize = 12)
+        public ActionResult Index(string searchString, string userKey, int page = 1, int pageSize = 2)
         {
             var postDtos = string.IsNullOrEmpty(userKey)
                 ? _postService.Get().OrderByDescending(post => post.CreationDate).Skip((page - 1) * pageSize)
@@ -102,20 +103,35 @@ namespace Photo_album.Controllers
             if (post.Image == null)
                 ModelState.AddModelError("Image", "Error! Please pick your image!");
 
-            if (ModelState.IsValid)
+            if (post.Image != null)
             {
-                var bytes = new byte[post.Image.ContentLength];
-                await post.Image.InputStream.ReadAsync(bytes, 0, bytes.Length);
-                var base64 = Convert.ToBase64String(bytes);
-                var postDto = new PostDTO
+                var fileInfo = new FileInfo(post.Image.FileName);
+                if (string.Equals(fileInfo.Extension, ".jpg") || string.Equals(fileInfo.Extension, ".jpeg") ||
+                    string.Equals(fileInfo.Extension, ".png") ||
+                    string.Equals(fileInfo.Extension, ".gif"))
                 {
-                    Description = post.Description.Trim(),
-                    Image = base64,
-                    UserId = User.Identity.GetUserId()
-                };
-                await _postService.InsertAsync(postDto);
-                return RedirectToAction("Index", new { userKey = postDto.UserId });
+                    if (ModelState.IsValid)
+                    {
+                        var bytes = new byte[post.Image.ContentLength];
+                        await post.Image.InputStream.ReadAsync(bytes, 0, bytes.Length);
+                        var base64 = Convert.ToBase64String(bytes);
+                        var postDto = new PostDTO
+                        {
+                            Description = post.Description.Trim(),
+                            Image = base64,
+                            UserId = User.Identity.GetUserId()
+                        };
+                        await _postService.InsertAsync(postDto);
+                        return RedirectToAction("Index", new { userKey = postDto.UserId });
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("Image", "Error! Please pick an image!");
+                }
             }
+            
+            
 
             return View("PostCreate");
         }
